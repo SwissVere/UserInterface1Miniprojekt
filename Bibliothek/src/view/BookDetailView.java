@@ -17,12 +17,19 @@ import java.awt.Color;
 import javax.swing.JList;
 import javax.swing.JLabel;
 import javax.swing.JButton;
+import javax.swing.JTextField;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+import domain.Shelf;
 
 public class BookDetailView extends Observable{
 
 	private JFrame frame;
 
 	private Book book;
+	private JTextField edTitle;
+	private JTextField edAuthor;
+	private JTextField edPublisher;
 	// needed for UI-Designer
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -56,11 +63,11 @@ public class BookDetailView extends Observable{
 	 */
 	private void initialize() {
 		frame = new JFrame("Book detail view");
-		frame.setBounds(100, 100, 450, 300);
+		frame.setBounds(100, 100, 450, 369);
 		frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0};
-		gridBagLayout.rowHeights = new int[]{0, 0, 0};
+		gridBagLayout.rowHeights = new int[]{0, 169, 0};
 		gridBagLayout.columnWeights = new double[]{1.0, Double.MIN_VALUE};
 		gridBagLayout.rowWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
 		frame.getContentPane().setLayout(gridBagLayout);
@@ -73,6 +80,79 @@ public class BookDetailView extends Observable{
 		gbc_panBookInformation.gridx = 0;
 		gbc_panBookInformation.gridy = 0;
 		frame.getContentPane().add(panBookInformation, gbc_panBookInformation);
+		GridBagLayout gbl_panBookInformation = new GridBagLayout();
+		gbl_panBookInformation.columnWidths = new int[]{70, 0, 0};
+		gbl_panBookInformation.rowHeights = new int[]{0, 0, 0, 0, 0};
+		gbl_panBookInformation.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+		gbl_panBookInformation.rowWeights = new double[]{1.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
+		panBookInformation.setLayout(gbl_panBookInformation);
+		
+		JLabel lblTitle = new JLabel("Title");
+		GridBagConstraints gbc_lblTitle = new GridBagConstraints();
+		gbc_lblTitle.anchor = GridBagConstraints.WEST;
+		gbc_lblTitle.insets = new Insets(0, 0, 5, 5);
+		gbc_lblTitle.gridx = 0;
+		gbc_lblTitle.gridy = 0;
+		panBookInformation.add(lblTitle, gbc_lblTitle);
+		
+		edTitle = new JTextField();
+		GridBagConstraints gbc_edTitle = new GridBagConstraints();
+		gbc_edTitle.insets = new Insets(0, 0, 5, 0);
+		gbc_edTitle.fill = GridBagConstraints.HORIZONTAL;
+		gbc_edTitle.gridx = 1;
+		gbc_edTitle.gridy = 0;
+		panBookInformation.add(edTitle, gbc_edTitle);
+		edTitle.setColumns(10);
+		
+		JLabel lblAuthor = new JLabel("Author");
+		GridBagConstraints gbc_lblAuthor = new GridBagConstraints();
+		gbc_lblAuthor.anchor = GridBagConstraints.WEST;
+		gbc_lblAuthor.insets = new Insets(0, 0, 5, 5);
+		gbc_lblAuthor.gridx = 0;
+		gbc_lblAuthor.gridy = 1;
+		panBookInformation.add(lblAuthor, gbc_lblAuthor);
+		
+		edAuthor = new JTextField();
+		GridBagConstraints gbc_edAuthor = new GridBagConstraints();
+		gbc_edAuthor.insets = new Insets(0, 0, 5, 0);
+		gbc_edAuthor.fill = GridBagConstraints.HORIZONTAL;
+		gbc_edAuthor.gridx = 1;
+		gbc_edAuthor.gridy = 1;
+		panBookInformation.add(edAuthor, gbc_edAuthor);
+		edAuthor.setColumns(10);
+		
+		JLabel lblPublisher = new JLabel("Publisher");
+		GridBagConstraints gbc_lblPublisher = new GridBagConstraints();
+		gbc_lblPublisher.anchor = GridBagConstraints.WEST;
+		gbc_lblPublisher.insets = new Insets(0, 0, 5, 5);
+		gbc_lblPublisher.gridx = 0;
+		gbc_lblPublisher.gridy = 2;
+		panBookInformation.add(lblPublisher, gbc_lblPublisher);
+		
+		edPublisher = new JTextField();
+		GridBagConstraints gbc_edPublisher = new GridBagConstraints();
+		gbc_edPublisher.insets = new Insets(0, 0, 5, 0);
+		gbc_edPublisher.fill = GridBagConstraints.HORIZONTAL;
+		gbc_edPublisher.gridx = 1;
+		gbc_edPublisher.gridy = 2;
+		panBookInformation.add(edPublisher, gbc_edPublisher);
+		edPublisher.setColumns(10);
+		
+		JLabel lblShelf = new JLabel("Shelf");
+		GridBagConstraints gbc_lblShelf = new GridBagConstraints();
+		gbc_lblShelf.anchor = GridBagConstraints.WEST;
+		gbc_lblShelf.insets = new Insets(0, 0, 0, 5);
+		gbc_lblShelf.gridx = 0;
+		gbc_lblShelf.gridy = 3;
+		panBookInformation.add(lblShelf, gbc_lblShelf);
+		
+		JComboBox cbShelf = new JComboBox();
+		cbShelf.setModel(new DefaultComboBoxModel(Shelf.values()));
+		GridBagConstraints gbc_cbShelf = new GridBagConstraints();
+		gbc_cbShelf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_cbShelf.gridx = 1;
+		gbc_cbShelf.gridy = 3;
+		panBookInformation.add(cbShelf, gbc_cbShelf);
 		
 		JPanel panCopies = new JPanel();
 		panCopies.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "Copies", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -94,6 +174,7 @@ public class BookDetailView extends Observable{
 		
 		JLabel lblCopyCount = new JLabel("Count: 0");
 		GridBagConstraints gbc_lblCopyCount = new GridBagConstraints();
+		gbc_lblCopyCount.anchor = GridBagConstraints.WEST;
 		gbc_lblCopyCount.insets = new Insets(0, 0, 0, 5);
 		gbc_lblCopyCount.gridx = 0;
 		gbc_lblCopyCount.gridy = 0;

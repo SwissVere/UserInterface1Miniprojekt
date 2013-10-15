@@ -27,7 +27,7 @@ public class LibraryApp {
 	public static void main(String[] args) throws Exception {
 		Library library = new Library();
 		initLibrary(library);
-		BookMasterView.main(args);
+		new BookMasterView(library);
 	}
 
 	private static void initLibrary(Library library)

@@ -11,10 +11,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 
 import java.awt.Color;
@@ -27,14 +29,19 @@ import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
 import domain.Book;
+import domain.Copy;
 import domain.Library;
+import domain.Loan;
 
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.Panel;
+import java.awt.ScrollPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.Console;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.awt.event.MouseAdapter;
@@ -55,7 +62,7 @@ public class BookMasterView implements Observer{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					BookMasterView window = new BookMasterView();
+					BookMasterView window = new BookMasterView(new Library());
 					window.frmSwingingLibar.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -67,9 +74,10 @@ public class BookMasterView implements Observer{
 	/**
 	 * Create the application.
 	 */
-	public BookMasterView() {
+	public BookMasterView(Library lib) {
+		this.lib = lib;
 		initialize();
-		lib = new Library();
+		frmSwingingLibar.setVisible(true);
 	}
 
 	/**
@@ -160,16 +168,11 @@ public class BookMasterView implements Observer{
 		panBookInventoryMenu.add(btnShowSelection, gbc_btnShowSelection);
 		
 		tableBookInventory = new JTable();
-		tableBookInventory.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"Available", "Title", "Author", "Publisher"
-			}
-		) {
-			/**
-			 * 
-			 */
+		tableBookInventory.setModel(new AbstractTableModel(){
+			private String[] columnNames = new String[] {
+					"Availalbe", "Title", "Author", "Publisher"
+			};
+			
 			private static final long serialVersionUID = 3924577490865829762L;
 			Class[] columnTypes = new Class[] {
 				String.class, String.class, String.class, String.class
@@ -182,6 +185,55 @@ public class BookMasterView implements Observer{
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
+			}
+			@Override
+			public int getColumnCount() {
+				return columnTypes.length;
+			}
+			@Override
+			public int getRowCount() {
+				System.out.println(lib.getBooks().size());
+				// TODO Auto-generated method stub
+				return lib.getBooks().size();
+			}
+			@Override
+			public Object getValueAt(int arg0, int arg1) {
+				System.out.println(arg0);
+				Book book = lib.getBooks().get(arg0);
+				switch (arg1) {
+				case 0:
+					List<Copy> copies = lib.getCopiesOfBook(book);
+					List<Loan> loans = lib.getLentCopiesOfBook(book);
+					int available = copies.size() - loans.size();
+					if(available < 1) {
+						Loan early = null;
+						for(Loan l : loans) {
+							if(early == null) {
+								early = l;
+							}
+							else {
+								if(l.getReturnDate().compareTo(early.getReturnDate()) < 0) {
+									early = l;
+								}
+							}
+						}
+						return early.getReturnDate().toString();
+					}
+					return Integer.toString(available);
+				case 1:
+					return book.getName();
+					
+				case 2:
+					return book.getAuthor();
+					
+				default:
+					return book.getPublisher();
+					
+				}
+			}
+			@Override
+			public String getColumnName(int column) {
+				return columnNames[column];
 			}
 		});
 		tableBookInventory.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -196,7 +248,11 @@ public class BookMasterView implements Observer{
 				}
 			}
 		});
-		panBookInventory.add(tableBookInventory, BorderLayout.CENTER);
+		
+		JScrollPane panBookInventoryTable = new JScrollPane();
+		panBookInventoryTable.add(tableBookInventory);
+		
+		panBookInventory.add(panBookInventoryTable, BorderLayout.CENTER);
 		
 		btnAddNewBook = new JButton("Add new book");
 		btnAddNewBook.addActionListener(new ActionListener() {
@@ -216,6 +272,5 @@ public class BookMasterView implements Observer{
 	public void update(Observable o, Object arg) {
 		Book book = (Book)arg;
 		DefaultTableModel model = (DefaultTableModel) tableBookInventory.getModel();
-		
 	}
 }
