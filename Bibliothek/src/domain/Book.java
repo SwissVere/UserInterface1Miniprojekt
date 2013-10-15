@@ -1,9 +1,12 @@
 package domain;
 
-public class Book {
+import java.util.Observable;
+
+public class Book extends Observable{
 	
 	private String title, author, publisher;
 	private Shelf shelf;
+	private boolean isNew = true;
 	
 	public Book(String name) {
 		this.title = name;
@@ -41,6 +44,14 @@ public class Book {
 		this.shelf = shelf;
 	}
 	
+	public boolean isNew() {
+		return isNew;
+	}
+
+	public void setNew(boolean isNew) {
+		this.isNew = isNew;
+	}
+
 	@Override
 	public String toString() {
 		return title + ", " + author + ", " + publisher;

@@ -15,6 +15,7 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableModel;
 
 import java.awt.Color;
 
@@ -140,11 +141,10 @@ public class BookMasterView implements Observer{
 		panBookInventoryMenu.add(lblCountSelected, gbc_lblCountSelected);
 		
 		btnShowSelection = new JButton("Show selection");
+		btnShowSelection.setEnabled(false);
 		btnShowSelection.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				BookDetailView detailView = new BookDetailView();
-				
-				//detailView.addObserver(this);
 			}
 		});
 		GridBagConstraints gbc_btnShowSelection = new GridBagConstraints();
@@ -155,6 +155,30 @@ public class BookMasterView implements Observer{
 		panBookInventoryMenu.add(btnShowSelection, gbc_btnShowSelection);
 		
 		tableBookInventory = new JTable();
+		tableBookInventory.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Available", "Title", "Author", "Publisher"
+			}
+		) {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 3924577490865829762L;
+			Class[] columnTypes = new Class[] {
+				String.class, String.class, String.class, String.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+			boolean[] columnEditables = new boolean[] {
+				false, false, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
 		tableBookInventory.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tableBookInventory.addMouseListener(new MouseAdapter() {
 			@Override
@@ -172,9 +196,8 @@ public class BookMasterView implements Observer{
 		btnAddNewBook = new JButton("Add new book");
 		btnAddNewBook.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//BookDetailView detailView = new BookDetailView((Book)listBookInventory.get§());
-				//detailView.addObserver(this);
-				// save book in table
+				Book newBook = createNewBook();
+				BookDetailView detailView = new BookDetailView(newBook);
 			}
 		});
 		btnAddNewBook.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -183,14 +206,18 @@ public class BookMasterView implements Observer{
 		gbc_btnAddNewBook.gridx = 4;
 		gbc_btnAddNewBook.gridy = 0;
 		panBookInventoryMenu.add(btnAddNewBook, gbc_btnAddNewBook);
-		
-		
+	}
+	
+	private Book createNewBook() {
+		Book newBook = new Book("");
+		newBook.addObserver(this);
+		return newBook;
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
+		Book book = (Book)arg;
+		DefaultTableModel model = (DefaultTableModel) tableBookInventory.getModel();
 		
 	}
-
 }
