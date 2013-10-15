@@ -65,77 +65,77 @@ public class BookMasterView {
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		frmSwingingLibar.getContentPane().add(tabbedPane, BorderLayout.CENTER);
 		
-		JPanel panel = new JPanel();
-		tabbedPane.addTab("Books", null, panel, null);
-		panel.setLayout(new BorderLayout(0, 0));
+		JPanel panBooks = new JPanel();
+		tabbedPane.addTab("Books", null, panBooks, null);
+		panBooks.setLayout(new BorderLayout(0, 0));
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "Inventory statistics", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel.add(panel_1, BorderLayout.NORTH);
-		GridBagLayout gbl_panel_1 = new GridBagLayout();
-		gbl_panel_1.columnWidths = new int[]{116, 0, 109, 0, 94, 0};
-		gbl_panel_1.rowHeights = new int[]{23, 0};
-		gbl_panel_1.columnWeights = new double[]{0.0, 1.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
-		gbl_panel_1.rowWeights = new double[]{0.0, Double.MIN_VALUE};
-		panel_1.setLayout(gbl_panel_1);
+		JPanel panInventoryStatistics = new JPanel();
+		panInventoryStatistics.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "Inventory statistics", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panBooks.add(panInventoryStatistics, BorderLayout.NORTH);
+		GridBagLayout gbl_panInventoryStatistics = new GridBagLayout();
+		gbl_panInventoryStatistics.columnWidths = new int[]{116, 0, 109, 0, 94, 0};
+		gbl_panInventoryStatistics.rowHeights = new int[]{23, 0};
+		gbl_panInventoryStatistics.columnWeights = new double[]{0.0, 1.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
+		gbl_panInventoryStatistics.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		panInventoryStatistics.setLayout(gbl_panInventoryStatistics);
 		
-		JLabel lblNewLabel_2 = new JLabel("New label");
-		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
-		gbc_lblNewLabel_2.anchor = GridBagConstraints.WEST;
-		gbc_lblNewLabel_2.insets = new Insets(0, 0, 0, 5);
-		gbc_lblNewLabel_2.gridx = 0;
-		gbc_lblNewLabel_2.gridy = 0;
-		panel_1.add(lblNewLabel_2, gbc_lblNewLabel_2);
+		JLabel lblCountBooks = new JLabel("New label");
+		GridBagConstraints gbc_lblCountBooks = new GridBagConstraints();
+		gbc_lblCountBooks.anchor = GridBagConstraints.WEST;
+		gbc_lblCountBooks.insets = new Insets(0, 0, 0, 5);
+		gbc_lblCountBooks.gridx = 0;
+		gbc_lblCountBooks.gridy = 0;
+		panInventoryStatistics.add(lblCountBooks, gbc_lblCountBooks);
 		
-		JLabel lblNewLabel_4 = new JLabel("New label");
-		GridBagConstraints gbc_lblNewLabel_4 = new GridBagConstraints();
-		gbc_lblNewLabel_4.anchor = GridBagConstraints.WEST;
-		gbc_lblNewLabel_4.insets = new Insets(0, 0, 0, 5);
-		gbc_lblNewLabel_4.gridx = 2;
-		gbc_lblNewLabel_4.gridy = 0;
-		panel_1.add(lblNewLabel_4, gbc_lblNewLabel_4);
+		JLabel lblCountCopies = new JLabel("New label");
+		GridBagConstraints gbc_lblCountCopies = new GridBagConstraints();
+		gbc_lblCountCopies.anchor = GridBagConstraints.WEST;
+		gbc_lblCountCopies.insets = new Insets(0, 0, 0, 5);
+		gbc_lblCountCopies.gridx = 2;
+		gbc_lblCountCopies.gridy = 0;
+		panInventoryStatistics.add(lblCountCopies, gbc_lblCountCopies);
 		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "Book-Inventory", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel.add(panel_2, BorderLayout.CENTER);
-		panel_2.setLayout(new BorderLayout(0, 0));
+		JPanel panBookInventory = new JPanel();
+		panBookInventory.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "Book-Inventory", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panBooks.add(panBookInventory, BorderLayout.CENTER);
+		panBookInventory.setLayout(new BorderLayout(0, 0));
 		
-		JPanel panel_3 = new JPanel();
-		panel_2.add(panel_3, BorderLayout.NORTH);
-		GridBagLayout gbl_panel_3 = new GridBagLayout();
-		gbl_panel_3.columnWidths = new int[]{116, 0, 109, 0, 94, 0};
-		gbl_panel_3.rowHeights = new int[]{23, 0};
-		gbl_panel_3.columnWeights = new double[]{0.0, 1.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
-		gbl_panel_3.rowWeights = new double[]{0.0, Double.MIN_VALUE};
-		panel_3.setLayout(gbl_panel_3);
+		JPanel panBookInventoryMenu = new JPanel();
+		panBookInventory.add(panBookInventoryMenu, BorderLayout.NORTH);
+		GridBagLayout gbl_panBookInventoryMenu = new GridBagLayout();
+		gbl_panBookInventoryMenu.columnWidths = new int[]{116, 0, 109, 0, 94, 0};
+		gbl_panBookInventoryMenu.rowHeights = new int[]{23, 0};
+		gbl_panBookInventoryMenu.columnWeights = new double[]{0.0, 1.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
+		gbl_panBookInventoryMenu.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		panBookInventoryMenu.setLayout(gbl_panBookInventoryMenu);
 		
-		JLabel lblNewLabel_3 = new JLabel("New label");
-		lblNewLabel_3.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
-		gbc_lblNewLabel_3.anchor = GridBagConstraints.WEST;
-		gbc_lblNewLabel_3.insets = new Insets(0, 0, 0, 5);
-		gbc_lblNewLabel_3.gridx = 0;
-		gbc_lblNewLabel_3.gridy = 0;
-		panel_3.add(lblNewLabel_3, gbc_lblNewLabel_3);
+		JLabel lblCountSelected = new JLabel("New label");
+		lblCountSelected.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_lblCountSelected = new GridBagConstraints();
+		gbc_lblCountSelected.anchor = GridBagConstraints.WEST;
+		gbc_lblCountSelected.insets = new Insets(0, 0, 0, 5);
+		gbc_lblCountSelected.gridx = 0;
+		gbc_lblCountSelected.gridy = 0;
+		panBookInventoryMenu.add(lblCountSelected, gbc_lblCountSelected);
 		
-		JButton btnNewButton = new JButton("Show selection");
-		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.anchor = GridBagConstraints.NORTHEAST;
-		gbc_btnNewButton.insets = new Insets(0, 0, 0, 5);
-		gbc_btnNewButton.gridx = 2;
-		gbc_btnNewButton.gridy = 0;
-		panel_3.add(btnNewButton, gbc_btnNewButton);
+		JButton btnShowSelection = new JButton("Show selection");
+		GridBagConstraints gbc_btnShowSelection = new GridBagConstraints();
+		gbc_btnShowSelection.anchor = GridBagConstraints.NORTHEAST;
+		gbc_btnShowSelection.insets = new Insets(0, 0, 0, 5);
+		gbc_btnShowSelection.gridx = 2;
+		gbc_btnShowSelection.gridy = 0;
+		panBookInventoryMenu.add(btnShowSelection, gbc_btnShowSelection);
 		
-		JButton btnNewButton_1 = new JButton("Add new book");
-		btnNewButton_1.setHorizontalAlignment(SwingConstants.RIGHT);
-		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
-		gbc_btnNewButton_1.anchor = GridBagConstraints.NORTHEAST;
-		gbc_btnNewButton_1.gridx = 4;
-		gbc_btnNewButton_1.gridy = 0;
-		panel_3.add(btnNewButton_1, gbc_btnNewButton_1);
+		JButton btnAddNewBook = new JButton("Add new book");
+		btnAddNewBook.setHorizontalAlignment(SwingConstants.RIGHT);
+		GridBagConstraints gbc_btnAddNewBook = new GridBagConstraints();
+		gbc_btnAddNewBook.anchor = GridBagConstraints.NORTHEAST;
+		gbc_btnAddNewBook.gridx = 4;
+		gbc_btnAddNewBook.gridy = 0;
+		panBookInventoryMenu.add(btnAddNewBook, gbc_btnAddNewBook);
 		
-		JList list = new JList();
-		panel_2.add(list, BorderLayout.CENTER);
+		JList listBookInventory = new JList();
+		panBookInventory.add(listBookInventory, BorderLayout.CENTER);
 	}
 
 }
