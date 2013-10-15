@@ -4,25 +4,46 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
+
 import java.awt.BorderLayout;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.LineBorder;
+
 import java.awt.Color;
+
 import javax.swing.JList;
+
 import java.awt.FlowLayout;
+
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
+
+import domain.Book;
+
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.io.Console;
+import java.util.Observable;
+import java.util.Observer;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-public class BookMasterView {
+public class BookMasterView implements Observer{
 
 	private JFrame frmSwingingLibar;
+	private JTable tableBookInventory;
+	private JButton btnAddNewBook;
+	private JButton btnShowSelection;
 
 	/**
 	 * Launch the application.
@@ -118,7 +139,14 @@ public class BookMasterView {
 		gbc_lblCountSelected.gridy = 0;
 		panBookInventoryMenu.add(lblCountSelected, gbc_lblCountSelected);
 		
-		JButton btnShowSelection = new JButton("Show selection");
+		btnShowSelection = new JButton("Show selection");
+		btnShowSelection.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				BookDetailView detailView = new BookDetailView();
+				
+				//detailView.addObserver(this);
+			}
+		});
 		GridBagConstraints gbc_btnShowSelection = new GridBagConstraints();
 		gbc_btnShowSelection.anchor = GridBagConstraints.NORTHEAST;
 		gbc_btnShowSelection.insets = new Insets(0, 0, 0, 5);
@@ -126,7 +154,29 @@ public class BookMasterView {
 		gbc_btnShowSelection.gridy = 0;
 		panBookInventoryMenu.add(btnShowSelection, gbc_btnShowSelection);
 		
-		JButton btnAddNewBook = new JButton("Add new book");
+		tableBookInventory = new JTable();
+		tableBookInventory.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tableBookInventory.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				if(tableBookInventory.getSelectedColumn() == -1) {
+					btnShowSelection.setEnabled(false);
+				}
+				else {
+					btnShowSelection.setEnabled(true);
+				}
+			}
+		});
+		panBookInventory.add(tableBookInventory, BorderLayout.CENTER);
+		
+		btnAddNewBook = new JButton("Add new book");
+		btnAddNewBook.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				//BookDetailView detailView = new BookDetailView((Book)listBookInventory.get§());
+				//detailView.addObserver(this);
+				// save book in table
+			}
+		});
 		btnAddNewBook.setHorizontalAlignment(SwingConstants.RIGHT);
 		GridBagConstraints gbc_btnAddNewBook = new GridBagConstraints();
 		gbc_btnAddNewBook.anchor = GridBagConstraints.NORTHEAST;
@@ -134,8 +184,13 @@ public class BookMasterView {
 		gbc_btnAddNewBook.gridy = 0;
 		panBookInventoryMenu.add(btnAddNewBook, gbc_btnAddNewBook);
 		
-		JList listBookInventory = new JList();
-		panBookInventory.add(listBookInventory, BorderLayout.CENTER);
+		
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
