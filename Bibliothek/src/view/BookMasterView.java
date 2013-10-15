@@ -27,6 +27,7 @@ import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
 import domain.Book;
+import domain.Library;
 
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -45,6 +46,7 @@ public class BookMasterView implements Observer{
 	private JTable tableBookInventory;
 	private JButton btnAddNewBook;
 	private JButton btnShowSelection;
+	private Library lib;
 
 	/**
 	 * Launch the application.
@@ -67,6 +69,7 @@ public class BookMasterView implements Observer{
 	 */
 	public BookMasterView() {
 		initialize();
+		lib = new Library();
 	}
 
 	/**
@@ -144,6 +147,8 @@ public class BookMasterView implements Observer{
 		btnShowSelection.setEnabled(false);
 		btnShowSelection.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//tableBookInventory.get
+				lib.findByBookTitle("");
 				BookDetailView detailView = new BookDetailView();
 			}
 		});
@@ -196,8 +201,7 @@ public class BookMasterView implements Observer{
 		btnAddNewBook = new JButton("Add new book");
 		btnAddNewBook.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Book newBook = createNewBook();
-				BookDetailView detailView = new BookDetailView(newBook);
+				BookDetailView detailView = new BookDetailView();
 			}
 		});
 		btnAddNewBook.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -206,12 +210,6 @@ public class BookMasterView implements Observer{
 		gbc_btnAddNewBook.gridx = 4;
 		gbc_btnAddNewBook.gridy = 0;
 		panBookInventoryMenu.add(btnAddNewBook, gbc_btnAddNewBook);
-	}
-	
-	private Book createNewBook() {
-		Book newBook = new Book("");
-		newBook.addObserver(this);
-		return newBook;
 	}
 
 	@Override
