@@ -93,9 +93,11 @@ public class PanBook extends JPanel {
 		btnShowSelection.setEnabled(false);
 		btnShowSelection.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//tableBookInventory.get
-				lib.findByBookTitle("");
-				BookDetailView detailView = new BookDetailView();
+				int[] selectedRows = tableBookInventory.getSelectedRows();
+				List<Book> books = lib.getBooks();
+				for(int row : selectedRows) {
+					new BookDetailView(books.get(row), lib);
+				}
 			}
 		});
 		GridBagConstraints gbc_btnShowSelection = new GridBagConstraints();
@@ -106,78 +108,7 @@ public class PanBook extends JPanel {
 		panBookInventoryMenu.add(btnShowSelection, gbc_btnShowSelection);
 		
 		tableBookInventory = new JTable();
-		tableBookInventory.setModel(new AbstractTableModel(){
-			private String[] columnNames = new String[] {
-					"Availalbe", "Title", "Author", "Publisher"
-			};
-			
-			private static final long serialVersionUID = 3924577490865829762L;
-			Class[] columnTypes = new Class[] {
-				String.class, String.class, String.class, String.class
-			};
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-			boolean[] columnEditables = new boolean[] {
-				false, false, false, false
-			};
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
-			}
-			@Override
-			public int getColumnCount() {
-				return columnTypes.length;
-			}
-			@Override
-			public int getRowCount() {
-				System.out.println(lib.getBooks().size());
-				// TODO Auto-generated method stub
-				return lib.getBooks().size();
-			}
-			@Override
-			public Object getValueAt(int arg0, int arg1) {
-				System.out.println(arg0);
-				List<Book> books = lib.getBooks();
-				if(books.size() < 1)
-					return "";
-				Book book = books.get(arg0);
-				switch (arg1) {
-				case 0:
-					List<Copy> copies = lib.getCopiesOfBook(book);
-					List<Loan> loans = lib.getLentCopiesOfBook(book);
-					int available = copies.size() - loans.size();
-					if(available < 1) {
-						Loan early = null;
-						for(Loan l : loans) {
-							if(early == null) {
-								early = l;
-							}
-							else {
-								if(l.getReturnDate().compareTo(early.getReturnDate()) < 0) {
-									early = l;
-								}
-							}
-						}
-						return early.getReturnDate().toString();
-					}
-					return Integer.toString(available);
-				case 1:
-					return book.getName();
-					
-				case 2:
-					return book.getAuthor();
-					
-				default:
-					return book.getPublisher();
-					
-				}
-			}
-			@Override
-			public String getColumnName(int column) {
-				return columnNames[column];
-			}
-		});
-		tableBookInventory.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tableBookInventory.setModel(new BookTableModel(lib));
 		tableBookInventory.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -190,8 +121,7 @@ public class PanBook extends JPanel {
 			}
 		});
 		
-		JScrollPane panBookInventoryTable = new JScrollPane();
-		panBookInventoryTable.add(tableBookInventory);
+		JScrollPane panBookInventoryTable = new JScrollPane(tableBookInventory);
 		
 		panBookInventory.add(panBookInventoryTable, BorderLayout.CENTER);
 		

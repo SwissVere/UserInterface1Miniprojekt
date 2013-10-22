@@ -90,6 +90,8 @@ public class BookDetailView extends Observable{
 			listModel.addElement(c);
 		}
 		
+		lblCopyCount.setText("Copies: " + library.getCopiesOfBook(book).size());
+		
 		frame.setVisible(true);
 	}
 
