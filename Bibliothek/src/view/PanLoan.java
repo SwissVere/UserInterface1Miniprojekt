@@ -22,6 +22,9 @@ import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 
+import application.LibraryApp;
+import domain.Library;
+
 public class PanLoan extends JPanel {
 	private JTextField textField;
 	private JTable table;
@@ -32,71 +35,72 @@ public class PanLoan extends JPanel {
 	public PanLoan() {
 		setLayout(new BorderLayout(0, 0));
 		
-		JPanel panel = new JPanel();
-		panel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "Loan Statistics", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		add(panel, BorderLayout.NORTH);
+		JPanel panLoanStatistics = new JPanel();
+		panLoanStatistics.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "Loan Statistics", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		add(panLoanStatistics, BorderLayout.NORTH);
 		GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0};
+		gbl_panel.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_panel.rowHeights = new int[]{0, 0};
-		gbl_panel.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_panel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
-		panel.setLayout(gbl_panel);
+		panLoanStatistics.setLayout(gbl_panel);
 		
-		JLabel lblNewLabel = new JLabel("New label");
-		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.insets = new Insets(0, 0, 0, 5);
-		gbc_lblNewLabel.gridx = 0;
-		gbc_lblNewLabel.gridy = 0;
-		panel.add(lblNewLabel, gbc_lblNewLabel);
+		JLabel lblAmountLoans = new JLabel("Amount Loans");
+		GridBagConstraints gbc_lblAmountLoans = new GridBagConstraints();
+		gbc_lblAmountLoans.insets = new Insets(0, 0, 0, 5);
+		gbc_lblAmountLoans.gridx = 0;
+		gbc_lblAmountLoans.gridy = 0;
+		panLoanStatistics.add(lblAmountLoans, gbc_lblAmountLoans);
 		
-		JLabel lblNewLabel_1 = new JLabel("New label");
-		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
-		gbc_lblNewLabel_1.insets = new Insets(0, 0, 0, 5);
-		gbc_lblNewLabel_1.gridx = 1;
-		gbc_lblNewLabel_1.gridy = 0;
-		panel.add(lblNewLabel_1, gbc_lblNewLabel_1);
+		JLabel lblAmountLoansResult = new JLabel("Dini Muetter");
+		//JLabel lblAmountLoansResult = new JLabel("Counter");
+		GridBagConstraints gbc_lblAmountLoansResult = new GridBagConstraints();
+		gbc_lblAmountLoansResult.insets = new Insets(0, 0, 0, 5);
+		gbc_lblAmountLoansResult.gridx = 1;
+		gbc_lblAmountLoansResult.gridy = 0;
+		panLoanStatistics.add(lblAmountLoansResult, gbc_lblAmountLoansResult);
 		
 		JLabel lblNewLabel_3 = new JLabel("New label");
 		GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
 		gbc_lblNewLabel_3.insets = new Insets(0, 0, 0, 5);
-		gbc_lblNewLabel_3.gridx = 2;
+		gbc_lblNewLabel_3.gridx = 3;
 		gbc_lblNewLabel_3.gridy = 0;
-		panel.add(lblNewLabel_3, gbc_lblNewLabel_3);
+		panLoanStatistics.add(lblNewLabel_3, gbc_lblNewLabel_3);
 		
 		JLabel lblNewLabel_4 = new JLabel("New label");
 		GridBagConstraints gbc_lblNewLabel_4 = new GridBagConstraints();
 		gbc_lblNewLabel_4.insets = new Insets(0, 0, 0, 5);
-		gbc_lblNewLabel_4.gridx = 3;
+		gbc_lblNewLabel_4.gridx = 4;
 		gbc_lblNewLabel_4.gridy = 0;
-		panel.add(lblNewLabel_4, gbc_lblNewLabel_4);
+		panLoanStatistics.add(lblNewLabel_4, gbc_lblNewLabel_4);
 		
 		JLabel lblNewLabel_5 = new JLabel("New label");
 		GridBagConstraints gbc_lblNewLabel_5 = new GridBagConstraints();
 		gbc_lblNewLabel_5.insets = new Insets(0, 0, 0, 5);
-		gbc_lblNewLabel_5.gridx = 4;
+		gbc_lblNewLabel_5.gridx = 6;
 		gbc_lblNewLabel_5.gridy = 0;
-		panel.add(lblNewLabel_5, gbc_lblNewLabel_5);
+		panLoanStatistics.add(lblNewLabel_5, gbc_lblNewLabel_5);
 		
 		JLabel lblNewLabel_6 = new JLabel("New label");
 		GridBagConstraints gbc_lblNewLabel_6 = new GridBagConstraints();
-		gbc_lblNewLabel_6.gridx = 5;
+		gbc_lblNewLabel_6.gridx = 7;
 		gbc_lblNewLabel_6.gridy = 0;
-		panel.add(lblNewLabel_6, gbc_lblNewLabel_6);
+		panLoanStatistics.add(lblNewLabel_6, gbc_lblNewLabel_6);
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "Loans", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		add(panel_1, BorderLayout.CENTER);
-		panel_1.setLayout(new BorderLayout(0, 0));
+		JPanel panLoans = new JPanel();
+		panLoans.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "Loans", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		add(panLoans, BorderLayout.CENTER);
+		panLoans.setLayout(new BorderLayout(0, 0));
 		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBorder(new TitledBorder(null, "All Loans are in the table below", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_1.add(panel_2, BorderLayout.NORTH);
-		GridBagLayout gbl_panel_2 = new GridBagLayout();
-		gbl_panel_2.columnWidths = new int[]{0, 0, 86, 0, 0};
-		gbl_panel_2.rowHeights = new int[]{20, 0};
-		gbl_panel_2.columnWeights = new double[]{1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_panel_2.rowWeights = new double[]{0.0, Double.MIN_VALUE};
-		panel_2.setLayout(gbl_panel_2);
+		JPanel panLoansAdministration = new JPanel();
+		panLoansAdministration.setBorder(new TitledBorder(null, "All Loans are in the table below", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panLoans.add(panLoansAdministration, BorderLayout.NORTH);
+		GridBagLayout gbl_panLoansAdministration = new GridBagLayout();
+		gbl_panLoansAdministration.columnWidths = new int[]{0, 0, 86, 0, 0};
+		gbl_panLoansAdministration.rowHeights = new int[]{20, 0};
+		gbl_panLoansAdministration.columnWeights = new double[]{1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panLoansAdministration.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		panLoansAdministration.setLayout(gbl_panLoansAdministration);
 		
 		textField = new JTextField();
 		GridBagConstraints gbc_textField = new GridBagConstraints();
@@ -104,7 +108,7 @@ public class PanLoan extends JPanel {
 		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textField.gridx = 0;
 		gbc_textField.gridy = 0;
-		panel_2.add(textField, gbc_textField);
+		panLoansAdministration.add(textField, gbc_textField);
 		textField.setColumns(10);
 		
 		JCheckBox chckbxNewCheckBox = new JCheckBox("Show only overdue loans");
@@ -112,23 +116,23 @@ public class PanLoan extends JPanel {
 		gbc_chckbxNewCheckBox.insets = new Insets(0, 0, 0, 5);
 		gbc_chckbxNewCheckBox.gridx = 1;
 		gbc_chckbxNewCheckBox.gridy = 0;
-		panel_2.add(chckbxNewCheckBox, gbc_chckbxNewCheckBox);
+		panLoansAdministration.add(chckbxNewCheckBox, gbc_chckbxNewCheckBox);
 		
-		JButton btnNewButton = new JButton("New button");
-		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.insets = new Insets(0, 0, 0, 5);
-		gbc_btnNewButton.gridx = 2;
-		gbc_btnNewButton.gridy = 0;
-		panel_2.add(btnNewButton, gbc_btnNewButton);
+		JButton btnShowSelectedLoans = new JButton("Show selected Loans");
+		GridBagConstraints gbc_btnShowSelectedLoans = new GridBagConstraints();
+		gbc_btnShowSelectedLoans.insets = new Insets(0, 0, 0, 5);
+		gbc_btnShowSelectedLoans.gridx = 2;
+		gbc_btnShowSelectedLoans.gridy = 0;
+		panLoansAdministration.add(btnShowSelectedLoans, gbc_btnShowSelectedLoans);
 		
-		JButton btnNewButton_1 = new JButton("New button");
-		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
-		gbc_btnNewButton_1.gridx = 3;
-		gbc_btnNewButton_1.gridy = 0;
-		panel_2.add(btnNewButton_1, gbc_btnNewButton_1);
+		JButton btnNewLoan = new JButton("New Loan");
+		GridBagConstraints gbc_btnNewLoan = new GridBagConstraints();
+		gbc_btnNewLoan.gridx = 3;
+		gbc_btnNewLoan.gridy = 0;
+		panLoansAdministration.add(btnNewLoan, gbc_btnNewLoan);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		panel_1.add(scrollPane, BorderLayout.CENTER);
+		JScrollPane scrollPanLoansView = new JScrollPane();
+		panLoans.add(scrollPanLoansView, BorderLayout.CENTER);
 		
 		table = new JTable();
 		table.setModel(new AbstractTableModel(){
@@ -154,7 +158,7 @@ public class PanLoan extends JPanel {
 				return null;
 			}
 		});	
-	scrollPane.setViewportView(table);
+	scrollPanLoansView.setViewportView(table);
 
 	}
 }
