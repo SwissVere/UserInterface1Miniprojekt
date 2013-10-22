@@ -31,4 +31,9 @@ public class Copy {
 	public long getInventoryNumber() {
 		return inventoryNumber;
 	}
+	
+	@Override
+	public String toString() {
+		return book.getName() + " " + condition.toString() + " " + inventoryNumber;
+	}
 }

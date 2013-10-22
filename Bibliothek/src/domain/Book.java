@@ -10,6 +10,8 @@ public class Book extends Observable{
 	
 	public Book(String name) {
 		this.title = name;
+		this.author = "";
+		this.publisher = "";
 	}
 
 	public String getName() {
@@ -18,6 +20,8 @@ public class Book extends Observable{
 
 	public void setName(String name) {
 		this.title = name;
+		setChanged();
+		notifyObservers(this);
 	}
 
 	public String getAuthor() {
@@ -26,6 +30,8 @@ public class Book extends Observable{
 
 	public void setAuthor(String autor) {
 		this.author = autor;
+		setChanged();
+		notifyObservers(this);
 	}
 
 	public String getPublisher() {
@@ -34,6 +40,8 @@ public class Book extends Observable{
 
 	public void setPublisher(String publisher) {
 		this.publisher = publisher;
+		setChanged();
+		notifyObservers(this);
 	}
 	
 	public Shelf getShelf() {
@@ -42,6 +50,8 @@ public class Book extends Observable{
 	
 	public void setShelf(Shelf shelf) {
 		this.shelf = shelf;
+		setChanged();
+		notifyObservers(this);
 	}
 	
 	public boolean isNew() {
@@ -50,6 +60,8 @@ public class Book extends Observable{
 
 	public void setNew(boolean isNew) {
 		this.isNew = isNew;
+		setChanged();
+		notifyObservers(this);
 	}
 
 	@Override

@@ -73,6 +73,10 @@ public class Library {
 
 		return res;
 	}
+	
+	public void deleteCopyOfBook(Copy copy) {
+		copies.remove(copy);
+	}
 
 	public List<Loan> getLentCopiesOfBook(Book book) {
 		List<Loan> lentCopies = new ArrayList<Loan>();

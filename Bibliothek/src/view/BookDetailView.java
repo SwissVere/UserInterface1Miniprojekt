@@ -1,35 +1,59 @@
 package view;
 
 import java.awt.EventQueue;
+import java.util.List;
 import java.util.Observable;
 
 import javax.swing.JFrame;
 
 import domain.Book;
+import domain.Copy;
+import domain.Library;
+
 import java.awt.BorderLayout;
+
 import javax.swing.JPanel;
+
+import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.ScrollPane;
+
 import javax.swing.border.TitledBorder;
 import javax.swing.border.LineBorder;
+
 import java.awt.Color;
+
+import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+
 import domain.Shelf;
+
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class BookDetailView extends Observable{
 
 	private JFrame frame;
 
+	private Library library;
 	private Book book;
 	private JTextField edTitle;
 	private JTextField edAuthor;
 	private JTextField edPublisher;
+	private JComboBox<Shelf> cbShelf;
+	private JList<Copy> listCopies;
+	private JLabel lblCopyCount;
+	private DefaultListModel<Copy> listModel = new DefaultListModel<Copy>();  
+	
 	// needed for UI-Designer
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -49,12 +73,23 @@ public class BookDetailView extends Observable{
 	 * Create the application.
 	 */
 	public BookDetailView() {
-		this(new Book(""));
+		this(new Book(""), new Library());
 	}
 	
-	public BookDetailView(Book book) {
+	public BookDetailView(Book book, Library library) {
 		this.book = book;
 		initialize();
+		edTitle.setText(book.getName());
+		edAuthor.setText(book.getAuthor());
+		edPublisher.setText(book.getPublisher());
+		cbShelf.setSelectedItem(book.getShelf());
+		
+		this.library = library;
+		List<Copy> copies = library.getCopiesOfBook(book);
+		for(Copy c : copies) {
+			listModel.addElement(c);
+		}
+		
 		frame.setVisible(true);
 	}
 
@@ -63,11 +98,13 @@ public class BookDetailView extends Observable{
 	 */
 	private void initialize() {
 		frame = new JFrame("Book detail view");
+		frame.setMinimumSize(new Dimension( 450, 400));
+		frame.setAlwaysOnTop(true);
 		frame.setBounds(100, 100, 450, 369);
 		frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0};
-		gridBagLayout.rowHeights = new int[]{0, 169, 0};
+		gridBagLayout.rowHeights = new int[]{140, 169, 0};
 		gridBagLayout.columnWeights = new double[]{1.0, Double.MIN_VALUE};
 		gridBagLayout.rowWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
 		frame.getContentPane().setLayout(gridBagLayout);
@@ -96,6 +133,12 @@ public class BookDetailView extends Observable{
 		panBookInformation.add(lblTitle, gbc_lblTitle);
 		
 		edTitle = new JTextField();
+		edTitle.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				book.setName(edTitle.getText());
+			}
+		});
 		GridBagConstraints gbc_edTitle = new GridBagConstraints();
 		gbc_edTitle.insets = new Insets(0, 0, 5, 0);
 		gbc_edTitle.fill = GridBagConstraints.HORIZONTAL;
@@ -113,6 +156,12 @@ public class BookDetailView extends Observable{
 		panBookInformation.add(lblAuthor, gbc_lblAuthor);
 		
 		edAuthor = new JTextField();
+		edAuthor.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				book.setAuthor(edAuthor.getText());
+			}
+		});
 		GridBagConstraints gbc_edAuthor = new GridBagConstraints();
 		gbc_edAuthor.insets = new Insets(0, 0, 5, 0);
 		gbc_edAuthor.fill = GridBagConstraints.HORIZONTAL;
@@ -130,6 +179,12 @@ public class BookDetailView extends Observable{
 		panBookInformation.add(lblPublisher, gbc_lblPublisher);
 		
 		edPublisher = new JTextField();
+		edPublisher.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				book.setPublisher(edPublisher.getText());
+			}
+		});
 		GridBagConstraints gbc_edPublisher = new GridBagConstraints();
 		gbc_edPublisher.insets = new Insets(0, 0, 5, 0);
 		gbc_edPublisher.fill = GridBagConstraints.HORIZONTAL;
@@ -146,8 +201,14 @@ public class BookDetailView extends Observable{
 		gbc_lblShelf.gridy = 3;
 		panBookInformation.add(lblShelf, gbc_lblShelf);
 		
-		JComboBox cbShelf = new JComboBox();
-		cbShelf.setModel(new DefaultComboBoxModel(Shelf.values()));
+		cbShelf = new JComboBox<Shelf>();
+		cbShelf.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				book.setShelf((Shelf)cbShelf.getSelectedItem());
+			}
+		});
+		cbShelf.setModel(new DefaultComboBoxModel<Shelf>(Shelf.values()));
 		GridBagConstraints gbc_cbShelf = new GridBagConstraints();
 		gbc_cbShelf.fill = GridBagConstraints.HORIZONTAL;
 		gbc_cbShelf.gridx = 1;
@@ -172,7 +233,7 @@ public class BookDetailView extends Observable{
 		gbl_panel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 		panel.setLayout(gbl_panel);
 		
-		JLabel lblCopyCount = new JLabel("Count: 0");
+		lblCopyCount = new JLabel("Count: 0");
 		GridBagConstraints gbc_lblCopyCount = new GridBagConstraints();
 		gbc_lblCopyCount.anchor = GridBagConstraints.WEST;
 		gbc_lblCopyCount.insets = new Insets(0, 0, 0, 5);
@@ -181,6 +242,16 @@ public class BookDetailView extends Observable{
 		panel.add(lblCopyCount, gbc_lblCopyCount);
 		
 		JButton btnDeleteSelected = new JButton("Delete Selected");
+		btnDeleteSelected.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				List<Copy> selectedCopies = listCopies.getSelectedValuesList();
+				for(Copy selectedCopy : selectedCopies) {
+					library.deleteCopyOfBook(selectedCopy);
+					listModel.removeElement(selectedCopy);
+				}
+				lblCopyCount.setText("Copies: " + library.getCopiesOfBook(book).size());
+			}
+		});
 		GridBagConstraints gbc_btnDeleteSelected = new GridBagConstraints();
 		gbc_btnDeleteSelected.insets = new Insets(0, 0, 0, 5);
 		gbc_btnDeleteSelected.gridx = 2;
@@ -188,12 +259,22 @@ public class BookDetailView extends Observable{
 		panel.add(btnDeleteSelected, gbc_btnDeleteSelected);
 		
 		JButton btnAddCopy = new JButton("Add copy");
+		btnAddCopy.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Copy newCopy = library.createAndAddCopy(book);
+				lblCopyCount.setText("Copies: " + library.getCopiesOfBook(book).size());
+				listModel.addElement(newCopy);
+			}
+		});
 		GridBagConstraints gbc_btnAddCopy = new GridBagConstraints();
 		gbc_btnAddCopy.gridx = 4;
 		gbc_btnAddCopy.gridy = 0;
 		panel.add(btnAddCopy, gbc_btnAddCopy);
 		
-		JList listCopies = new JList();
-		panCopies.add(listCopies, BorderLayout.CENTER);
+		listCopies = new JList<Copy>(listModel);
+		
+		ScrollPane scrollPane = new ScrollPane();
+		scrollPane.add(listCopies);
+		panCopies.add(scrollPane, BorderLayout.CENTER);
 	}
 }
