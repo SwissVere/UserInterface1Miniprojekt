@@ -266,6 +266,9 @@ public class BookMasterView implements Observer{
 		gbc_btnAddNewBook.gridx = 4;
 		gbc_btnAddNewBook.gridy = 0;
 		panBookInventoryMenu.add(btnAddNewBook, gbc_btnAddNewBook);
+		
+		JTabbedPane panLoan = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.addTab("Loan", null, panLoan, null);
 	}
 
 	@Override
