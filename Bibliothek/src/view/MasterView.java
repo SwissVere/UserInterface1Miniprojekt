@@ -47,7 +47,7 @@ import java.util.Observer;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class BookMasterView implements Observer{
+public class MasterView implements Observer{
 
 	private JFrame frmSwingingLibar;
 	private JTable tableBookInventory;
@@ -62,7 +62,7 @@ public class BookMasterView implements Observer{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					BookMasterView window = new BookMasterView(new Library());
+					MasterView window = new MasterView(new Library());
 					window.frmSwingingLibar.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -74,7 +74,7 @@ public class BookMasterView implements Observer{
 	/**
 	 * Create the application.
 	 */
-	public BookMasterView(Library lib) {
+	public MasterView(Library lib) {
 		this.lib = lib;
 		initialize();
 		frmSwingingLibar.setVisible(true);
@@ -98,8 +98,10 @@ public class BookMasterView implements Observer{
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		frmSwingingLibar.getContentPane().add(tabbedPane, BorderLayout.CENTER);
 		
+		
 		JPanel panBooks = new JPanel();
 		tabbedPane.addTab("Books", null, panBooks, null);
+		tabbedPane.addTab("Loans", new PanLoan());
 		panBooks.setLayout(new BorderLayout(0, 0));
 		
 		JPanel panInventoryStatistics = new JPanel();
@@ -267,8 +269,6 @@ public class BookMasterView implements Observer{
 		gbc_btnAddNewBook.gridy = 0;
 		panBookInventoryMenu.add(btnAddNewBook, gbc_btnAddNewBook);
 		
-		JTabbedPane panLoan = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.addTab("Loan", null, panLoan, null);
 	}
 
 	@Override

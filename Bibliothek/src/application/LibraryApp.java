@@ -14,7 +14,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import view.BookMasterView;
+import view.MasterView;
 import domain.Copy;
 import domain.Customer;
 import domain.IllegalLoanOperationException;
@@ -27,7 +27,7 @@ public class LibraryApp {
 	public static void main(String[] args) throws Exception {
 		Library library = new Library();
 		initLibrary(library);
-		new BookMasterView(library);
+		new MasterView(library);
 	}
 
 	private static void initLibrary(Library library)
