@@ -22,6 +22,9 @@ import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 
+import application.LibraryApp;
+import domain.Library;
+
 public class PanLoan extends JPanel {
 	private JTextField textField;
 	private JTable table;
@@ -36,50 +39,51 @@ public class PanLoan extends JPanel {
 		panLoanStatistics.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "Loan Statistics", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		add(panLoanStatistics, BorderLayout.NORTH);
 		GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0};
+		gbl_panel.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_panel.rowHeights = new int[]{0, 0};
-		gbl_panel.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_panel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 		panLoanStatistics.setLayout(gbl_panel);
 		
-		JLabel lblNewLabel = new JLabel("New label");
-		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.insets = new Insets(0, 0, 0, 5);
-		gbc_lblNewLabel.gridx = 0;
-		gbc_lblNewLabel.gridy = 0;
-		panLoanStatistics.add(lblNewLabel, gbc_lblNewLabel);
+		JLabel lblAmountLoans = new JLabel("Amount Loans");
+		GridBagConstraints gbc_lblAmountLoans = new GridBagConstraints();
+		gbc_lblAmountLoans.insets = new Insets(0, 0, 0, 5);
+		gbc_lblAmountLoans.gridx = 0;
+		gbc_lblAmountLoans.gridy = 0;
+		panLoanStatistics.add(lblAmountLoans, gbc_lblAmountLoans);
 		
-		JLabel lblNewLabel_1 = new JLabel("New label");
-		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
-		gbc_lblNewLabel_1.insets = new Insets(0, 0, 0, 5);
-		gbc_lblNewLabel_1.gridx = 1;
-		gbc_lblNewLabel_1.gridy = 0;
-		panLoanStatistics.add(lblNewLabel_1, gbc_lblNewLabel_1);
+		JLabel lblAmountLoansResult = new JLabel("Dini Muetter");
+		//JLabel lblAmountLoansResult = new JLabel("Counter");
+		GridBagConstraints gbc_lblAmountLoansResult = new GridBagConstraints();
+		gbc_lblAmountLoansResult.insets = new Insets(0, 0, 0, 5);
+		gbc_lblAmountLoansResult.gridx = 1;
+		gbc_lblAmountLoansResult.gridy = 0;
+		panLoanStatistics.add(lblAmountLoansResult, gbc_lblAmountLoansResult);
 		
 		JLabel lblNewLabel_3 = new JLabel("New label");
 		GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
 		gbc_lblNewLabel_3.insets = new Insets(0, 0, 0, 5);
-		gbc_lblNewLabel_3.gridx = 2;
+		gbc_lblNewLabel_3.gridx = 3;
 		gbc_lblNewLabel_3.gridy = 0;
 		panLoanStatistics.add(lblNewLabel_3, gbc_lblNewLabel_3);
 		
 		JLabel lblNewLabel_4 = new JLabel("New label");
 		GridBagConstraints gbc_lblNewLabel_4 = new GridBagConstraints();
 		gbc_lblNewLabel_4.insets = new Insets(0, 0, 0, 5);
-		gbc_lblNewLabel_4.gridx = 3;
+		gbc_lblNewLabel_4.gridx = 4;
 		gbc_lblNewLabel_4.gridy = 0;
 		panLoanStatistics.add(lblNewLabel_4, gbc_lblNewLabel_4);
 		
 		JLabel lblNewLabel_5 = new JLabel("New label");
 		GridBagConstraints gbc_lblNewLabel_5 = new GridBagConstraints();
 		gbc_lblNewLabel_5.insets = new Insets(0, 0, 0, 5);
-		gbc_lblNewLabel_5.gridx = 4;
+		gbc_lblNewLabel_5.gridx = 6;
 		gbc_lblNewLabel_5.gridy = 0;
 		panLoanStatistics.add(lblNewLabel_5, gbc_lblNewLabel_5);
 		
 		JLabel lblNewLabel_6 = new JLabel("New label");
 		GridBagConstraints gbc_lblNewLabel_6 = new GridBagConstraints();
-		gbc_lblNewLabel_6.gridx = 5;
+		gbc_lblNewLabel_6.gridx = 7;
 		gbc_lblNewLabel_6.gridy = 0;
 		panLoanStatistics.add(lblNewLabel_6, gbc_lblNewLabel_6);
 		
