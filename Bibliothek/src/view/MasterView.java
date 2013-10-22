@@ -98,8 +98,10 @@ public class MasterView implements Observer{
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		frmSwingingLibar.getContentPane().add(tabbedPane, BorderLayout.CENTER);
 		
+		
 		JPanel panBooks = new JPanel();
 		tabbedPane.addTab("Books", null, panBooks, null);
+		tabbedPane.addTab("Loans", new PanLoan());
 		panBooks.setLayout(new BorderLayout(0, 0));
 		
 		JPanel panInventoryStatistics = new JPanel();
@@ -267,9 +269,6 @@ public class MasterView implements Observer{
 		gbc_btnAddNewBook.gridy = 0;
 		panBookInventoryMenu.add(btnAddNewBook, gbc_btnAddNewBook);
 		
-		JPanel panLoan = new JPanel();
-		tabbedPane.addTab("Loans", null, panLoan, null);
-		panLoan.
 	}
 
 	@Override
