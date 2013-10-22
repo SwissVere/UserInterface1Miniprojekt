@@ -7,7 +7,7 @@ import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class CreateLoan {
+public class LoanDetailView {
 
 	private JFrame frame;
 
@@ -18,7 +18,7 @@ public class CreateLoan {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					CreateLoan window = new CreateLoan();
+					LoanDetailView window = new LoanDetailView();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -30,7 +30,7 @@ public class CreateLoan {
 	/**
 	 * Create the application.
 	 */
-	public CreateLoan() {
+	public LoanDetailView() {
 		initialize();
 		frame.setVisible(true);
 	}
@@ -41,7 +41,7 @@ public class CreateLoan {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
 		JLabel lblNewLabel = new JLabel("New label");

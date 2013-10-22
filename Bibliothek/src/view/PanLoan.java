@@ -132,7 +132,7 @@ public class PanLoan extends JPanel {
 		JButton btnNewLoan = new JButton("New Loan");
 		btnNewLoan.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				CreateLoan createLoan = new CreateLoan();
+				LoanDetailView createLoan = new LoanDetailView();
 			}
 		});
 		GridBagConstraints gbc_btnNewLoan = new GridBagConstraints();

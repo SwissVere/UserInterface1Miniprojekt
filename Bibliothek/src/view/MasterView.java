@@ -88,9 +88,6 @@ public class MasterView implements Observer{
 		frmSwingingLibar.setBounds(100, 100, 450, 300);
 		frmSwingingLibar.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		JLabel lblNewLabel = new JLabel("New label");
-		frmSwingingLibar.getContentPane().add(lblNewLabel, BorderLayout.NORTH);
-		
 		JLabel lblNewLabel_1 = new JLabel("New label");
 		frmSwingingLibar.getContentPane().add(lblNewLabel_1, BorderLayout.SOUTH);
 		
