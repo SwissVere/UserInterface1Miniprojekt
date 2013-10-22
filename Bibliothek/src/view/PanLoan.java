@@ -1,5 +1,6 @@
 package view;
 
+
 import javax.swing.JPanel;
 
 import java.awt.BorderLayout;
@@ -24,6 +25,8 @@ import javax.swing.JScrollPane;
 
 import application.LibraryApp;
 import domain.Library;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class PanLoan extends JPanel {
 	private JTextField textField;
@@ -54,40 +57,39 @@ public class PanLoan extends JPanel {
 		gbc_lblAmountLoans.gridy = 0;
 		panLoanStatistics.add(lblAmountLoans, gbc_lblAmountLoans);
 		
-		JLabel lblAmountLoansResult = new JLabel("Dini Muetter");
-		//JLabel lblAmountLoansResult = new JLabel("Counter");
+		JLabel lblAmountLoansResult = new JLabel(lib.getLoans().size() + "");
 		GridBagConstraints gbc_lblAmountLoansResult = new GridBagConstraints();
 		gbc_lblAmountLoansResult.insets = new Insets(0, 0, 0, 5);
 		gbc_lblAmountLoansResult.gridx = 1;
 		gbc_lblAmountLoansResult.gridy = 0;
 		panLoanStatistics.add(lblAmountLoansResult, gbc_lblAmountLoansResult);
 		
-		JLabel lblNewLabel_3 = new JLabel("New label");
-		GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
-		gbc_lblNewLabel_3.insets = new Insets(0, 0, 0, 5);
-		gbc_lblNewLabel_3.gridx = 3;
-		gbc_lblNewLabel_3.gridy = 0;
-		panLoanStatistics.add(lblNewLabel_3, gbc_lblNewLabel_3);
+		JLabel lblActualLoans = new JLabel("Actual Loans");
+		GridBagConstraints gbc_lblActualLoans = new GridBagConstraints();
+		gbc_lblActualLoans.insets = new Insets(0, 0, 0, 5);
+		gbc_lblActualLoans.gridx = 3;
+		gbc_lblActualLoans.gridy = 0;
+		panLoanStatistics.add(lblActualLoans, gbc_lblActualLoans);
 		
-		JLabel lblNewLabel_4 = new JLabel("New label");
-		GridBagConstraints gbc_lblNewLabel_4 = new GridBagConstraints();
-		gbc_lblNewLabel_4.insets = new Insets(0, 0, 0, 5);
-		gbc_lblNewLabel_4.gridx = 4;
-		gbc_lblNewLabel_4.gridy = 0;
-		panLoanStatistics.add(lblNewLabel_4, gbc_lblNewLabel_4);
+		JLabel lblActualLoansResult = new JLabel(lib.getLentOutBooks().size() + "");
+		GridBagConstraints gbc_lblActualLoansResult = new GridBagConstraints();
+		gbc_lblActualLoansResult.insets = new Insets(0, 0, 0, 5);
+		gbc_lblActualLoansResult.gridx = 4;
+		gbc_lblActualLoansResult.gridy = 0;
+		panLoanStatistics.add(lblActualLoansResult, gbc_lblActualLoansResult);
 		
-		JLabel lblNewLabel_5 = new JLabel("New label");
-		GridBagConstraints gbc_lblNewLabel_5 = new GridBagConstraints();
-		gbc_lblNewLabel_5.insets = new Insets(0, 0, 0, 5);
-		gbc_lblNewLabel_5.gridx = 6;
-		gbc_lblNewLabel_5.gridy = 0;
-		panLoanStatistics.add(lblNewLabel_5, gbc_lblNewLabel_5);
+		JLabel lblOverdueLoans = new JLabel("Overdue Loans");
+		GridBagConstraints gbc_lblOverdueLoans = new GridBagConstraints();
+		gbc_lblOverdueLoans.insets = new Insets(0, 0, 0, 5);
+		gbc_lblOverdueLoans.gridx = 6;
+		gbc_lblOverdueLoans.gridy = 0;
+		panLoanStatistics.add(lblOverdueLoans, gbc_lblOverdueLoans);
 		
-		JLabel lblNewLabel_6 = new JLabel("New label");
-		GridBagConstraints gbc_lblNewLabel_6 = new GridBagConstraints();
-		gbc_lblNewLabel_6.gridx = 7;
-		gbc_lblNewLabel_6.gridy = 0;
-		panLoanStatistics.add(lblNewLabel_6, gbc_lblNewLabel_6);
+		JLabel lblOverdueLoansResult = new JLabel(lib.getOverdueLoans().size() + "");
+		GridBagConstraints gbc_lblOverdueLoansResult = new GridBagConstraints();
+		gbc_lblOverdueLoansResult.gridx = 7;
+		gbc_lblOverdueLoansResult.gridy = 0;
+		panLoanStatistics.add(lblOverdueLoansResult, gbc_lblOverdueLoansResult);
 		
 		JPanel panLoans = new JPanel();
 		panLoans.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "Loans", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -128,6 +130,11 @@ public class PanLoan extends JPanel {
 		panLoansAdministration.add(btnShowSelectedLoans, gbc_btnShowSelectedLoans);
 		
 		JButton btnNewLoan = new JButton("New Loan");
+		btnNewLoan.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				LoanDetailView createLoan = new LoanDetailView();
+			}
+		});
 		GridBagConstraints gbc_btnNewLoan = new GridBagConstraints();
 		gbc_btnNewLoan.gridx = 3;
 		gbc_btnNewLoan.gridy = 0;
@@ -137,28 +144,10 @@ public class PanLoan extends JPanel {
 		panLoans.add(scrollPanLoansView, BorderLayout.CENTER);
 		
 		table = new JTable();
-		table.setModel(new AbstractTableModel(){
+		table.setModel(new LoansTableModel(){
 			private String[] columnNames = new String[] {
 					"Availalbe", "Title", "Author", "Publisher"
 			};
-
-			@Override
-			public int getColumnCount() {
-				// TODO Auto-generated method stub
-				return 0;
-			}
-
-			@Override
-			public int getRowCount() {
-				// TODO Auto-generated method stub
-				return 0;
-			}
-
-			@Override
-			public Object getValueAt(int arg0, int arg1) {
-				// TODO Auto-generated method stub
-				return null;
-			}
 		});	
 	scrollPanLoansView.setViewportView(table);
 
