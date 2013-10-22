@@ -97,11 +97,14 @@ public class MasterView implements Observer{
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		frmSwingingLibar.getContentPane().add(tabbedPane, BorderLayout.CENTER);
 		
-		if(isBuilder) 
+		if(isBuilder) {
 			tabbedPane.addTab("Books", new PanBook(new Library()));
-		else
+			tabbedPane.addTab("Loans", new PanLoan(new Library()));
+		}
+		else {
 			tabbedPane.addTab("Books", new PanBook(lib));
-		tabbedPane.addTab("Loans", new PanLoan());
+			tabbedPane.addTab("Loans", new PanLoan(lib));
+		}
 	}
 
 	@Override

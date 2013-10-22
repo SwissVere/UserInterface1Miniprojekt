@@ -28,11 +28,13 @@ import domain.Library;
 public class PanLoan extends JPanel {
 	private JTextField textField;
 	private JTable table;
-
+	private Library lib;
+	
 	/**
 	 * Create the panel.
 	 */
-	public PanLoan() {
+	public PanLoan(Library library) {
+		this.lib = library;
 		setLayout(new BorderLayout(0, 0));
 		
 		JPanel panLoanStatistics = new JPanel();
