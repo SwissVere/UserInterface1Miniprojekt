@@ -32,6 +32,7 @@ public class CreateLoan {
 	 */
 	public CreateLoan() {
 		initialize();
+		frame.setVisible(true);
 	}
 
 	/**
