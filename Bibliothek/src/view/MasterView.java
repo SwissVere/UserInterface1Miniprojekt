@@ -51,6 +51,7 @@ public class MasterView implements Observer{
 
 	private JFrame frmSwingingLibar;
 	private Library lib;
+	private boolean isBuilder;
 
 	/**
 	 * Launch the application.
@@ -59,7 +60,7 @@ public class MasterView implements Observer{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MasterView window = new MasterView(new Library());
+					MasterView window = new MasterView(new Library(), true);
 					window.frmSwingingLibar.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -71,8 +72,9 @@ public class MasterView implements Observer{
 	/**
 	 * Create the application.
 	 */
-	public MasterView(Library lib) {
+	public MasterView(Library lib, boolean isBuilder) {
 		this.lib = lib;
+		this.isBuilder = isBuilder;
 		initialize();
 		frmSwingingLibar.setVisible(true);
 	}
@@ -95,8 +97,10 @@ public class MasterView implements Observer{
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		frmSwingingLibar.getContentPane().add(tabbedPane, BorderLayout.CENTER);
 		
-		
-		tabbedPane.addTab("Books", new PanBook(this.lib));
+		if(isBuilder) 
+			tabbedPane.addTab("Books", new PanBook(new Library()));
+		else
+			tabbedPane.addTab("Books", new PanBook(lib));
 		tabbedPane.addTab("Loans", new PanLoan());
 	}
 

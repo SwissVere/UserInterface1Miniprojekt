@@ -33,7 +33,7 @@ public class PanBook extends JPanel {
 	private JButton btnAddNewBook;
 	private JButton btnShowSelection;
 	private Library lib;
-	
+
 	/**
 	 * Create the panel.
 	 */
@@ -137,7 +137,10 @@ public class PanBook extends JPanel {
 			@Override
 			public Object getValueAt(int arg0, int arg1) {
 				System.out.println(arg0);
-				Book book = lib.getBooks().get(arg0);
+				List<Book> books = lib.getBooks();
+				if(books.size() < 1)
+					return "";
+				Book book = books.get(arg0);
 				switch (arg1) {
 				case 0:
 					List<Copy> copies = lib.getCopiesOfBook(book);
