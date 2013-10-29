@@ -3,22 +3,43 @@ package view;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+
 import java.awt.BorderLayout;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+
 import javax.swing.border.TitledBorder;
 import javax.swing.border.LineBorder;
+
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JComboBox;
+
+import application.LibraryApp;
+import domain.Book;
+import domain.Copy;
+import domain.Customer;
+import domain.Library;
+import domain.Loan;
 
 public class LoanDetailView {
 
 	private JFrame frame;
 	private JTable table;
+	private Library library;
+	private Loan loan;
+	private static HashMap<Loan, LoanDetailView> openViews = new HashMap<Loan, LoanDetailView>();
 
 	/**
 	 * Launch the application.
@@ -35,11 +56,31 @@ public class LoanDetailView {
 			}
 		});
 	}
+	
+	public static LoanDetailView openNewLoanDetailView(Loan loan, Library library){
+			LoanDetailView detailView;
+			if(openViews.containsKey(loan)){
+				detailView = openViews.get(loan);
+			}else{
+				detailView = new LoanDetailView(library, loan);
+				openViews.put(loan, detailView);
+			}
+			detailView.frame.toFront();
+			detailView.frame.repaint();
+			
+			return detailView;
+	}
 
+	public LoanDetailView() {
+		this(new Library(), new Loan(new Customer("", ""), new Copy(new Book(""))));
+	}
+	
 	/**
 	 * Create the application.
 	 */
-	public LoanDetailView() {
+	public LoanDetailView(Library lib, Loan loan) {
+		this.library = lib;
+		this.loan = loan;
 		initialize();
 		frame.setVisible(true);
 	}
@@ -77,24 +118,27 @@ public class LoanDetailView {
 		GridBagLayout gbl_panel_1 = new GridBagLayout();
 		gbl_panel_1.columnWidths = new int[]{0, 0, 0};
 		gbl_panel_1.rowHeights = new int[]{0, 0, 0};
-		gbl_panel_1.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_1.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		gbl_panel_1.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		panel_1.setLayout(gbl_panel_1);
 		
 		JLabel lblNewLabel = new JLabel("Customer");
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel.anchor = GridBagConstraints.WEST;
+		gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
 		gbc_lblNewLabel.gridx = 0;
 		gbc_lblNewLabel.gridy = 0;
 		panel_1.add(lblNewLabel, gbc_lblNewLabel);
 		
-		JLabel lblNewLabel_5 = new JLabel("New label");
-		GridBagConstraints gbc_lblNewLabel_5 = new GridBagConstraints();
-		gbc_lblNewLabel_5.insets = new Insets(0, 0, 5, 0);
-		gbc_lblNewLabel_5.gridx = 1;
-		gbc_lblNewLabel_5.gridy = 0;
-		panel_1.add(lblNewLabel_5, gbc_lblNewLabel_5);
+		JComboBox cbCustomers = new JComboBox();
+		GridBagConstraints gbc_cbCustomers = new GridBagConstraints();
+		gbc_cbCustomers.insets = new Insets(0, 0, 5, 0);
+		gbc_cbCustomers.fill = GridBagConstraints.HORIZONTAL;
+		gbc_cbCustomers.gridx = 1;
+		gbc_cbCustomers.gridy = 0;
+		panel_1.add(cbCustomers, gbc_cbCustomers);
+		List<Customer> customers = library.getCustomers();
+		cbCustomers.setModel(new DefaultComboBoxModel<Customer>(customers.toArray(new Customer[customers.size()])));
 		
 		JLabel lblStreet = new JLabel("Street");
 		GridBagConstraints gbc_lblStreet = new GridBagConstraints();

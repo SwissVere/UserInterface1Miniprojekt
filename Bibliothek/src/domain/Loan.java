@@ -10,6 +10,11 @@ public class Loan {
 	private Customer customer;
 	private GregorianCalendar pickupDate, returnDate;
 	private final static int DAYS_TO_RETURN_BOOK = 30;
+	
+	@Override
+	public int hashCode(){
+		return System.identityHashCode(this);
+	}
 
 	public Loan(Customer customer, Copy copy) {
 		this.copy = copy;
