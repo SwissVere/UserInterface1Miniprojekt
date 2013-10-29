@@ -129,16 +129,6 @@ public class PanLoan extends JPanel {
 		gbc_btnShowSelectedLoans.gridy = 0;
 		panLoansAdministration.add(btnShowSelectedLoans, gbc_btnShowSelectedLoans);
 		
-		JButton btnNewLoan = new JButton("New Loan");
-		btnNewLoan.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				LoanDetailView createLoan = LoanDetailView.openNewLoanDetailView(lib);
-			}
-		});
-		GridBagConstraints gbc_btnNewLoan = new GridBagConstraints();
-		gbc_btnNewLoan.gridx = 3;
-		gbc_btnNewLoan.gridy = 0;
-		panLoansAdministration.add(btnNewLoan, gbc_btnNewLoan);
 		
 		JScrollPane scrollPanLoansView = new JScrollPane();
 		panLoans.add(scrollPanLoansView, BorderLayout.CENTER);

@@ -309,7 +309,9 @@ public class BookDetailView extends Observable{
 		btnNewLoan = new JButton("New Loan");
 		btnNewLoan.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				LoanDetailView.
+				for(Copy selected : listCopies.getSelectedValuesList()) {
+					LoanDetailView.openNewLoanDetailView(selected, library);
+				}
 			}
 		});
 		GridBagConstraints gbc_btnNewLoan = new GridBagConstraints();
