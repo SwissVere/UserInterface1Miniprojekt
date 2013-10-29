@@ -32,14 +32,16 @@ import domain.Copy;
 import domain.Customer;
 import domain.Library;
 import domain.Loan;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class LoanDetailView {
 
 	private JFrame frame;
 	private JTable table;
 	private Library library;
-	private Loan loan;
-	private static HashMap<Loan, LoanDetailView> openViews = new HashMap<Loan, LoanDetailView>();
+	private Copy copy;
+	private static HashMap<Copy, LoanDetailView> openViews = new HashMap<Copy, LoanDetailView>();
 
 	/**
 	 * Launch the application.
@@ -57,13 +59,13 @@ public class LoanDetailView {
 		});
 	}
 	
-	public static LoanDetailView openNewLoanDetailView(Loan loan, Library library){
+	public static LoanDetailView openNewLoanDetailView(Copy copy, Library library){
 			LoanDetailView detailView;
-			if(openViews.containsKey(loan)){
-				detailView = openViews.get(loan);
+			if(openViews.containsKey(copy)){
+				detailView = openViews.get(copy);
 			}else{
-				detailView = new LoanDetailView(library, loan);
-				openViews.put(loan, detailView);
+				detailView = new LoanDetailView(library, copy);
+				openViews.put(copy, detailView);
 			}
 			detailView.frame.toFront();
 			detailView.frame.repaint();
@@ -72,15 +74,15 @@ public class LoanDetailView {
 	}
 
 	public LoanDetailView() {
-		this(new Library(), new Loan(new Customer("", ""), new Copy(new Book(""))));
+		this(new Library(), new Copy(new Book("")));
 	}
 	
 	/**
 	 * Create the application.
 	 */
-	public LoanDetailView(Library lib, Loan loan) {
+	public LoanDetailView(Library lib, Copy copy) {
 		this.library = lib;
-		this.loan = loan;
+		this.copy = copy;
 		initialize();
 		frame.setVisible(true);
 	}
@@ -90,6 +92,12 @@ public class LoanDetailView {
 	 */
 	private void initialize() {
 		frame = new JFrame();
+		frame.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowDeactivated(WindowEvent arg0) {
+				openViews.remove(copy);
+			}
+		});
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
@@ -117,14 +125,14 @@ public class LoanDetailView {
 		panel.add(panel_1, gbc_panel_1);
 		GridBagLayout gbl_panel_1 = new GridBagLayout();
 		gbl_panel_1.columnWidths = new int[]{0, 0, 0};
-		gbl_panel_1.rowHeights = new int[]{0, 0, 0};
+		gbl_panel_1.rowHeights = new int[]{0, 0};
 		gbl_panel_1.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-		gbl_panel_1.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_1.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 		panel_1.setLayout(gbl_panel_1);
 		
 		JLabel lblNewLabel = new JLabel("Customer");
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel.insets = new Insets(0, 0, 0, 5);
 		gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
 		gbc_lblNewLabel.gridx = 0;
 		gbc_lblNewLabel.gridy = 0;
@@ -132,27 +140,12 @@ public class LoanDetailView {
 		
 		JComboBox cbCustomers = new JComboBox();
 		GridBagConstraints gbc_cbCustomers = new GridBagConstraints();
-		gbc_cbCustomers.insets = new Insets(0, 0, 5, 0);
 		gbc_cbCustomers.fill = GridBagConstraints.HORIZONTAL;
 		gbc_cbCustomers.gridx = 1;
 		gbc_cbCustomers.gridy = 0;
 		panel_1.add(cbCustomers, gbc_cbCustomers);
 		List<Customer> customers = library.getCustomers();
 		cbCustomers.setModel(new DefaultComboBoxModel<Customer>(customers.toArray(new Customer[customers.size()])));
-		
-		JLabel lblStreet = new JLabel("Street");
-		GridBagConstraints gbc_lblStreet = new GridBagConstraints();
-		gbc_lblStreet.anchor = GridBagConstraints.WEST;
-		gbc_lblStreet.insets = new Insets(0, 0, 0, 5);
-		gbc_lblStreet.gridx = 0;
-		gbc_lblStreet.gridy = 1;
-		panel_1.add(lblStreet, gbc_lblStreet);
-		
-		JLabel lblNewLabel_4 = new JLabel("New label");
-		GridBagConstraints gbc_lblNewLabel_4 = new GridBagConstraints();
-		gbc_lblNewLabel_4.gridx = 1;
-		gbc_lblNewLabel_4.gridy = 1;
-		panel_1.add(lblNewLabel_4, gbc_lblNewLabel_4);
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "Lend out new copy", TitledBorder.LEADING, TitledBorder.TOP, null, null));
