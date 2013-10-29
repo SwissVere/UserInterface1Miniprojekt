@@ -139,7 +139,7 @@ public class PanLoan extends JPanel {
 					"Availalbe", "Title", "Author", "Publisher"
 			};
 		});	
-	scrollPanLoansView.setViewportView(table);
+		scrollPanLoansView.setViewportView(table);
 
 	}
 }

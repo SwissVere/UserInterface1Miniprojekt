@@ -10,6 +10,11 @@ public class Copy {
 	private final Book book;
 	private Condition condition;
 	
+	@Override
+	public int hashCode() {
+		return System.identityHashCode(this);
+	}
+	
 	public Copy(Book title) {
 		this.book = title;
 		inventoryNumber = nextInventoryNumber++;
