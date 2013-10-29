@@ -52,6 +52,8 @@ public class BookTableModel extends AbstractTableModel{
 		switch (arg1) {
 		case 0:
 			List<Copy> copies = lib.getCopiesOfBook(book);
+			if(copies.size() < 1)
+				return "0";
 			List<Loan> loans = lib.getLentCopiesOfBook(book);
 			int available = copies.size() - loans.size();
 			if(available < 1) {

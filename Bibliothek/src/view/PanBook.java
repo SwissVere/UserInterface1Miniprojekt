@@ -10,6 +10,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -27,7 +29,7 @@ import domain.Copy;
 import domain.Library;
 import domain.Loan;
 
-public class PanBook extends JPanel {
+public class PanBook extends JPanel implements Observer{
 
 	private JTable tableBookInventory;
 	private JButton btnAddNewBook;
@@ -39,6 +41,7 @@ public class PanBook extends JPanel {
 	 */
 	public PanBook(Library library) {
 		this.lib = library;
+		this.lib.addObserver(this);
 		setLayout(new BorderLayout(0, 0));
 		JPanel panInventoryStatistics = new JPanel();
 		panInventoryStatistics.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "Inventory statistics", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -96,7 +99,7 @@ public class PanBook extends JPanel {
 				int[] selectedRows = tableBookInventory.getSelectedRows();
 				List<Book> books = lib.getBooks();
 				for(int row : selectedRows) {
-					new BookDetailView(books.get(row), lib);
+					BookDetailView.OpenNewBookDetailView(books.get(row), lib);
 				}
 			}
 		});
@@ -128,7 +131,8 @@ public class PanBook extends JPanel {
 		btnAddNewBook = new JButton("Add new book");
 		btnAddNewBook.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				BookDetailView detailView = new BookDetailView();
+				Book b = lib.createAndAddBook("");
+				BookDetailView detailView = BookDetailView.OpenNewBookDetailView(b, lib);
 			}
 		});
 		btnAddNewBook.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -137,6 +141,11 @@ public class PanBook extends JPanel {
 		gbc_btnAddNewBook.gridx = 4;
 		gbc_btnAddNewBook.gridy = 0;
 		panBookInventoryMenu.add(btnAddNewBook, gbc_btnAddNewBook);
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		tableBookInventory.updateUI();
 	}
 
 }

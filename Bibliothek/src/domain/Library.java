@@ -2,8 +2,10 @@ package domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
-public class Library {
+public class Library extends Observable{
 
 	private List<Copy> copies;
 	private List<Customer> customers;
@@ -21,6 +23,8 @@ public class Library {
 		if (!isCopyLent(copy)) {
 			Loan l = new Loan(customer, copy);
 			loans.add(l);
+			setChanged();
+			notifyObservers(l);
 			return l;
 		} else {
 			return null;
@@ -36,12 +40,16 @@ public class Library {
 	public Book createAndAddBook(String name) {
 		Book b = new Book(name);
 		books.add(b);
+		setChanged();
+		notifyObservers(b);
 		return b;
 	}
 
 	public Copy createAndAddCopy(Book title) {
 		Copy c = new Copy(title);
 		copies.add(c);
+		setChanged();
+		notifyObservers(c);
 		return c;
 	}
 
@@ -139,6 +147,17 @@ public class Library {
 
 	public List<Customer> getCustomers() {
 		return customers;
+	}
+	
+	@Override
+	public void addObserver(Observer o) {
+		super.addObserver(o);
+		for(Book b : books) {
+			b.addObserver(o);
+		}
+		for(Loan l : loans) {
+			//l.addObserver(l);
+		}
 	}
 
 }

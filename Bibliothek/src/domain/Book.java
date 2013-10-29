@@ -8,6 +8,12 @@ public class Book extends Observable{
 	private Shelf shelf;
 	private boolean isNew = true;
 	
+	@Override
+	public int hashCode()
+	{
+		return System.identityHashCode(this);
+	}
+	
 	public Book(String name) {
 		this.title = name;
 		this.author = "";

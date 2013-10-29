@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.EventQueue;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Observable;
 
@@ -40,6 +41,11 @@ import java.awt.event.FocusEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.ListSelectionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 public class BookDetailView extends Observable{
 
 	private JFrame frame;
@@ -52,7 +58,10 @@ public class BookDetailView extends Observable{
 	private JComboBox<Shelf> cbShelf;
 	private JList<Copy> listCopies;
 	private JLabel lblCopyCount;
+	private JButton btnDeleteSelected;
+	private JButton btnNewLoan;
 	private DefaultListModel<Copy> listModel = new DefaultListModel<Copy>();  
+	private static HashMap<Book, BookDetailView> openViews = new HashMap<Book, BookDetailView>();
 	
 	// needed for UI-Designer
 	public static void main(String[] args) {
@@ -68,6 +77,22 @@ public class BookDetailView extends Observable{
 		});
 	}
 	
+	
+	public static BookDetailView OpenNewBookDetailView(Book book, Library library) {
+		BookDetailView detailView;
+		if(openViews.containsKey(book)) {
+			detailView = openViews.get(book);
+		}
+		else {
+			detailView = new BookDetailView(book, library);
+			openViews.put(book, detailView);
+		}
+		
+		detailView.frame.toFront();
+		detailView.frame.repaint();
+		
+		return detailView;
+	}
 	
 	/**
 	 * Create the application.
@@ -100,8 +125,14 @@ public class BookDetailView extends Observable{
 	 */
 	private void initialize() {
 		frame = new JFrame("Book detail view");
+		frame.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowDeactivated(WindowEvent e) {
+				if(openViews.containsKey(book))
+					openViews.remove(book);
+			}
+		});
 		frame.setMinimumSize(new Dimension( 450, 400));
-		frame.setAlwaysOnTop(true);
 		frame.setBounds(100, 100, 450, 369);
 		frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
@@ -229,9 +260,9 @@ public class BookDetailView extends Observable{
 		JPanel panel = new JPanel();
 		panCopies.add(panel, BorderLayout.NORTH);
 		GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWidths = new int[]{116, 0, 109, 0, 109, 0};
+		gbl_panel.columnWidths = new int[]{116, 0, 109, 0, 0, 109, 0, 0, 0};
 		gbl_panel.rowHeights = new int[]{23, 0};
-		gbl_panel.columnWeights = new double[]{0.0, 1.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
+		gbl_panel.columnWeights = new double[]{0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
 		gbl_panel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 		panel.setLayout(gbl_panel);
 		
@@ -243,7 +274,8 @@ public class BookDetailView extends Observable{
 		gbc_lblCopyCount.gridy = 0;
 		panel.add(lblCopyCount, gbc_lblCopyCount);
 		
-		JButton btnDeleteSelected = new JButton("Delete Selected");
+		btnDeleteSelected = new JButton("Delete Selected");
+		btnDeleteSelected.setEnabled(false);
 		btnDeleteSelected.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				List<Copy> selectedCopies = listCopies.getSelectedValuesList();
@@ -269,14 +301,39 @@ public class BookDetailView extends Observable{
 			}
 		});
 		GridBagConstraints gbc_btnAddCopy = new GridBagConstraints();
-		gbc_btnAddCopy.gridx = 4;
+		gbc_btnAddCopy.insets = new Insets(0, 0, 0, 5);
+		gbc_btnAddCopy.gridx = 5;
 		gbc_btnAddCopy.gridy = 0;
 		panel.add(btnAddCopy, gbc_btnAddCopy);
 		
+		btnNewLoan = new JButton("New Loan");
+		btnNewLoan.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				LoanDetailView.
+			}
+		});
+		GridBagConstraints gbc_btnNewLoan = new GridBagConstraints();
+		gbc_btnNewLoan.gridx = 7;
+		gbc_btnNewLoan.gridy = 0;
+		panel.add(btnNewLoan, gbc_btnNewLoan);
+		
 		listCopies = new JList<Copy>(listModel);
+		listCopies.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent arg0) {
+				if(listCopies.getSelectedIndex() == -1) {
+					btnDeleteSelected.setEnabled(false);
+					btnNewLoan.setEnabled(false);
+				}
+				else {
+					btnDeleteSelected.setEnabled(true);
+					btnNewLoan.setEnabled(true);
+				}
+			}
+		});
 		
 		ScrollPane scrollPane = new ScrollPane();
 		scrollPane.add(listCopies);
 		panCopies.add(scrollPane, BorderLayout.CENTER);
 	}
+	
 }
