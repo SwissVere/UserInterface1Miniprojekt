@@ -25,12 +25,16 @@ import javax.swing.JScrollPane;
 
 import application.LibraryApp;
 import domain.Library;
+import domain.Loan;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.List;
+import java.util.Observable;
 
 public class PanLoan extends JPanel {
 	private JTextField textField;
-	private JTable table;
+	private JTable tableLoanInventory;
 	private Library lib;
 	
 	/**
@@ -123,23 +127,44 @@ public class PanLoan extends JPanel {
 		panLoansAdministration.add(chckbxNewCheckBox, gbc_chckbxNewCheckBox);
 		
 		JButton btnShowSelectedLoans = new JButton("Show selected Loans");
+		btnShowSelectedLoans.setEnabled(false);
+		btnShowSelectedLoans.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int[] selectedRows = tableLoanInventory.getSelectedRows();
+				List<Loan> loans = lib.getLoans();
+				for(int row : selectedRows) {
+					LoanDetailView.openNewLoanDetailView(loans.get(row), lib);
+				}
+			}
+		});
 		GridBagConstraints gbc_btnShowSelectedLoans = new GridBagConstraints();
 		gbc_btnShowSelectedLoans.insets = new Insets(0, 0, 0, 5);
 		gbc_btnShowSelectedLoans.gridx = 2;
 		gbc_btnShowSelectedLoans.gridy = 0;
 		panLoansAdministration.add(btnShowSelectedLoans, gbc_btnShowSelectedLoans);
+				
+		tableLoanInventory = new JTable();
+		tableLoanInventory.setModel(new LoanTableModel(lib));
+		tableLoanInventory.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				if(tableLoanInventory.getSelectedColumn() == -1) {
+					btnShowSelectedLoans.setEnabled(false);
+				}
+				else {
+					btnShowSelectedLoans.setEnabled(true);
+				}
+			}
+		});
 		
+		JScrollPane scrollPanLoansView = new JScrollPane(tableLoanInventory);
 		
-		JScrollPane scrollPanLoansView = new JScrollPane();
 		panLoans.add(scrollPanLoansView, BorderLayout.CENTER);
-		
-		table = new JTable();
-		table.setModel(new LoansTableModel(){
-			private String[] columnNames = new String[] {
-					"Availalbe", "Title", "Author", "Publisher"
-			};
-		});	
-		scrollPanLoansView.setViewportView(table);
-
+		scrollPanLoansView.setViewportView(tableLoanInventory);
+	}
+	
+	
+	public void update(Observable arg0, Object arg1) {
+		tableLoanInventory.updateUI();
 	}
 }
