@@ -18,21 +18,32 @@ public class LoanTableModel extends AbstractTableModel {
 	}
 
 	private String[] columnNames = new String[] {
-			"Availalbe", "Title", "Author", "Publisher"
+			"Status", "Copy-ID", "Title", "Lend until", "Lend to" 
 	};
 
+	private static final long serialVersionUID = 3924577490865829762L;
+	Class[] columnTypes = new Class[] {
+		String.class, String.class, String.class, String.class, String.class
+	};
+	@Override
+	public Class<?> getColumnClass(int columnIndex) {
+		return columnTypes[columnIndex];
+	}
+	boolean[] columnEditables = new boolean[] {
+		false, false, false, false
+	};
+	public boolean isCellEditable(int row, int column) {
+		return columnEditables[column];
+	}
 	@Override
 	public int getColumnCount() {
-		// TODO Auto-generated method stub
-		return 0;
+		return columnTypes.length;
 	}
-
 	@Override
 	public int getRowCount() {
-		// TODO Auto-generated method stub
-		return 0;
+		return lib.getLoans().size();
 	}
-
+	
 	@Override
 	public Object getValueAt(int arg0, int arg1) {
 		List<Loan> loans = lib.getLoans();
@@ -41,20 +52,28 @@ public class LoanTableModel extends AbstractTableModel {
 		Loan loan = loans.get(arg0);
 		switch (arg1) {
 		case 0:
-			return loan.isOverdue();
+			if(loan.isOverdue()){
+				return (String)"Overdue!";
+			}
+			return (String)"Ok";
 		case 1:
 			return loan.getCopy().getInventoryNumber();
 			
 		case 2:
-			return loan.getCopy().getTitle();
+			return loan.getCopy().getTitle().toString();
 			
 		case 3:
 			return loan.getReturnDate();
 			
 		default:
-			return loan.getCustomer();
+			return (String)loan.getCustomer().getSurname() + " " + loan.getCustomer().getName();
 			
 		}
+	}
+	
+	@Override
+	public String getColumnName(int column) {
+		return columnNames[column];
 	}
 
 }

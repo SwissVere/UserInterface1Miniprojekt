@@ -29,6 +29,8 @@ import domain.Loan;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.Observable;
 
@@ -36,6 +38,7 @@ public class PanLoan extends JPanel {
 	private JTextField textField;
 	private JTable tableLoanInventory;
 	private Library lib;
+	private JButton btnShowSelectedLoans;
 	
 	/**
 	 * Create the panel.
@@ -126,14 +129,14 @@ public class PanLoan extends JPanel {
 		gbc_chckbxNewCheckBox.gridy = 0;
 		panLoansAdministration.add(chckbxNewCheckBox, gbc_chckbxNewCheckBox);
 		
-		JButton btnShowSelectedLoans = new JButton("Show selected Loans");
+		btnShowSelectedLoans = new JButton("Show selected Loans");
 		btnShowSelectedLoans.setEnabled(false);
 		btnShowSelectedLoans.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int[] selectedRows = tableLoanInventory.getSelectedRows();
 				List<Loan> loans = lib.getLoans();
 				for(int row : selectedRows) {
-					LoanDetailView.openNewLoanDetailView(loans.get(row), lib);
+					LoanDetailView.openNewLoanDetailView(loans.get(row).getCopy(), lib);
 				}
 			}
 		});
