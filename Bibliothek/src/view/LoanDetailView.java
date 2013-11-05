@@ -43,6 +43,8 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
+import sun.security.action.GetLongAction;
+
 public class LoanDetailView {
 
 	private JFrame frame;
@@ -94,13 +96,21 @@ public class LoanDetailView {
 	}
 
 	/**
-	 * Create the application.
+	 * Create the application. For new Loan
 	 */
 	public LoanDetailView(Library lib, Copy copy) {
 		this.library = lib;
 		this.copy = copy;
 		initialize();
+		
 		frame.setVisible(true);
+	}
+	
+	/**
+	 * For existing loan
+	 */
+	public LoanDetailView(Library lib, Loan loan) {
+		edCustomerID.setText(loan.);
 	}
 
 	/**
@@ -114,6 +124,7 @@ public class LoanDetailView {
 				openViews.remove(copy);
 			}
 		});
+		frame.setTitle("Loan Detail View");
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));

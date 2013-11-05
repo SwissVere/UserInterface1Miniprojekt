@@ -33,6 +33,7 @@ import domain.Copy;
 import domain.Library;
 import domain.Loan;
 
+import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -84,6 +85,7 @@ public class MasterView implements Observer{
 	 */
 	private void initialize() {
 		frmSwingingLibar = new JFrame();
+		frmSwingingLibar.setMinimumSize(new Dimension( 800, 500));
 		frmSwingingLibar.setTitle("Swinging Library");
 		frmSwingingLibar.setBounds(100, 100, 450, 300);
 		frmSwingingLibar.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
