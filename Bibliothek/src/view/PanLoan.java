@@ -32,6 +32,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class PanLoan extends JPanel {
 	private JTextField edSearchField;
@@ -114,6 +116,12 @@ public class PanLoan extends JPanel {
 		panLoansAdministration.setLayout(gbl_panLoansAdministration);
 		
 		edSearchField = new JTextField();
+		edSearchField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				updateTableFilter();
+			}
+		});
 		GridBagConstraints gbc_edSearchField = new GridBagConstraints();
 		gbc_edSearchField.insets = new Insets(0, 0, 0, 5);
 		gbc_edSearchField.fill = GridBagConstraints.HORIZONTAL;
