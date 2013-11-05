@@ -14,6 +14,8 @@ public class BookTableModel extends AbstractTableModel{
 	private Library lib;
 	
 	public BookTableModel(Library lib) {
+		if(lib == null)
+			lib = new Library();
 		this.lib = lib;
 	}
 	
@@ -73,7 +75,7 @@ public class BookTableModel extends AbstractTableModel{
 					return early.getReturnDate().toString();
 				return "Not available";
 			}
-			return Integer.toString(available);
+			return "Available";
 		case 1:
 			return book.getName();
 			
