@@ -27,6 +27,7 @@ import javax.swing.RowFilter;
 
 import application.LibraryApp;
 import domain.Library;
+import domain.Loan;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -34,13 +35,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.List;
+import java.util.Observable;
 
 public class PanLoan extends JPanel {
 	private JTextField edSearchField;
-	private JTable table;
+	private JTextField textField;
+	private JTable tableLoanInventory;
 	private Library lib;
 
-	private TableRowSorter<LoansTableModel> sorter;
+	private TableRowSorter<LoanTableModel> sorter;
+	private JButton btnShowSelectedLoans;
 	
 	/**
 	 * Create the panel.
@@ -137,30 +144,53 @@ public class PanLoan extends JPanel {
 		gbc_chckbxNewCheckBox.gridy = 0;
 		panLoansAdministration.add(chckbxNewCheckBox, gbc_chckbxNewCheckBox);
 		
-		JButton btnShowSelectedLoans = new JButton("Show selected Loans");
+		btnShowSelectedLoans = new JButton("Show selected Loans");
+		btnShowSelectedLoans.setEnabled(false);
+		btnShowSelectedLoans.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int[] selectedRows = tableLoanInventory.getSelectedRows();
+				List<Loan> loans = lib.getLoans();
+				for(int row : selectedRows) {
+					LoanDetailView.openNewLoanDetailView(loans.get(row).getCopy(), lib);
+				}
+			}
+		});
 		GridBagConstraints gbc_btnShowSelectedLoans = new GridBagConstraints();
 		gbc_btnShowSelectedLoans.insets = new Insets(0, 0, 0, 5);
 		gbc_btnShowSelectedLoans.gridx = 2;
 		gbc_btnShowSelectedLoans.gridy = 0;
 		panLoansAdministration.add(btnShowSelectedLoans, gbc_btnShowSelectedLoans);
+				
+		tableLoanInventory = new JTable();
+		tableLoanInventory.setModel(new LoanTableModel(lib));
+		tableLoanInventory.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				if(tableLoanInventory.getSelectedColumn() == -1) {
+					btnShowSelectedLoans.setEnabled(false);
+				}
+				else {
+					btnShowSelectedLoans.setEnabled(true);
+				}
+			}
+		});
 		
+		JScrollPane scrollPanLoansView = new JScrollPane(tableLoanInventory);
 		
-		JScrollPane scrollPanLoansView = new JScrollPane();
 		panLoans.add(scrollPanLoansView, BorderLayout.CENTER);
 		
-		table = new JTable();
-		table.setModel(new LoansTableModel(){
-			private String[] columnNames = new String[] {
-					"Availalbe", "Title", "Author", "Publisher"
-			};
-		});	
 		
-		sorter = new TableRowSorter<LoansTableModel>();
-		sorter.setModel((LoansTableModel)table.getModel());
-		table.setRowSorter(sorter);
+		sorter = new TableRowSorter<LoanTableModel>();
+		sorter.setModel((LoanTableModel)tableLoanInventory.getModel());
+		tableLoanInventory.setRowSorter(sorter);
 		
-		scrollPanLoansView.setViewportView(table);
 
+		scrollPanLoansView.setViewportView(tableLoanInventory);
+	}
+	
+	
+	public void update(Observable arg0, Object arg1) {
+		tableLoanInventory.updateUI();
 	}
 	
 
