@@ -14,6 +14,7 @@ import java.awt.Insets;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableRowSorter;
 
 import java.awt.Color;
 
@@ -22,16 +23,22 @@ import javax.swing.JCheckBox;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
+import javax.swing.RowFilter;
 
 import application.LibraryApp;
 import domain.Library;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PanLoan extends JPanel {
-	private JTextField textField;
+	private JTextField edSearchField;
 	private JTable table;
 	private Library lib;
+
+	private TableRowSorter<LoansTableModel> sorter;
 	
 	/**
 	 * Create the panel.
@@ -106,14 +113,14 @@ public class PanLoan extends JPanel {
 		gbl_panLoansAdministration.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 		panLoansAdministration.setLayout(gbl_panLoansAdministration);
 		
-		textField = new JTextField();
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.insets = new Insets(0, 0, 0, 5);
-		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField.gridx = 0;
-		gbc_textField.gridy = 0;
-		panLoansAdministration.add(textField, gbc_textField);
-		textField.setColumns(10);
+		edSearchField = new JTextField();
+		GridBagConstraints gbc_edSearchField = new GridBagConstraints();
+		gbc_edSearchField.insets = new Insets(0, 0, 0, 5);
+		gbc_edSearchField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_edSearchField.gridx = 0;
+		gbc_edSearchField.gridy = 0;
+		panLoansAdministration.add(edSearchField, gbc_edSearchField);
+		edSearchField.setColumns(10);
 		
 		JCheckBox chckbxNewCheckBox = new JCheckBox("Show only overdue loans");
 		GridBagConstraints gbc_chckbxNewCheckBox = new GridBagConstraints();
@@ -139,7 +146,33 @@ public class PanLoan extends JPanel {
 					"Availalbe", "Title", "Author", "Publisher"
 			};
 		});	
+		
+		sorter = new TableRowSorter<LoansTableModel>();
+		sorter.setModel((LoansTableModel)table.getModel());
+		table.setRowSorter(sorter);
+		
 		scrollPanLoansView.setViewportView(table);
 
 	}
+	
+
+	private void updateTableFilter() {
+		try {
+		
+			List<RowFilter<Object, Object>> filters = new ArrayList<RowFilter<Object, Object>>();
+			
+			filters.add( RowFilter.regexFilter("(?i)" + edSearchField.getText()) ); 
+			
+			/*if(cbShowAvailable.isSelected()) {
+				filters.add( RowFilter.regexFilter("^(?i)Available$"));
+			}*/
+			
+			RowFilter<Object, Object> rf = RowFilter.andFilter(filters);
+			sorter.setRowFilter(rf);
+
+		} catch (java.util.regex.PatternSyntaxException e) {
+		        return;
+		}	
+	}
+	
 }
