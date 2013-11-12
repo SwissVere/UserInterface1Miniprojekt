@@ -95,28 +95,21 @@ public class LoanDetailView {
 	}
 
 	public LoanDetailView() {
-		this(new Library(), new Copy(new Book("")));
+		this(new Library(), new Loan(null, null));
 	}
+	//Andi aluege!
 
 	/**
-	 * Create the application. For new Loan
-	 */
-	public LoanDetailView(Library lib, Copy copy) {
-		this.library = lib;
-		this.copy = copy;
-		initialize();
-		
-		frame.setVisible(true);
-	}
-	
-	/**
-	 * For existing loan
+	 * For existing loans
 	 */
 	public LoanDetailView(Library lib, Loan loan) {
 		this.library = lib;
 		this.loan = loan;
 		initialize();
+		
 		edCustomerID.setText(loan.getCustomer().getId());
+		edCopyID.setText("" + loan.getCopy().getInventoryNumber());
+		
 
 		frame.setVisible(true);
 	}
