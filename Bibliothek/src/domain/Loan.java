@@ -9,7 +9,7 @@ public class Loan {
 	private Copy copy;
 	private Customer customer;
 	private GregorianCalendar pickupDate, returnDate;
-	private final static int DAYS_TO_RETURN_BOOK = 30;
+	public final static int DAYS_TO_RETURN_BOOK = 30;
 	
 	@Override
 	public int hashCode(){

@@ -56,6 +56,8 @@ public class LoanDetailView {
 	private Loan loan;
 	private static HashMap<Loan, LoanDetailView> openViews = new HashMap<Loan, LoanDetailView>();
 	private JTextField edCopyID;
+	private JComboBox cbCustomers;
+	private JLabel lblReturnDate;
 
 	Calendar c = new GregorianCalendar();
 
@@ -93,7 +95,7 @@ public class LoanDetailView {
 
 		return detailView;
 	}
-
+	
 	public LoanDetailView() {
 		this(new Library(), new Loan(null, null));
 	}
@@ -108,8 +110,26 @@ public class LoanDetailView {
 		initialize();
 		
 		edCustomerID.setText(loan.getCustomer().getId());
+		cbCustomers.setSelectedItem(loan.getCustomer());
 		edCopyID.setText("" + loan.getCopy().getInventoryNumber());
-		
+		if(loan.getReturnDate() == null) {
+			GregorianCalendar returnDate = (GregorianCalendar) loan.getPickupDate().clone();
+			returnDate.add(GregorianCalendar.DAY_OF_YEAR, loan.DAYS_TO_RETURN_BOOK);
+			lblReturnDate.setText(loan.getFormattedDate(returnDate));
+		}
+		else
+			lblReturnDate.setText(loan.getFormattedDate(loan.getReturnDate()));
+
+		frame.setVisible(true);
+	}
+	
+	/**
+	 * For new loans
+	 */
+	public LoanDetailView(Library lib) {
+		this.library = lib;
+		this.loan = loan;
+		initialize();
 
 		frame.setVisible(true);
 	}
@@ -188,7 +208,7 @@ public class LoanDetailView {
 		gbc_lblNewLabel.gridy = 1;
 		panel_1.add(lblNewLabel, gbc_lblNewLabel);
 
-		JComboBox cbCustomers = new JComboBox();
+		cbCustomers = new JComboBox();
 		GridBagConstraints gbc_cbCustomers = new GridBagConstraints();
 		gbc_cbCustomers.fill = GridBagConstraints.HORIZONTAL;
 		gbc_cbCustomers.gridx = 1;
@@ -248,7 +268,7 @@ public class LoanDetailView {
 		gbc_lblNewLabel_3.gridy = 1;
 		panel_2.add(lblNewLabel_3, gbc_lblNewLabel_3);
 
-		JLabel lblReturnDate = new JLabel("" + today);
+		lblReturnDate = new JLabel();
 		GridBagConstraints gbc_lblReturnDate = new GridBagConstraints();
 		gbc_lblReturnDate.insets = new Insets(0, 0, 5, 5);
 		gbc_lblReturnDate.gridx = 1;
