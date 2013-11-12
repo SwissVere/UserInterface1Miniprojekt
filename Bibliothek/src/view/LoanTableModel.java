@@ -58,7 +58,7 @@ public class LoanTableModel extends AbstractTableModel {
 			}
 			return (String)"Ok";
 		case 1:
-			return loan.getCopy().getInventoryNumber();
+			return "" + loan.getCopy().getInventoryNumber();
 			
 		case 2:
 			return loan.getCopy().getTitle().getName();
