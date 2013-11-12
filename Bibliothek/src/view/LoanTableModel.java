@@ -66,7 +66,7 @@ public class LoanTableModel extends AbstractTableModel {
 			return loan.getReturnDate();
 			
 		default:
-			return (String)loan.getCustomer().getSurname() + " " + loan.getCustomer().getName();
+			return (String)loan.getCustomer().getFirstname() + " " + loan.getCustomer().getLastname();
 			
 		}
 	}

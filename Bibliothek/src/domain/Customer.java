@@ -17,7 +17,7 @@ public class Customer {
 		this.city = city;
 	}
 
-	public String getName() {
+	public String getLastname() {
 		return lastname;
 	}
 

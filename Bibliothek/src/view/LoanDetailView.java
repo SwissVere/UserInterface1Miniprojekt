@@ -110,7 +110,8 @@ public class LoanDetailView {
 	 * For existing loan
 	 */
 	public LoanDetailView(Library lib, Loan loan) {
-		edCustomerID.setText(loan.);
+		edCustomerID.setText(loan.getCustomer().getId());
+		
 	}
 
 	/**
