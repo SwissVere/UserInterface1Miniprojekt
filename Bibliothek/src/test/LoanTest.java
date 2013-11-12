@@ -10,7 +10,7 @@ public class LoanTest extends TestCase {
 	public void testLoanCreation() {
 		Loan l = createSampleLoan();
 		assertTrue(new GregorianCalendar().equals(l.getPickupDate()));
-		assertEquals("Keller",l.getCustomer().getName());
+		assertEquals("Keller",l.getCustomer().getLastname());
 		assertEquals("Design Pattern", l.getCopy().getTitle().getName());
 	}
 
