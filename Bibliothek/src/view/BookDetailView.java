@@ -61,7 +61,7 @@ public class BookDetailView extends Observable{
 	private JList<Copy> listCopies;
 	private JLabel lblCopyCount;
 	private JButton btnDeleteSelected;
-	private JButton btnNewLoan;
+	//private JButton btnNewLoan;
 	private DefaultListModel<Copy> listModel = new DefaultListModel<Copy>();  
 	private static HashMap<Book, BookDetailView> openViews = new HashMap<Book, BookDetailView>();
 	
@@ -308,7 +308,7 @@ public class BookDetailView extends Observable{
 		gbc_btnAddCopy.gridy = 0;
 		panel.add(btnAddCopy, gbc_btnAddCopy);
 		
-		btnNewLoan = new JButton("New Loan");
+		/*btnNewLoan = new JButton("New Loan");
 		btnNewLoan.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				for(Copy selected : listCopies.getSelectedValuesList()) {
@@ -320,17 +320,17 @@ public class BookDetailView extends Observable{
 		gbc_btnNewLoan.gridx = 7;
 		gbc_btnNewLoan.gridy = 0;
 		panel.add(btnNewLoan, gbc_btnNewLoan);
-		
+		*/
 		listCopies = new JList<Copy>(listModel);
 		listCopies.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent arg0) {
 				if(listCopies.getSelectedIndex() == -1) {
 					btnDeleteSelected.setEnabled(false);
-					btnNewLoan.setEnabled(false);
+					//btnNewLoan.setEnabled(false);
 				}
 				else {
 					btnDeleteSelected.setEnabled(true);
-					btnNewLoan.setEnabled(true);
+					//btnNewLoan.setEnabled(true);
 				}
 			}
 		});

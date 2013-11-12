@@ -44,6 +44,8 @@ import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
 import sun.security.action.GetLongAction;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 public class LoanDetailView {
 
@@ -51,7 +53,8 @@ public class LoanDetailView {
 	private JTable table;
 	private Library library;
 	private Copy copy;
-	private static HashMap<Copy, LoanDetailView> openViews = new HashMap<Copy, LoanDetailView>();
+	private Loan loan;
+	private static HashMap<Loan, LoanDetailView> openViews = new HashMap<Loan, LoanDetailView>();
 	private JTextField edCopyID;
 
 	Calendar c = new GregorianCalendar();
@@ -76,14 +79,14 @@ public class LoanDetailView {
 		});
 	}
 
-	public static LoanDetailView openNewLoanDetailView(Copy copy,
+	public static LoanDetailView openNewLoanDetailView(Loan loan,
 			Library library) {
 		LoanDetailView detailView;
-		if (openViews.containsKey(copy)) {
-			detailView = openViews.get(copy);
+		if (openViews.containsKey(loan)) {
+			detailView = openViews.get(loan);
 		} else {
-			detailView = new LoanDetailView(library, copy);
-			openViews.put(copy, detailView);
+			detailView = new LoanDetailView(library, loan);
+			openViews.put(loan, detailView);
 		}
 		detailView.frame.toFront();
 		detailView.frame.repaint();
@@ -110,8 +113,12 @@ public class LoanDetailView {
 	 * For existing loan
 	 */
 	public LoanDetailView(Library lib, Loan loan) {
+		this.library = lib;
+		this.loan = loan;
+		initialize();
 		edCustomerID.setText(loan.getCustomer().getId());
-		
+
+		frame.setVisible(true);
 	}
 
 	/**
@@ -119,10 +126,11 @@ public class LoanDetailView {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.addWindowListener(new WindowAdapter() {
+		frame.addComponentListener(new ComponentAdapter() {
 			@Override
-			public void windowDeactivated(WindowEvent arg0) {
-				openViews.remove(copy);
+			public void componentHidden(ComponentEvent e) {
+				if(openViews.containsKey(loan))
+					openViews.remove(loan);
 			}
 		});
 		frame.setTitle("Loan Detail View");

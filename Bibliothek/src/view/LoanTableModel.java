@@ -30,7 +30,7 @@ public class LoanTableModel extends AbstractTableModel {
 		return columnTypes[columnIndex];
 	}
 	boolean[] columnEditables = new boolean[] {
-		false, false, false, false
+		false, false, false, false, false
 	};
 	public boolean isCellEditable(int row, int column) {
 		return columnEditables[column];
@@ -60,7 +60,7 @@ public class LoanTableModel extends AbstractTableModel {
 			return loan.getCopy().getInventoryNumber();
 			
 		case 2:
-			return loan.getCopy().getTitle().toString();
+			return loan.getCopy().getTitle().getName();
 			
 		case 3:
 			return loan.getReturnDate();

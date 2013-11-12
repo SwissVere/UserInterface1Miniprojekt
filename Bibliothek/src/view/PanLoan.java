@@ -149,9 +149,12 @@ public class PanLoan extends JPanel {
 		btnShowSelectedLoans.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int[] selectedRows = tableLoanInventory.getSelectedRows();
-				List<Loan> loans = lib.getLoans();
+				
 				for(int row : selectedRows) {
-					LoanDetailView.openNewLoanDetailView(loans.get(row).getCopy(), lib);
+					String bookName = (String)tableLoanInventory.getValueAt(row, 2);
+					String customerId = (String)tableLoanInventory.getValueAt(row, 4);
+					customerId = customerId.replaceAll(" ", "");
+					LoanDetailView.openNewLoanDetailView(lib.findLoanByBookTitleAndCustomerId(bookName, customerId), lib);
 				}
 			}
 		});

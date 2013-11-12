@@ -62,6 +62,14 @@ public class Library extends Observable{
 		return null;
 	}
 
+	
+	public Loan findLoanByBookTitleAndCustomerId(String title, String customerId) {
+		for(Loan l : loans) {
+			if(l.getCopy().getTitle().getName().equals(title) && l.getCustomer().getId().equals(customerId))
+				return l;
+		}
+		return null;
+	}
 	public boolean isCopyLent(Copy copy) {
 		for (Loan l : loans) {
 			if (l.getCopy().equals(copy) && l.isLent()) {
