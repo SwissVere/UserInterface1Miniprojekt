@@ -45,6 +45,8 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 public class BookDetailView extends Observable{
 
@@ -125,9 +127,9 @@ public class BookDetailView extends Observable{
 	 */
 	private void initialize() {
 		frame = new JFrame("Book detail view");
-		frame.addWindowListener(new WindowAdapter() {
+		frame.addComponentListener(new ComponentAdapter() {
 			@Override
-			public void windowDeactivated(WindowEvent e) {
+			public void componentHidden(ComponentEvent arg0) {
 				if(openViews.containsKey(book))
 					openViews.remove(book);
 			}

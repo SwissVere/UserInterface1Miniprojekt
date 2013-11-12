@@ -107,9 +107,8 @@ public class PanBook extends JPanel implements Observer{
 		btnShowSelection.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int[] selectedRows = tableBookInventory.getSelectedRows();
-				List<Book> books = lib.getBooks();
 				for(int row : selectedRows) {
-					BookDetailView.OpenNewBookDetailView(books.get(row), lib);
+					BookDetailView.OpenNewBookDetailView(lib.findByBookTitle((String)tableBookInventory.getValueAt(row, 1)), lib);
 				}
 			}
 		});
