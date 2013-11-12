@@ -39,11 +39,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.Observable;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class PanLoan extends JPanel {
 	private JTextField edSearchField;
 	private JTextField textField;
 	private JTable tableLoanInventory;
+	private JCheckBox cbShowOverdueLoans;
 	private Library lib;
 
 	private TableRowSorter<LoanTableModel> sorter;
@@ -137,12 +140,17 @@ public class PanLoan extends JPanel {
 		panLoansAdministration.add(edSearchField, gbc_edSearchField);
 		edSearchField.setColumns(10);
 		
-		JCheckBox chckbxNewCheckBox = new JCheckBox("Show only overdue loans");
+		cbShowOverdueLoans = new JCheckBox("Show only overdue loans");
+		cbShowOverdueLoans.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent arg0) {
+				updateTableFilter();
+			}
+		});
 		GridBagConstraints gbc_chckbxNewCheckBox = new GridBagConstraints();
 		gbc_chckbxNewCheckBox.insets = new Insets(0, 0, 0, 5);
 		gbc_chckbxNewCheckBox.gridx = 1;
 		gbc_chckbxNewCheckBox.gridy = 0;
-		panLoansAdministration.add(chckbxNewCheckBox, gbc_chckbxNewCheckBox);
+		panLoansAdministration.add(cbShowOverdueLoans, gbc_chckbxNewCheckBox);
 		
 		btnShowSelectedLoans = new JButton("Show selected Loans");
 		btnShowSelectedLoans.setEnabled(false);
@@ -210,9 +218,9 @@ public class PanLoan extends JPanel {
 			
 			filters.add( RowFilter.regexFilter("(?i)" + edSearchField.getText()) ); 
 			
-			/*if(cbShowAvailable.isSelected()) {
-				filters.add( RowFilter.regexFilter("^(?i)Available$"));
-			}*/
+			if(cbShowOverdueLoans.isSelected()) {
+				filters.add( RowFilter.regexFilter("^(?i)Overdue!$"));
+			}
 			
 			RowFilter<Object, Object> rf = RowFilter.andFilter(filters);
 			sorter.setRowFilter(rf);
