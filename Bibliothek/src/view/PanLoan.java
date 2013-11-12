@@ -152,7 +152,7 @@ public class PanLoan extends JPanel {
 				
 				for(int row : selectedRows) {
 					String bookName = (String)tableLoanInventory.getValueAt(row, 2);
-					String customerId = (String)tableLoanInventory.getValueAt(row, 4);
+					String customerId = (String)tableLoanInventory.getValueAt(row, 3);
 					customerId = customerId.replaceAll(" ", "");
 					LoanDetailView.openNewLoanDetailView(lib.findLoanByBookTitleAndCustomerId(bookName, customerId), lib);
 				}

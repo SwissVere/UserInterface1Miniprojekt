@@ -18,19 +18,19 @@ public class LoanTableModel extends AbstractTableModel {
 	}
 
 	private String[] columnNames = new String[] {
-			"Status", "Copy-ID", "Title", "Lend until", "Lend to" 
+			"Status", "Copy-ID", "Title", "Lend to" 
 	};
 
 	private static final long serialVersionUID = 3924577490865829762L;
 	Class[] columnTypes = new Class[] {
-		String.class, String.class, String.class, String.class, String.class
+		String.class, String.class, String.class, String.class
 	};
 	@Override
 	public Class<?> getColumnClass(int columnIndex) {
 		return columnTypes[columnIndex];
 	}
 	boolean[] columnEditables = new boolean[] {
-		false, false, false, false, false
+		false, false, false, false
 	};
 	public boolean isCellEditable(int row, int column) {
 		return columnEditables[column];
@@ -41,12 +41,13 @@ public class LoanTableModel extends AbstractTableModel {
 	}
 	@Override
 	public int getRowCount() {
-		return lib.getLoans().size();
+		return lib.getLentLoans().size();
 	}
 	
 	@Override
 	public Object getValueAt(int arg0, int arg1) {
-		List<Loan> loans = lib.getLoans();
+		List<Loan> loans = lib.getLentLoans();
+		
 		if(loans.size() < 1)
 			return "";
 		Loan loan = loans.get(arg0);
@@ -61,9 +62,6 @@ public class LoanTableModel extends AbstractTableModel {
 			
 		case 2:
 			return loan.getCopy().getTitle().getName();
-			
-		case 3:
-			return loan.getReturnDate();
 			
 		default:
 			return (String)loan.getCustomer().getFirstname() + " " + loan.getCustomer().getLastname();

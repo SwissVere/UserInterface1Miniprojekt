@@ -77,7 +77,7 @@ public class Loan {
 				+ getDaysOfLoanDuration();
 	}
 
-	private String getFormattedDate(GregorianCalendar date) {
+	public String getFormattedDate(GregorianCalendar date) {
 		if (date != null) {
 			DateFormat f = SimpleDateFormat.getDateInstance();
 			return f.format(date.getTime());

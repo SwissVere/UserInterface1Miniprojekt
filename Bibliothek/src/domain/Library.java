@@ -148,6 +148,15 @@ public class Library extends Observable{
 	public List<Loan> getLoans() {
 		return loans;
 	}
+	
+	public List<Loan> getLentLoans() {
+		List<Loan> lentLoans = new ArrayList<Loan>();
+		for(Loan l : loans) {
+			if(l.isLent())
+				lentLoans.add(l);
+		}
+		return lentLoans;
+	}
 
 	public List<Book> getBooks() {
 		return books;
