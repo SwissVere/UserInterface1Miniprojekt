@@ -2,12 +2,13 @@ package domain;
 
 public class Customer {
 	
-	private String name, surname, street, city;
+	private String lastname, firstname, street, city, id;
 	private int zip;
 
-	public Customer(String name, String surname) {
-		this.name = name;
-		this.surname = surname;
+	public Customer(String lastname, String firstname) {
+		this.id = firstname + lastname;
+		this.lastname = lastname;
+		this.firstname = firstname;
 	}
 	
 	public void setAdress(String street, int zip, String city) {
@@ -17,19 +18,19 @@ public class Customer {
 	}
 
 	public String getName() {
-		return name;
+		return lastname;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
 	}
 
-	public String getSurname() {
-		return surname;
+	public String getFirstname() {
+		return firstname;
 	}
 
-	public void setSurname(String surname) {
-		this.surname = surname;
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
 	}
 
 	public String getStreet() {
@@ -56,9 +57,17 @@ public class Customer {
 		this.zip = zip;
 	}
 	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+	
 	@Override
 	public String toString() {
-		return name + " " + surname + " , " + street + " , " + zip + " " + city;
+		return lastname + " " + firstname + " , " + street + " , " + zip + " " + city;
 	}
 
 }
