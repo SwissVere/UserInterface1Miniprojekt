@@ -64,6 +64,7 @@ public class Book extends Observable{
 		return isNew;
 	}
 
+	@Deprecated
 	public void setNew(boolean isNew) {
 		this.isNew = isNew;
 		setChanged();
@@ -73,5 +74,15 @@ public class Book extends Observable{
 	@Override
 	public String toString() {
 		return title + ", " + author + ", " + publisher;
+	}
+	
+	@Override
+	public Book clone() {
+		Book b = new Book(title);
+		b.setAuthor(author);
+		b.setPublisher(publisher);
+		b.setShelf(shelf);
+		
+		return b;
 	}
 }

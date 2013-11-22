@@ -53,6 +53,8 @@ public class PanBook extends JPanel implements Observer{
 	private Library lib;
 	private JTextField edSearchField;
 	private JCheckBox cbShowAvailable;
+	private JLabel lblCountBooks;
+	private JLabel lblCountCopies;
 	private TableRowSorter<BookTableModel> sorter;
 
 	/**
@@ -60,7 +62,7 @@ public class PanBook extends JPanel implements Observer{
 	 */
 	public PanBook(Library library) {
 		this.lib = library;
-		this.lib.addObserver(this);
+		lib.addObserver(this);
 		setLayout(new BorderLayout(0, 0));
 		JPanel panInventoryStatistics = new JPanel();
 		panInventoryStatistics.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "Inventory statistics", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -72,7 +74,7 @@ public class PanBook extends JPanel implements Observer{
 		gbl_panInventoryStatistics.rowWeights = new double[]{1.0, Double.MIN_VALUE};
 		panInventoryStatistics.setLayout(gbl_panInventoryStatistics);
 		
-		JLabel lblCountBooks = new JLabel("New label");
+		lblCountBooks = new JLabel("Books count: ");
 		GridBagConstraints gbc_lblCountBooks = new GridBagConstraints();
 		gbc_lblCountBooks.anchor = GridBagConstraints.WEST;
 		gbc_lblCountBooks.insets = new Insets(0, 0, 0, 5);
@@ -80,7 +82,7 @@ public class PanBook extends JPanel implements Observer{
 		gbc_lblCountBooks.gridy = 0;
 		panInventoryStatistics.add(lblCountBooks, gbc_lblCountBooks);
 		
-		JLabel lblCountCopies = new JLabel("New label");
+		lblCountCopies = new JLabel("Copies count: ");
 		GridBagConstraints gbc_lblCountCopies = new GridBagConstraints();
 		gbc_lblCountCopies.anchor = GridBagConstraints.WEST;
 		gbc_lblCountCopies.insets = new Insets(0, 0, 0, 5);
@@ -175,10 +177,11 @@ public class PanBook extends JPanel implements Observer{
 		btnAddNewBook = new JButton("Add new book");
 		btnAddNewBook.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Book b = lib.createAndAddBook("");
+				Book b = new Book("");
 				BookDetailView detailView = BookDetailView.OpenNewBookDetailView(b, lib);
 			}
 		});
+		
 		btnAddNewBook.setHorizontalAlignment(SwingConstants.RIGHT);
 		GridBagConstraints gbc_btnAddNewBook = new GridBagConstraints();
 		gbc_btnAddNewBook.anchor = GridBagConstraints.NORTHEAST;
@@ -187,11 +190,6 @@ public class PanBook extends JPanel implements Observer{
 		panBookInventoryMenu.add(btnAddNewBook, gbc_btnAddNewBook);
 	}
 
-	@Override
-	public void update(Observable arg0, Object arg1) {
-		tableBookInventory.updateUI();
-	}
-	
 	private void updateTableFilter() {
 		try {
 		
@@ -209,5 +207,10 @@ public class PanBook extends JPanel implements Observer{
 		} catch (java.util.regex.PatternSyntaxException e) {
 		        return;
 		}	
+	}
+	
+	public void update(Observable sender, Object arg) {
+		lblCountBooks.setText("Books count: " + lib.getBooks().size());
+		lblCountCopies.setText("Copies count: " + lib.getCopies().size());
 	}
 }

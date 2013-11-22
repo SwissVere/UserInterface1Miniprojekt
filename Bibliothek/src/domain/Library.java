@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-public class Library extends Observable{
+public class Library extends Observable implements Observer{
 
 	private List<Copy> copies;
 	private List<Customer> customers;
@@ -22,9 +22,9 @@ public class Library extends Observable{
 	public Loan createAndAddLoan(Customer customer, Copy copy) {
 		if (!isCopyLent(copy)) {
 			Loan l = new Loan(customer, copy);
+			//l.addObserver(this);
 			loans.add(l);
-			setChanged();
-			notifyObservers(l);
+			notifyAllObservers();
 			return l;
 		} else {
 			return null;
@@ -39,17 +39,32 @@ public class Library extends Observable{
 
 	public Book createAndAddBook(String name) {
 		Book b = new Book(name);
+		b.addObserver(this);
 		books.add(b);
-		setChanged();
-		notifyObservers(b);
+		notifyAllObservers();
 		return b;
 	}
 
+	public void replaceOrAddBook(Book book) {
+		Book b = findByBookTitle(book.getName());
+		if(b != null)
+			books.remove(b);
+		books.add(book);
+		book.addObserver(this);
+		notifyAllObservers();
+	}
+	
+	public void replaceOrAddLoan(Loan loan) {
+		loans.remove(loan);
+		loans.add(loan);
+		//loan.addObserver(this);
+		notifyAllObservers();
+	}
+	
 	public Copy createAndAddCopy(Book title) {
 		Copy c = new Copy(title);
 		copies.add(c);
-		setChanged();
-		notifyObservers(c);
+		notifyAllObservers();
 		return c;
 	}
 
@@ -165,16 +180,22 @@ public class Library extends Observable{
 	public List<Customer> getCustomers() {
 		return customers;
 	}
+
+	public Customer getCustomerPerID(String id) {
+		for(Customer c : customers) {
+			if(c.getId() == id)
+				return c;
+		}
+		return null;
+	}
 	
 	@Override
-	public void addObserver(Observer o) {
-		super.addObserver(o);
-		for(Book b : books) {
-			b.addObserver(o);
-		}
-		for(Loan l : loans) {
-			//l.addObserver(l);
-		}
+	public void update(Observable o, Object arg) {
+		notifyAllObservers();
 	}
 
+	private void notifyAllObservers() {
+		setChanged();
+		notifyObservers();
+	}
 }

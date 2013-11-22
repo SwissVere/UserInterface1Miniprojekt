@@ -26,13 +26,16 @@ import javax.swing.border.LineBorder;
 
 import java.awt.Color;
 
+import javax.swing.AbstractAction;
 import javax.swing.DefaultListModel;
+import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.KeyStroke;
 
 import domain.Shelf;
 
@@ -40,9 +43,11 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
+
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.ComponentAdapter;
@@ -61,7 +66,6 @@ public class BookDetailView extends Observable{
 	private JList<Copy> listCopies;
 	private JLabel lblCopyCount;
 	private JButton btnDeleteSelected;
-	//private JButton btnNewLoan;
 	private DefaultListModel<Copy> listModel = new DefaultListModel<Copy>();  
 	private static HashMap<Book, BookDetailView> openViews = new HashMap<Book, BookDetailView>();
 	
@@ -92,6 +96,7 @@ public class BookDetailView extends Observable{
 		
 		detailView.frame.toFront();
 		detailView.frame.repaint();
+		detailView.frame.setVisible(true);
 		
 		return detailView;
 	}
@@ -104,14 +109,14 @@ public class BookDetailView extends Observable{
 	}
 	
 	public BookDetailView(Book book, Library library) {
-		this.book = book;
+		this.book = book.clone();
+		this.library = library;
 		initialize();
 		edTitle.setText(book.getName());
 		edAuthor.setText(book.getAuthor());
 		edPublisher.setText(book.getPublisher());
 		cbShelf.setSelectedItem(book.getShelf());
 		
-		this.library = library;
 		List<Copy> copies = library.getCopiesOfBook(book);
 		for(Copy c : copies) {
 			listModel.addElement(c);
@@ -119,7 +124,7 @@ public class BookDetailView extends Observable{
 		
 		lblCopyCount.setText("Copies: " + library.getCopiesOfBook(book).size());
 		
-		frame.setVisible(true);
+		setDefaultKeys();
 	}
 
 	/**
@@ -139,9 +144,9 @@ public class BookDetailView extends Observable{
 		frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0};
-		gridBagLayout.rowHeights = new int[]{140, 169, 0};
+		gridBagLayout.rowHeights = new int[]{140, 169, 0, 0};
 		gridBagLayout.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{1.0, 1.0, 1.0, Double.MIN_VALUE};
 		frame.getContentPane().setLayout(gridBagLayout);
 		
 		JPanel panBookInformation = new JPanel();
@@ -253,6 +258,7 @@ public class BookDetailView extends Observable{
 		JPanel panCopies = new JPanel();
 		panCopies.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "Copies", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_panCopies = new GridBagConstraints();
+		gbc_panCopies.insets = new Insets(0, 0, 5, 0);
 		gbc_panCopies.fill = GridBagConstraints.BOTH;
 		gbc_panCopies.gridx = 0;
 		gbc_panCopies.gridy = 1;
@@ -308,29 +314,14 @@ public class BookDetailView extends Observable{
 		gbc_btnAddCopy.gridy = 0;
 		panel.add(btnAddCopy, gbc_btnAddCopy);
 		
-		/*btnNewLoan = new JButton("New Loan");
-		btnNewLoan.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				for(Copy selected : listCopies.getSelectedValuesList()) {
-					LoanDetailView.openNewLoanDetailView(selected, library);
-				}
-			}
-		});
-		GridBagConstraints gbc_btnNewLoan = new GridBagConstraints();
-		gbc_btnNewLoan.gridx = 7;
-		gbc_btnNewLoan.gridy = 0;
-		panel.add(btnNewLoan, gbc_btnNewLoan);
-		*/
 		listCopies = new JList<Copy>(listModel);
 		listCopies.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent arg0) {
 				if(listCopies.getSelectedIndex() == -1) {
 					btnDeleteSelected.setEnabled(false);
-					//btnNewLoan.setEnabled(false);
 				}
 				else {
 					btnDeleteSelected.setEnabled(true);
-					//btnNewLoan.setEnabled(true);
 				}
 			}
 		});
@@ -338,6 +329,37 @@ public class BookDetailView extends Observable{
 		ScrollPane scrollPane = new ScrollPane();
 		scrollPane.add(listCopies);
 		panCopies.add(scrollPane, BorderLayout.CENTER);
+		
+		JPanel panControl = new PanControl(library, book, null, frame);
+		GridBagConstraints gbc_panControl = new GridBagConstraints();
+		gbc_panControl.fill = GridBagConstraints.BOTH;
+		gbc_panControl.gridx = 0;
+		gbc_panControl.gridy = 2;
+		frame.getContentPane().add(panControl, gbc_panControl);
+
+	}
+	
+	private void setDefaultKeys() {
+		// on ESC key close frame
+        frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+            KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "Cancel"); //$NON-NLS-1$
+        frame.getRootPane().getActionMap().put("Cancel", new AbstractAction(){ //$NON-NLS-1$
+            public void actionPerformed(ActionEvent e)
+            {
+            	frame.setVisible(false);
+            }
+        });
+        
+        frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+                KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "Save"); //$NON-NLS-1$
+        frame.getRootPane().getActionMap().put("Save", new AbstractAction(){ //$NON-NLS-1$
+            public void actionPerformed(ActionEvent e)
+                {
+            		library.replaceOrAddBook(book);
+            		frame.setVisible(false);
+                }
+            });
+            
 	}
 	
 }

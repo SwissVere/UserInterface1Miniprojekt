@@ -1,6 +1,8 @@
 package view;
 
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -9,7 +11,7 @@ import domain.Copy;
 import domain.Library;
 import domain.Loan;
 
-public class BookTableModel extends AbstractTableModel{
+public class BookTableModel extends AbstractTableModel implements Observer{
 	
 	private Library lib;
 	
@@ -17,6 +19,7 @@ public class BookTableModel extends AbstractTableModel{
 		if(lib == null)
 			lib = new Library();
 		this.lib = lib;
+		lib.addObserver(this);
 	}
 	
 	private String[] columnNames = new String[] {
@@ -90,6 +93,10 @@ public class BookTableModel extends AbstractTableModel{
 	@Override
 	public String getColumnName(int column) {
 		return columnNames[column];
+	}
+	@Override
+	public void update(Observable o, Object arg) {
+		fireTableDataChanged();		
 	}
 
 }
