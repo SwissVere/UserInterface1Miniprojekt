@@ -188,6 +188,8 @@ public class PanBook extends JPanel implements Observer{
 		gbc_btnAddNewBook.gridx = 5;
 		gbc_btnAddNewBook.gridy = 0;
 		panBookInventoryMenu.add(btnAddNewBook, gbc_btnAddNewBook);
+		
+		update(null, null);
 	}
 
 	private void updateTableFilter() {

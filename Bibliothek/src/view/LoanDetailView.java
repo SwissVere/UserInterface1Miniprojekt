@@ -50,6 +50,8 @@ import javax.swing.JList;
 import java.awt.Panel;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class LoanDetailView {
 
@@ -202,7 +204,7 @@ public class LoanDetailView {
 				cbCustomers.setSelectedItem(cs);
 				
 				loanDetailTableModel = new LoanDetailTableModel(library, cs);
-				
+				table.setModel(loanDetailTableModel);
 				loanDetailTableModel.fireTableDataChanged();
 			}
 		});
@@ -224,6 +226,18 @@ public class LoanDetailView {
 		panel_1.add(lblNewLabel, gbc_lblNewLabel);
 
 		cbCustomers = new JComboBox();
+		cbCustomers.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent arg0) {
+				Customer cs = (Customer)cbCustomers.getSelectedItem();
+				if(cs == null)
+					return;
+				edCustomerID.setText(cs.getId());
+				
+				loanDetailTableModel = new LoanDetailTableModel(library, cs);
+				table.setModel(loanDetailTableModel);
+				loanDetailTableModel.fireTableDataChanged();
+			}
+		});
 		GridBagConstraints gbc_cbCustomers = new GridBagConstraints();
 		gbc_cbCustomers.fill = GridBagConstraints.HORIZONTAL;
 		gbc_cbCustomers.gridx = 1;

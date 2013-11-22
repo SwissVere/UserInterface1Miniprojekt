@@ -183,7 +183,7 @@ public class Library extends Observable implements Observer{
 
 	public Customer getCustomerPerID(String id) {
 		for(Customer c : customers) {
-			if(c.getId() == id)
+			if(c.getId().equals(id))
 				return c;
 		}
 		return null;
