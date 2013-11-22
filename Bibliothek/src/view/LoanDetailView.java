@@ -158,7 +158,7 @@ public class LoanDetailView {
 			}
 		});
 		frame.setTitle("Loan Detail View");
-		frame.setBounds(100, 100, 450, 300);
+		frame.setBounds(100, 100, 599, 479);
 		frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 434, 0 };
@@ -327,15 +327,13 @@ public class LoanDetailView {
 			loanDetailTableModel = new LoanDetailTableModel(library, loan.getCustomer());
 		table.setModel(loanDetailTableModel);
 		scrollPane.setViewportView(table);
-
-		JLabel lblNewLabel_1 = new JLabel("New label");
-		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
-		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 0);
-		gbc_lblNewLabel_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_lblNewLabel_1.anchor = GridBagConstraints.SOUTH;
-		gbc_lblNewLabel_1.gridx = 0;
-		gbc_lblNewLabel_1.gridy = 3;
-		frame.getContentPane().add(lblNewLabel_1, gbc_lblNewLabel_1);
+		
+		JPanel panControl = new PanControl(library, null, loan, frame);
+		GridBagConstraints gbc_panControl = new GridBagConstraints();
+		gbc_panControl.fill = GridBagConstraints.BOTH;
+		gbc_panControl.gridx = 0;
+		gbc_panControl.gridy = 3;
+		frame.getContentPane().add(panControl, gbc_panControl);
 	}
 
 }
