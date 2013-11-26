@@ -1,7 +1,10 @@
 package view;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.table.AbstractTableModel;
 
 import domain.Book;
@@ -18,19 +21,19 @@ public class LoanTableModel extends AbstractTableModel {
 	}
 
 	private String[] columnNames = new String[] {
-			"Status", "Copy-ID", "Title", "Lend to" 
+			"Status", "Copy-ID", "Title", "Lend to", "Return loan"
 	};
 
 	private static final long serialVersionUID = 3924577490865829762L;
 	Class[] columnTypes = new Class[] {
-		String.class, String.class, String.class, String.class
+		String.class, String.class, String.class, String.class, ReturnLoanButton.class
 	};
 	@Override
 	public Class<?> getColumnClass(int columnIndex) {
 		return columnTypes[columnIndex];
 	}
 	boolean[] columnEditables = new boolean[] {
-		false, false, false, false
+		false, false, false, false, true
 	};
 	public boolean isCellEditable(int row, int column) {
 		return columnEditables[column];
@@ -63,9 +66,11 @@ public class LoanTableModel extends AbstractTableModel {
 		case 2:
 			return loan.getCopy().getTitle().getName();
 			
-		default:
+		case 3:
 			return (String)loan.getCustomer().getFirstname() + " " + loan.getCustomer().getLastname();
 			
+		default:
+			return new ReturnLoanButton(loan);
 		}
 	}
 	
