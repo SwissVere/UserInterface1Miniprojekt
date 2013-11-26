@@ -2,14 +2,14 @@ package view;
 
 import javax.swing.JFrame;
 
-public class PanControl_old extends JPanel {
+public class PanControl extends JPanel {
 
 	private Library lib;
 	private Book book;
 	private Loan loan;
 	private JFrame masterFrame;
 	
-	public PanControl_old(Library lib, Book book, Loan loan, JFrame masterFrame) {
+	public PanControl(Library lib, Book book, Loan loan, JFrame masterFrame) {
 		this();
 		this.lib = lib;
 		this.book = book;
@@ -20,7 +20,7 @@ public class PanControl_old extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public PanControl_old() {
+	public PanControl() {
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0};

@@ -7,11 +7,11 @@ import javax.swing.JButton;
 
 import domain.Loan;
 
-public class ReturnLoanButton_old extends JButton {
+public class ReturnLoanButton extends JButton {
 
 	private Loan loan;
 	
-	public ReturnLoanButton_old(Loan loan) {
+	public ReturnLoanButton(Loan loan) {
 		this.loan = loan;
 		this.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
