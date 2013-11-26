@@ -70,7 +70,9 @@ public class LoanDetailView extends Observable {
 	private JTextField edCopyID;
 	private JComboBox cbCustomers;
 	private JLabel lblReturnDate;
+	private JLabel lblIsAvailable;
 	private LoanDetailTableModel loanDetailTableModel;
+	private JButton btnLendCopy;
 
 	Calendar c = new GregorianCalendar();
 
@@ -136,7 +138,13 @@ public class LoanDetailView extends Observable {
 		} else
 			lblReturnDate.setText(loan.getFormattedDate(loan.getReturnDate()));
 
-		if (lib.getLentCustomerLoans(customer).)
+		if (lib.getLentCustomerLoans(loan.getCustomer()).size() < 3){
+			lblIsAvailable.setText("More Loans possible");
+			btnLendCopy.setEnabled(true);
+		} else {
+			lblIsAvailable.setText("More Loans aren't possible!");
+			btnLendCopy.setEnabled(false);
+		}
 		
 		frame.setVisible(true);
 	}
@@ -279,7 +287,7 @@ public class LoanDetailView extends Observable {
 		gbc_lblAvailable.gridy = 0;
 		panCopySelection.add(lblAvailable, gbc_lblAvailable);
 		
-		JLabel lblIsAvailable = new JLabel("");
+		lblIsAvailable = new JLabel("");
 		GridBagConstraints gbc_lblIsAvailable = new GridBagConstraints();
 		gbc_lblIsAvailable.insets = new Insets(0, 0, 5, 5);
 		gbc_lblIsAvailable.gridx = 1;
@@ -303,7 +311,7 @@ public class LoanDetailView extends Observable {
 		panCopySelection.add(edCopyID, gbc_edCopyID);
 		edCopyID.setColumns(10);
 
-		JButton btnLendCopy = new JButton("Lend Copy");
+		btnLendCopy = new JButton("Lend Copy");
 		btnLendCopy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				library.createAndAddLoan(library.getCustomerPerID(edCustomerID.getText()), library.getCopyPerId(Long.parseLong(edCopyID.getText())));
