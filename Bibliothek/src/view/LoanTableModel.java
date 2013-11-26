@@ -3,6 +3,8 @@ package view;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JButton;
 import javax.swing.table.AbstractTableModel;
@@ -12,12 +14,13 @@ import domain.Copy;
 import domain.Library;
 import domain.Loan;
 
-public class LoanTableModel extends AbstractTableModel {
+public class LoanTableModel extends AbstractTableModel implements Observer{
 
 	private Library lib;
 
 	public LoanTableModel(Library lib) {
 		this.lib = lib;
+		lib.addObserver(this);
 	}
 
 	private String[] columnNames = new String[] {
@@ -79,5 +82,9 @@ public class LoanTableModel extends AbstractTableModel {
 	public String getColumnName(int column) {
 		return columnNames[column];
 	}
-
+	
+	@Override
+	public void update(Observable o, Object arg) {
+		fireTableDataChanged();		
+	}
 }

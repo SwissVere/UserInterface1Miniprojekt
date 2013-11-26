@@ -136,7 +136,7 @@ public class LoanDetailView extends Observable {
 		} else
 			lblReturnDate.setText(loan.getFormattedDate(loan.getReturnDate()));
 
-		if (lib.getLentCustomerLoans(customer).)
+		//if (lib.getLentCustomerLoans(customer).)
 		
 		frame.setVisible(true);
 	}

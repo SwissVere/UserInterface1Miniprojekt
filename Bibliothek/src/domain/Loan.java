@@ -119,8 +119,6 @@ public class Loan extends Observable{
 		
 		return ( new GregorianCalendar().after(dueDate) );
 	}
-	
-
 
 	private void notifyAllObservers() {
 		setChanged();
