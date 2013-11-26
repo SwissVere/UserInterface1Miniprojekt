@@ -9,6 +9,7 @@ import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -44,9 +45,12 @@ import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
 import sun.security.action.GetLongAction;
+
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+
 import javax.swing.JList;
+
 import java.awt.Panel;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -158,7 +162,8 @@ public class LoanDetailView {
 			}
 		});
 		frame.setTitle("Loan Detail View");
-		frame.setBounds(100, 100, 599, 479);
+		frame.setMinimumSize(new Dimension(600, 480));
+		frame.setBounds(100, 100, 600, 480);
 		frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 434, 0 };
