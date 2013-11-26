@@ -1,6 +1,8 @@
 package view;
 
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -10,7 +12,7 @@ import domain.Customer;
 import domain.Library;
 import domain.Loan;
 
-public class LoanDetailTableModel extends AbstractTableModel {
+public class LoanDetailTableModel extends AbstractTableModel{
 
 	private Library lib;
 	private Customer customer;
@@ -71,5 +73,4 @@ public class LoanDetailTableModel extends AbstractTableModel {
 	public String getColumnName(int column) {
 		return columnNames[column];
 	}
-
 }

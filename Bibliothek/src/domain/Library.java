@@ -22,7 +22,7 @@ public class Library extends Observable implements Observer {
 	public Loan createAndAddLoan(Customer customer, Copy copy) {
 		if (!isCopyLent(copy)) {
 			Loan l = new Loan(customer, copy);
-			// l.addObserver(this);
+			l.addObserver(this);
 			loans.add(l);
 			notifyAllObservers();
 			return l;
@@ -57,7 +57,7 @@ public class Library extends Observable implements Observer {
 	public void replaceOrAddLoan(Loan loan) {
 		loans.remove(loan);
 		loans.add(loan);
-		// loan.addObserver(this);
+		loan.addObserver(this);
 		notifyAllObservers();
 	}
 

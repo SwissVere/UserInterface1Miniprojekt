@@ -14,6 +14,8 @@ import java.awt.Insets;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
 import java.awt.Color;
@@ -24,6 +26,8 @@ import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.RowFilter;
+
+import com.sun.org.apache.regexp.internal.REUtil;
 
 import application.LibraryApp;
 import domain.Library;
@@ -183,7 +187,25 @@ public class PanLoan extends JPanel {
 		gbc_btnCreateNewLoan.gridy = 0;
 		panLoansAdministration.add(btnCreateNewLoan, gbc_btnCreateNewLoan);
 				
-		tableLoanInventory = new JTable();
+		
+		final TableCellRenderer buttonRenderer = new ReturnLoanButton();
+		tableLoanInventory = new JTable() {
+		    public TableCellRenderer getCellRenderer(int row, int column) {
+		        if ((column == 4)) {
+		            return buttonRenderer;
+		        }
+		        // else...
+		        return super.getCellRenderer(row, column);
+		    }
+		    @Override
+		    public TableCellEditor getCellEditor(int arg0, int arg1) {
+		    	 if ((arg1 == 4)) {
+			            return (TableCellEditor)buttonRenderer;
+			        }
+			        // else...
+			        return super.getCellEditor(arg0, arg1);
+		    };
+		};
 		tableLoanInventory.setModel(new LoanTableModel(lib));
 		tableLoanInventory.addMouseListener(new MouseAdapter() {
 			@Override

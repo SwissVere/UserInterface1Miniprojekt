@@ -3,6 +3,8 @@ package view;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JButton;
 import javax.swing.table.AbstractTableModel;
@@ -12,12 +14,13 @@ import domain.Copy;
 import domain.Library;
 import domain.Loan;
 
-public class LoanTableModel extends AbstractTableModel {
+public class LoanTableModel extends AbstractTableModel implements Observer{
 
 	private Library lib;
 
 	public LoanTableModel(Library lib) {
 		this.lib = lib;
+		lib.addObserver(this);
 	}
 
 	private String[] columnNames = new String[] {
@@ -26,7 +29,7 @@ public class LoanTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 3924577490865829762L;
 	Class[] columnTypes = new Class[] {
-		String.class, String.class, String.class, String.class, ReturnLoanButton.class
+		String.class, String.class, String.class, String.class, Object.class
 	};
 	@Override
 	public Class<?> getColumnClass(int columnIndex) {
@@ -35,6 +38,7 @@ public class LoanTableModel extends AbstractTableModel {
 	boolean[] columnEditables = new boolean[] {
 		false, false, false, false, true
 	};
+	@Override
 	public boolean isCellEditable(int row, int column) {
 		return columnEditables[column];
 	}
@@ -70,7 +74,7 @@ public class LoanTableModel extends AbstractTableModel {
 			return (String)loan.getCustomer().getFirstname() + " " + loan.getCustomer().getLastname();
 			
 		default:
-			return new ReturnLoanButton(loan);
+			return loan;
 		}
 	}
 	
@@ -78,5 +82,9 @@ public class LoanTableModel extends AbstractTableModel {
 	public String getColumnName(int column) {
 		return columnNames[column];
 	}
-
+	
+	@Override
+	public void update(Observable o, Object arg) {
+		fireTableDataChanged();		
+	}
 }
