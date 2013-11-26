@@ -129,7 +129,7 @@ public class Library extends Observable implements Observer {
 		}
 		return lentCopies;
 	}
-	
+
 	public List<Loan> getLentCustomerLoans(Customer customer) {
 		List<Loan> lentCopies = new ArrayList<Loan>();
 		for (Loan l : loans) {
@@ -169,6 +169,15 @@ public class Library extends Observable implements Observer {
 
 	public List<Copy> getCopies() {
 		return copies;
+	}
+
+	public Copy getCopyPerId(long id) {
+		for (Copy c : copies) {
+			if (c.getInventoryNumber() == id) {
+				return c;
+			}
+		}
+		return null;
 	}
 
 	public List<Loan> getLoans() {
