@@ -26,7 +26,7 @@ public class LoanTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 3924577490865829762L;
 	Class[] columnTypes = new Class[] {
-		String.class, String.class, String.class, String.class, ReturnLoanButton.class
+		String.class, String.class, String.class, String.class, Object.class
 	};
 	@Override
 	public Class<?> getColumnClass(int columnIndex) {
@@ -35,6 +35,7 @@ public class LoanTableModel extends AbstractTableModel {
 	boolean[] columnEditables = new boolean[] {
 		false, false, false, false, true
 	};
+	@Override
 	public boolean isCellEditable(int row, int column) {
 		return columnEditables[column];
 	}
@@ -70,7 +71,7 @@ public class LoanTableModel extends AbstractTableModel {
 			return (String)loan.getCustomer().getFirstname() + " " + loan.getCustomer().getLastname();
 			
 		default:
-			return new ReturnLoanButton(loan);
+			return loan;
 		}
 	}
 	
