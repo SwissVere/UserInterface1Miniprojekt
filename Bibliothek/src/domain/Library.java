@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-public class Library extends Observable implements Observer{
+public class Library extends Observable implements Observer {
 
 	private List<Copy> copies;
 	private List<Customer> customers;
@@ -22,7 +22,7 @@ public class Library extends Observable implements Observer{
 	public Loan createAndAddLoan(Customer customer, Copy copy) {
 		if (!isCopyLent(copy)) {
 			Loan l = new Loan(customer, copy);
-			//l.addObserver(this);
+			// l.addObserver(this);
 			loans.add(l);
 			notifyAllObservers();
 			return l;
@@ -47,20 +47,20 @@ public class Library extends Observable implements Observer{
 
 	public void replaceOrAddBook(Book book) {
 		Book b = findByBookTitle(book.getName());
-		if(b != null)
+		if (b != null)
 			books.remove(b);
 		books.add(book);
 		book.addObserver(this);
 		notifyAllObservers();
 	}
-	
+
 	public void replaceOrAddLoan(Loan loan) {
 		loans.remove(loan);
 		loans.add(loan);
-		//loan.addObserver(this);
+		// loan.addObserver(this);
 		notifyAllObservers();
 	}
-	
+
 	public Copy createAndAddCopy(Book title) {
 		Copy c = new Copy(title);
 		copies.add(c);
@@ -77,14 +77,15 @@ public class Library extends Observable implements Observer{
 		return null;
 	}
 
-	
 	public Loan findLoanByBookTitleAndCustomerId(String title, String customerId) {
-		for(Loan l : loans) {
-			if(l.getCopy().getTitle().getName().equals(title) && l.getCustomer().getId().equals(customerId))
+		for (Loan l : loans) {
+			if (l.getCopy().getTitle().getName().equals(title)
+					&& l.getCustomer().getId().equals(customerId))
 				return l;
 		}
 		return null;
 	}
+
 	public boolean isCopyLent(Copy copy) {
 		for (Loan l : loans) {
 			if (l.getCopy().equals(copy) && l.isLent()) {
@@ -104,7 +105,7 @@ public class Library extends Observable implements Observer{
 
 		return res;
 	}
-	
+
 	public void deleteCopyOfBook(Copy copy) {
 		copies.remove(copy);
 	}
@@ -129,20 +130,30 @@ public class Library extends Observable implements Observer{
 		return lentCopies;
 	}
 	
+	public List<Loan> getLentCustomerLoans(Customer customer) {
+		List<Loan> lentCopies = new ArrayList<Loan>();
+		for (Loan l : loans) {
+			if (l.getCustomer().equals(customer) && l.isLent()) {
+				lentCopies.add(l);
+			}
+		}
+		return lentCopies;
+	}
+
 	public List<Loan> getOverdueLoans() {
 		List<Loan> overdueLoans = new ArrayList<Loan>();
-		for ( Loan l : getLoans() ) {
+		for (Loan l : getLoans()) {
 			if (l.isOverdue())
 				overdueLoans.add(l);
 		}
 		return overdueLoans;
 	}
-	
-	public List<Copy> getAvailableCopies(){
+
+	public List<Copy> getAvailableCopies() {
 		return getCopies(false);
 	}
-	
-	public List<Copy> getLentOutBooks(){
+
+	public List<Copy> getLentOutBooks() {
 		return getCopies(true);
 	}
 
@@ -163,11 +174,11 @@ public class Library extends Observable implements Observer{
 	public List<Loan> getLoans() {
 		return loans;
 	}
-	
+
 	public List<Loan> getLentLoans() {
 		List<Loan> lentLoans = new ArrayList<Loan>();
-		for(Loan l : loans) {
-			if(l.isLent())
+		for (Loan l : loans) {
+			if (l.isLent())
 				lentLoans.add(l);
 		}
 		return lentLoans;
@@ -182,13 +193,13 @@ public class Library extends Observable implements Observer{
 	}
 
 	public Customer getCustomerPerID(String id) {
-		for(Customer c : customers) {
-			if(c.getId().equals(id))
+		for (Customer c : customers) {
+			if (c.getId().equals(id))
 				return c;
 		}
 		return null;
 	}
-	
+
 	@Override
 	public void update(Observable o, Object arg) {
 		notifyAllObservers();
