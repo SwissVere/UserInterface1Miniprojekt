@@ -168,22 +168,22 @@ public class LoanDetailView {
 				Double.MIN_VALUE };
 		frame.getContentPane().setLayout(gridBagLayout);
 
-		JPanel panel_1 = new JPanel();
-		GridBagConstraints gbc_panel_1 = new GridBagConstraints();
-		gbc_panel_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_panel_1.insets = new Insets(0, 0, 5, 0);
-		gbc_panel_1.gridx = 0;
-		gbc_panel_1.gridy = 0;
-		frame.getContentPane().add(panel_1, gbc_panel_1);
-		panel_1.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)),
+		JPanel panCustomerSelection = new JPanel();
+		GridBagConstraints gbc_panCustomerSelection = new GridBagConstraints();
+		gbc_panCustomerSelection.fill = GridBagConstraints.HORIZONTAL;
+		gbc_panCustomerSelection.insets = new Insets(0, 0, 5, 0);
+		gbc_panCustomerSelection.gridx = 0;
+		gbc_panCustomerSelection.gridy = 0;
+		frame.getContentPane().add(panCustomerSelection, gbc_panCustomerSelection);
+		panCustomerSelection.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)),
 				"Customer Selection", TitledBorder.LEADING, TitledBorder.TOP,
 				null, null));
-		GridBagLayout gbl_panel_1 = new GridBagLayout();
-		gbl_panel_1.columnWidths = new int[] { 0, 0, 0 };
-		gbl_panel_1.rowHeights = new int[] { 0, 0, 0 };
-		gbl_panel_1.columnWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
-		gbl_panel_1.rowWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
-		panel_1.setLayout(gbl_panel_1);
+		GridBagLayout gbl_panCustomerSelection = new GridBagLayout();
+		gbl_panCustomerSelection.columnWidths = new int[] { 0, 0, 0 };
+		gbl_panCustomerSelection.rowHeights = new int[] { 0, 0, 0 };
+		gbl_panCustomerSelection.columnWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
+		gbl_panCustomerSelection.rowWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
+		panCustomerSelection.setLayout(gbl_panCustomerSelection);
 
 		JLabel lblCustomerId = new JLabel("Customer ID");
 		lblCustomerId.setHorizontalAlignment(SwingConstants.LEFT);
@@ -192,7 +192,7 @@ public class LoanDetailView {
 		gbc_lblCustomerId.insets = new Insets(0, 0, 5, 5);
 		gbc_lblCustomerId.gridx = 0;
 		gbc_lblCustomerId.gridy = 0;
-		panel_1.add(lblCustomerId, gbc_lblCustomerId);
+		panCustomerSelection.add(lblCustomerId, gbc_lblCustomerId);
 
 		edCustomerID = new JTextField();
 		edCustomerID.addFocusListener(new FocusAdapter() {
@@ -213,7 +213,7 @@ public class LoanDetailView {
 		gbc_edCustomerID.fill = GridBagConstraints.HORIZONTAL;
 		gbc_edCustomerID.gridx = 1;
 		gbc_edCustomerID.gridy = 0;
-		panel_1.add(edCustomerID, gbc_edCustomerID);
+		panCustomerSelection.add(edCustomerID, gbc_edCustomerID);
 		edCustomerID.setColumns(10);
 
 		JLabel lblNewLabel = new JLabel("Customer");
@@ -223,7 +223,7 @@ public class LoanDetailView {
 		gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
 		gbc_lblNewLabel.gridx = 0;
 		gbc_lblNewLabel.gridy = 1;
-		panel_1.add(lblNewLabel, gbc_lblNewLabel);
+		panCustomerSelection.add(lblNewLabel, gbc_lblNewLabel);
 
 		cbCustomers = new JComboBox();
 		cbCustomers.addItemListener(new ItemListener() {
@@ -242,28 +242,28 @@ public class LoanDetailView {
 		gbc_cbCustomers.fill = GridBagConstraints.HORIZONTAL;
 		gbc_cbCustomers.gridx = 1;
 		gbc_cbCustomers.gridy = 1;
-		panel_1.add(cbCustomers, gbc_cbCustomers);
+		panCustomerSelection.add(cbCustomers, gbc_cbCustomers);
 		List<Customer> customers = library.getCustomers();
 		cbCustomers.setModel(new DefaultComboBoxModel<Customer>(customers
 				.toArray(new Customer[customers.size()])));
 
-		JPanel panel_2 = new JPanel();
-		GridBagConstraints gbc_panel_2 = new GridBagConstraints();
-		gbc_panel_2.fill = GridBagConstraints.HORIZONTAL;
-		gbc_panel_2.insets = new Insets(0, 0, 5, 0);
-		gbc_panel_2.gridx = 0;
-		gbc_panel_2.gridy = 1;
-		frame.getContentPane().add(panel_2, gbc_panel_2);
-		panel_2.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)),
+		JPanel panCopySelection = new JPanel();
+		GridBagConstraints gbc_panCopySelection = new GridBagConstraints();
+		gbc_panCopySelection.fill = GridBagConstraints.HORIZONTAL;
+		gbc_panCopySelection.insets = new Insets(0, 0, 5, 0);
+		gbc_panCopySelection.gridx = 0;
+		gbc_panCopySelection.gridy = 1;
+		frame.getContentPane().add(panCopySelection, gbc_panCopySelection);
+		panCopySelection.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)),
 				"Lend out new copy", TitledBorder.LEADING, TitledBorder.TOP,
 				null, null));
-		GridBagLayout gbl_panel_2 = new GridBagLayout();
-		gbl_panel_2.columnWidths = new int[] { 0, 0, 0, 0 };
-		gbl_panel_2.rowHeights = new int[] { 0, 0, 0, 0 };
-		gbl_panel_2.columnWeights = new double[] { 0.0, 1.0, 0.0,
+		GridBagLayout gbl_panCopySelection = new GridBagLayout();
+		gbl_panCopySelection.columnWidths = new int[] { 0, 0, 0, 0 };
+		gbl_panCopySelection.rowHeights = new int[] { 0, 0, 0, 0 };
+		gbl_panCopySelection.columnWeights = new double[] { 0.0, 1.0, 0.0,
 				Double.MIN_VALUE };
-		gbl_panel_2.rowWeights = new double[] { 0.0, 0.0, 0.0, Double.MIN_VALUE };
-		panel_2.setLayout(gbl_panel_2);
+		gbl_panCopySelection.rowWeights = new double[] { 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		panCopySelection.setLayout(gbl_panCopySelection);
 
 		JLabel lblNewLabel_2 = new JLabel("Copy ID");
 		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
@@ -271,7 +271,7 @@ public class LoanDetailView {
 		gbc_lblNewLabel_2.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel_2.gridx = 0;
 		gbc_lblNewLabel_2.gridy = 0;
-		panel_2.add(lblNewLabel_2, gbc_lblNewLabel_2);
+		panCopySelection.add(lblNewLabel_2, gbc_lblNewLabel_2);
 
 		edCopyID = new JTextField();
 		GridBagConstraints gbc_edCopyID = new GridBagConstraints();
@@ -279,7 +279,7 @@ public class LoanDetailView {
 		gbc_edCopyID.fill = GridBagConstraints.HORIZONTAL;
 		gbc_edCopyID.gridx = 1;
 		gbc_edCopyID.gridy = 0;
-		panel_2.add(edCopyID, gbc_edCopyID);
+		panCopySelection.add(edCopyID, gbc_edCopyID);
 		edCopyID.setColumns(10);
 
 		JButton btnLendCopy = new JButton("Lend Copy");
@@ -287,7 +287,7 @@ public class LoanDetailView {
 		gbc_btnLendCopy.insets = new Insets(0, 0, 5, 0);
 		gbc_btnLendCopy.gridx = 2;
 		gbc_btnLendCopy.gridy = 0;
-		panel_2.add(btnLendCopy, gbc_btnLendCopy);
+		panCopySelection.add(btnLendCopy, gbc_btnLendCopy);
 
 		JLabel lblNewLabel_3 = new JLabel("Back at");
 		GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
@@ -295,14 +295,14 @@ public class LoanDetailView {
 		gbc_lblNewLabel_3.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel_3.gridx = 0;
 		gbc_lblNewLabel_3.gridy = 1;
-		panel_2.add(lblNewLabel_3, gbc_lblNewLabel_3);
+		panCopySelection.add(lblNewLabel_3, gbc_lblNewLabel_3);
 
 		lblReturnDate = new JLabel();
 		GridBagConstraints gbc_lblReturnDate = new GridBagConstraints();
 		gbc_lblReturnDate.insets = new Insets(0, 0, 5, 5);
 		gbc_lblReturnDate.gridx = 1;
 		gbc_lblReturnDate.gridy = 1;
-		panel_2.add(lblReturnDate, gbc_lblReturnDate);
+		panCopySelection.add(lblReturnDate, gbc_lblReturnDate);
 
 		JLabel label = new JLabel("");
 		GridBagConstraints gbc_label = new GridBagConstraints();
@@ -310,7 +310,7 @@ public class LoanDetailView {
 		gbc_label.anchor = GridBagConstraints.WEST;
 		gbc_label.gridx = 0;
 		gbc_label.gridy = 2;
-		panel_2.add(label, gbc_label);
+		panCopySelection.add(label, gbc_label);
 
 		JScrollPane scrollPane = new JScrollPane();
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
