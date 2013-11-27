@@ -59,6 +59,8 @@ import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class LoanDetailView extends Observable {
 
@@ -70,7 +72,7 @@ public class LoanDetailView extends Observable {
 	private JTextField edCopyID;
 	private JComboBox cbCustomers;
 	private JLabel lblReturnDate;
-	private JLabel lblIsAvailable;
+	private JLabel lblStatus;
 	private LoanDetailTableModel loanDetailTableModel;
 	private JButton btnLendCopy;
 
@@ -142,8 +144,12 @@ public class LoanDetailView extends Observable {
 
 		frame.setVisible(true);
 
-		if (edCustomerID != null) {
-			checkChanges(library, library.getCustomerPerID(edCustomerID.getText()));
+		if (!edCustomerID.getText().isEmpty() && !edCopyID.getText().isEmpty()) {
+			checkCustomer(library,
+					library.getCustomerPerID(edCustomerID.getText()),
+					library.getCopyPerId(Long.parseLong(edCopyID.getText())));
+		} else {
+			btnLendCopy.setEnabled(false);
 		}
 	}
 
@@ -160,23 +166,36 @@ public class LoanDetailView extends Observable {
 			}
 		});
 		frame.setTitle("Loan Detail View");
-		frame.setMinimumSize(new Dimension(650, 550));
-		frame.setBounds(100, 100, 650, 550);
+		frame.setMinimumSize(new Dimension(650, 600));
+		frame.setBounds(100, 100, 650, 600);
 		frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 434, 0 };
-		gridBagLayout.rowHeights = new int[] { 96, 0, 274, 0, 0, 0 };
+		gridBagLayout.rowHeights = new int[] { 0, 57, 96, 0, 274, 0, 0, 0 };
 		gridBagLayout.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
-		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 1.0, 0.0, 1.0,
+		gridBagLayout.rowWeights = new double[] { 1.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0,
 				Double.MIN_VALUE };
 		frame.getContentPane().setLayout(gridBagLayout);
+		
+		JPanel panStatus = new JPanel();
+		panStatus.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "Loan Status", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		GridBagConstraints gbc_panStatus = new GridBagConstraints();
+		gbc_panStatus.insets = new Insets(0, 0, 5, 0);
+		gbc_panStatus.fill = GridBagConstraints.BOTH;
+		gbc_panStatus.gridx = 0;
+		gbc_panStatus.gridy = 1;
+		frame.getContentPane().add(panStatus, gbc_panStatus);
+		
+		lblStatus = new JLabel("");
+		lblStatus.setText("Customer or copy aren't chosen");
+		panStatus.add(lblStatus);
 
 		JPanel panCustomerSelection = new JPanel();
 		GridBagConstraints gbc_panCustomerSelection = new GridBagConstraints();
 		gbc_panCustomerSelection.fill = GridBagConstraints.HORIZONTAL;
 		gbc_panCustomerSelection.insets = new Insets(0, 0, 5, 0);
 		gbc_panCustomerSelection.gridx = 0;
-		gbc_panCustomerSelection.gridy = 0;
+		gbc_panCustomerSelection.gridy = 2;
 		frame.getContentPane().add(panCustomerSelection,
 				gbc_panCustomerSelection);
 		panCustomerSelection.setBorder(new TitledBorder(new LineBorder(
@@ -213,8 +232,13 @@ public class LoanDetailView extends Observable {
 				table.setModel(loanDetailTableModel);
 				loanDetailTableModel.fireTableDataChanged();
 
-				if (edCustomerID != null) {
-					checkChanges(library, library.getCustomerPerID(edCustomerID.getText()));
+				if (!edCustomerID.getText().isEmpty()
+						&& !edCopyID.getText().isEmpty()) {
+					checkCustomer(library, library
+							.getCustomerPerID(edCustomerID.getText()), library
+							.getCopyPerId(Long.parseLong(edCopyID.getText())));
+				} else {
+					btnLendCopy.setEnabled(false);
 				}
 			}
 		});
@@ -247,8 +271,13 @@ public class LoanDetailView extends Observable {
 				table.setModel(loanDetailTableModel);
 				loanDetailTableModel.fireTableDataChanged();
 
-				if (edCustomerID != null) {
-					checkChanges(library, library.getCustomerPerID(edCustomerID.getText()));
+				if (!edCustomerID.getText().isEmpty()
+						&& !edCopyID.getText().isEmpty()) {
+					checkCustomer(library, library
+							.getCustomerPerID(edCustomerID.getText()), library
+							.getCopyPerId(Long.parseLong(edCopyID.getText())));
+				} else {
+					btnLendCopy.setEnabled(false);
 				}
 			}
 		});
@@ -266,7 +295,7 @@ public class LoanDetailView extends Observable {
 		gbc_panCopySelection.fill = GridBagConstraints.HORIZONTAL;
 		gbc_panCopySelection.insets = new Insets(0, 0, 5, 0);
 		gbc_panCopySelection.gridx = 0;
-		gbc_panCopySelection.gridy = 1;
+		gbc_panCopySelection.gridy = 3;
 		frame.getContentPane().add(panCopySelection, gbc_panCopySelection);
 		panCopySelection.setBorder(new TitledBorder(new LineBorder(new Color(0,
 				0, 0)), "Lend out new copy", TitledBorder.LEADING,
@@ -280,21 +309,6 @@ public class LoanDetailView extends Observable {
 				Double.MIN_VALUE };
 		panCopySelection.setLayout(gbl_panCopySelection);
 
-		JLabel lblAvailable = new JLabel("Available");
-		GridBagConstraints gbc_lblAvailable = new GridBagConstraints();
-		gbc_lblAvailable.insets = new Insets(0, 0, 5, 5);
-		gbc_lblAvailable.gridx = 0;
-		gbc_lblAvailable.gridy = 0;
-		panCopySelection.add(lblAvailable, gbc_lblAvailable);
-
-		lblIsAvailable = new JLabel("");
-		lblIsAvailable.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_lblIsAvailable = new GridBagConstraints();
-		gbc_lblIsAvailable.insets = new Insets(0, 0, 5, 5);
-		gbc_lblIsAvailable.gridx = 1;
-		gbc_lblIsAvailable.gridy = 0;
-		panCopySelection.add(lblIsAvailable, gbc_lblIsAvailable);
-
 		JLabel lblCopyId = new JLabel("Copy ID");
 		GridBagConstraints gbc_lblCopyId = new GridBagConstraints();
 		gbc_lblCopyId.anchor = GridBagConstraints.EAST;
@@ -304,6 +318,19 @@ public class LoanDetailView extends Observable {
 		panCopySelection.add(lblCopyId, gbc_lblCopyId);
 
 		edCopyID = new JTextField();
+		edCopyID.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+				if (!edCustomerID.getText().isEmpty()
+						&& !edCopyID.getText().isEmpty()) {
+					checkCustomer(library, library
+							.getCustomerPerID(edCustomerID.getText()), library
+							.getCopyPerId(Long.parseLong(edCopyID.getText())));
+				} else {
+					btnLendCopy.setEnabled(false);
+				}
+			}
+		});
 		GridBagConstraints gbc_edCopyID = new GridBagConstraints();
 		gbc_edCopyID.insets = new Insets(0, 0, 5, 5);
 		gbc_edCopyID.fill = GridBagConstraints.HORIZONTAL;
@@ -321,8 +348,13 @@ public class LoanDetailView extends Observable {
 
 				loanDetailTableModel.fireTableDataChanged();
 
-				if (edCustomerID != null) {
-					checkChanges(library, library.getCustomerPerID(edCustomerID.getText()));
+				if (!edCustomerID.getText().isEmpty()
+						&& !edCopyID.getText().isEmpty()) {
+					checkCustomer(library, library
+							.getCustomerPerID(edCustomerID.getText()), library
+							.getCopyPerId(Long.parseLong(edCopyID.getText())));
+				} else {
+					btnLendCopy.setEnabled(false);
 				}
 			}
 		});
@@ -353,7 +385,7 @@ public class LoanDetailView extends Observable {
 		gbc_scrollPane.insets = new Insets(0, 0, 5, 0);
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane.gridx = 0;
-		gbc_scrollPane.gridy = 2;
+		gbc_scrollPane.gridy = 4;
 		frame.getContentPane().add(scrollPane, gbc_scrollPane);
 
 		table = new JTable();
@@ -368,29 +400,45 @@ public class LoanDetailView extends Observable {
 
 		JPanel panControl = new PanControl(library, null, loan, frame);
 		GridBagConstraints gbc_panControl = new GridBagConstraints();
+		gbc_panControl.insets = new Insets(0, 0, 5, 0);
 		gbc_panControl.fill = GridBagConstraints.BOTH;
 		gbc_panControl.gridx = 0;
-		gbc_panControl.gridy = 3;
+		gbc_panControl.gridy = 5;
 		frame.getContentPane().add(panControl, gbc_panControl);
 	}
 
-	private void checkChanges(Library lib, Customer customer) {
+	private void checkCustomer(Library lib, Customer customer, Copy copy) {
 		boolean oneLoanOverdue = false;
-		List<Loan> loans = lib.getLentCustomerLoans(customer);
-		
-		for(Loan l: loans){
-			if(l.isOverdue()){
+		boolean copyLent = false;
+		List<Loan> customerLoans = lib.getLentCustomerLoans(customer);
+		List<Loan> lentLoans = lib.getLentLoans();
+
+		for (Loan l : lentLoans) {
+			if (l.getCopy().equals(copy)) {
+				copyLent = true;
+			}
+		}
+
+		for (Loan l : customerLoans) {
+			if (l.isOverdue()) {
 				oneLoanOverdue = true;
 			}
 		}
-		
-		if (lib.getLentCustomerLoans(customer).size() >= 3 || oneLoanOverdue) {
-			lblIsAvailable.setText("More Loans aren't possible!");
+
+		if (lib.getLentCustomerLoans(customer).size() >= 3 || oneLoanOverdue
+				|| copyLent || copyLent) {
 			btnLendCopy.setEnabled(false);
+			if (lib.getLentCustomerLoans(customer).size() >= 3) {
+				lblStatus.setText("Cannot lend more than 3 books!");
+			} else if (oneLoanOverdue) {
+				lblStatus.setText("One ore more loan is overdue!");
+			} else {
+				lblStatus.setText("Copy already Lent!");
+			}
+
 		} else {
-			lblIsAvailable.setText("More Loans possible");
 			btnLendCopy.setEnabled(true);
+			lblStatus.setText("Loan is possible");
 		}
 	}
-
 }
