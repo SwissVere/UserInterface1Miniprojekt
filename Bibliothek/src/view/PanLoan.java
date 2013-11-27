@@ -52,7 +52,7 @@ public class PanLoan extends JPanel {
 	private JTable tableLoanInventory;
 	private JCheckBox cbShowOverdueLoans;
 	private Library lib;
-
+	private JLabel lblAmountLoansResult;
 	private TableRowSorter<LoanTableModel> sorter;
 	private JButton btnShowSelectedLoans;
 	
@@ -80,7 +80,7 @@ public class PanLoan extends JPanel {
 		gbc_lblAmountLoans.gridy = 0;
 		panLoanStatistics.add(lblAmountLoans, gbc_lblAmountLoans);
 		
-		JLabel lblAmountLoansResult = new JLabel(lib.getLoans().size() + "");
+		lblAmountLoansResult = new JLabel(lib.getLoans().size() + "");
 		GridBagConstraints gbc_lblAmountLoansResult = new GridBagConstraints();
 		gbc_lblAmountLoansResult.insets = new Insets(0, 0, 0, 5);
 		gbc_lblAmountLoansResult.gridx = 1;
@@ -235,6 +235,7 @@ public class PanLoan extends JPanel {
 	
 	public void update(Observable arg0, Object arg1) {
 		tableLoanInventory.updateUI();
+		lblAmountLoansResult.setText(lib.getLoans().size() + "");
 	}
 	
 

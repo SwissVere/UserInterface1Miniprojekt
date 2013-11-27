@@ -143,7 +143,7 @@ public class LoanDetailView extends Observable {
 		frame.setVisible(true);
 
 		if (edCustomerID != null) {
-			loanCheck(library, library.getCustomerPerID(edCustomerID.getText()));
+			checkChanges(library, library.getCustomerPerID(edCustomerID.getText()));
 		}
 	}
 
@@ -214,7 +214,7 @@ public class LoanDetailView extends Observable {
 				loanDetailTableModel.fireTableDataChanged();
 
 				if (edCustomerID != null) {
-					loanCheck(library, library.getCustomerPerID(edCustomerID.getText()));
+					checkChanges(library, library.getCustomerPerID(edCustomerID.getText()));
 				}
 			}
 		});
@@ -248,7 +248,7 @@ public class LoanDetailView extends Observable {
 				loanDetailTableModel.fireTableDataChanged();
 
 				if (edCustomerID != null) {
-					loanCheck(library, library.getCustomerPerID(edCustomerID.getText()));
+					checkChanges(library, library.getCustomerPerID(edCustomerID.getText()));
 				}
 			}
 		});
@@ -322,7 +322,7 @@ public class LoanDetailView extends Observable {
 				loanDetailTableModel.fireTableDataChanged();
 
 				if (edCustomerID != null) {
-					loanCheck(library, library.getCustomerPerID(edCustomerID.getText()));
+					checkChanges(library, library.getCustomerPerID(edCustomerID.getText()));
 				}
 			}
 		});
@@ -382,7 +382,7 @@ public class LoanDetailView extends Observable {
 		frame.getContentPane().add(panControl, gbc_panControl);
 	}
 
-	private void loanCheck(Library lib, Customer customer) {
+	private void checkChanges(Library lib, Customer customer) {
 		boolean oneLoanOverdue = false;
 		List<Loan> loans = lib.getLentCustomerLoans(customer);
 		for(Loan l: loans){
