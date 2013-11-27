@@ -125,9 +125,11 @@ public class LoanDetailView extends Observable {
 		this.loan = loan;
 		initialize();
 
-		edCustomerID.setText(loan.getCustomer().getId());
-		cbCustomers.setSelectedItem(loan.getCustomer());
-		edCopyID.setText("" + loan.getCopy().getInventoryNumber());
+		if (loan.getCustomer() != null || loan.getCopy() != null) {
+			edCustomerID.setText(loan.getCustomer().getId());
+			cbCustomers.setSelectedItem(loan.getCustomer());
+			edCopyID.setText("" + loan.getCopy().getInventoryNumber());
+		}
 
 		if (loan.getReturnDate() == null) {
 			GregorianCalendar returnDate = (GregorianCalendar) loan
@@ -137,24 +139,8 @@ public class LoanDetailView extends Observable {
 			lblReturnDate.setText(loan.getFormattedDate(returnDate));
 		} else
 			lblReturnDate.setText(loan.getFormattedDate(loan.getReturnDate()));
-
-		if (lib.getLentCustomerLoans(loan.getCustomer()).size() < 3){
-			lblIsAvailable.setText("More Loans possible");
-			btnLendCopy.setEnabled(true);
-		} else {
-			lblIsAvailable.setText("More Loans aren't possible!");
-			btnLendCopy.setEnabled(false);
-		}
 		
-		frame.setVisible(true);
-	}
-
-	/**
-	 * For new loans
-	 */
-	public LoanDetailView(Library lib) {
-		this.library = lib;
-		initialize();
+		loanCheck(lib);
 
 		frame.setVisible(true);
 	}
@@ -189,15 +175,18 @@ public class LoanDetailView extends Observable {
 		gbc_panCustomerSelection.insets = new Insets(0, 0, 5, 0);
 		gbc_panCustomerSelection.gridx = 0;
 		gbc_panCustomerSelection.gridy = 0;
-		frame.getContentPane().add(panCustomerSelection, gbc_panCustomerSelection);
-		panCustomerSelection.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)),
-				"Customer Selection", TitledBorder.LEADING, TitledBorder.TOP,
-				null, null));
+		frame.getContentPane().add(panCustomerSelection,
+				gbc_panCustomerSelection);
+		panCustomerSelection.setBorder(new TitledBorder(new LineBorder(
+				new Color(0, 0, 0)), "Customer Selection",
+				TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagLayout gbl_panCustomerSelection = new GridBagLayout();
 		gbl_panCustomerSelection.columnWidths = new int[] { 0, 0, 0 };
 		gbl_panCustomerSelection.rowHeights = new int[] { 0, 0, 0 };
-		gbl_panCustomerSelection.columnWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
-		gbl_panCustomerSelection.rowWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
+		gbl_panCustomerSelection.columnWeights = new double[] { 0.0, 1.0,
+				Double.MIN_VALUE };
+		gbl_panCustomerSelection.rowWeights = new double[] { 0.0, 0.0,
+				Double.MIN_VALUE };
 		panCustomerSelection.setLayout(gbl_panCustomerSelection);
 
 		JLabel lblCustomerId = new JLabel("Customer ID");
@@ -214,10 +203,10 @@ public class LoanDetailView extends Observable {
 			@Override
 			public void focusLost(FocusEvent arg0) {
 				Customer cs = library.getCustomerPerID(edCustomerID.getText());
-				if(cs == null)
+				if (cs == null)
 					return;
 				cbCustomers.setSelectedItem(cs);
-				
+
 				loanDetailTableModel = new LoanDetailTableModel(library, cs);
 				table.setModel(loanDetailTableModel);
 				loanDetailTableModel.fireTableDataChanged();
@@ -243,11 +232,11 @@ public class LoanDetailView extends Observable {
 		cbCustomers = new JComboBox();
 		cbCustomers.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent arg0) {
-				Customer cs = (Customer)cbCustomers.getSelectedItem();
-				if(cs == null)
+				Customer cs = (Customer) cbCustomers.getSelectedItem();
+				if (cs == null)
 					return;
 				edCustomerID.setText(cs.getId());
-				
+
 				loanDetailTableModel = new LoanDetailTableModel(library, cs);
 				table.setModel(loanDetailTableModel);
 				loanDetailTableModel.fireTableDataChanged();
@@ -269,24 +258,25 @@ public class LoanDetailView extends Observable {
 		gbc_panCopySelection.gridx = 0;
 		gbc_panCopySelection.gridy = 1;
 		frame.getContentPane().add(panCopySelection, gbc_panCopySelection);
-		panCopySelection.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)),
-				"Lend out new copy", TitledBorder.LEADING, TitledBorder.TOP,
-				null, null));
+		panCopySelection.setBorder(new TitledBorder(new LineBorder(new Color(0,
+				0, 0)), "Lend out new copy", TitledBorder.LEADING,
+				TitledBorder.TOP, null, null));
 		GridBagLayout gbl_panCopySelection = new GridBagLayout();
 		gbl_panCopySelection.columnWidths = new int[] { 0, 0, 0, 0 };
 		gbl_panCopySelection.rowHeights = new int[] { 0, 0, 0, 0, 0 };
 		gbl_panCopySelection.columnWeights = new double[] { 0.0, 1.0, 0.0,
 				Double.MIN_VALUE };
-		gbl_panCopySelection.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		gbl_panCopySelection.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0,
+				Double.MIN_VALUE };
 		panCopySelection.setLayout(gbl_panCopySelection);
-		
+
 		JLabel lblAvailable = new JLabel("Available");
 		GridBagConstraints gbc_lblAvailable = new GridBagConstraints();
 		gbc_lblAvailable.insets = new Insets(0, 0, 5, 5);
 		gbc_lblAvailable.gridx = 0;
 		gbc_lblAvailable.gridy = 0;
 		panCopySelection.add(lblAvailable, gbc_lblAvailable);
-		
+
 		lblIsAvailable = new JLabel("");
 		GridBagConstraints gbc_lblIsAvailable = new GridBagConstraints();
 		gbc_lblIsAvailable.insets = new Insets(0, 0, 5, 5);
@@ -314,7 +304,13 @@ public class LoanDetailView extends Observable {
 		btnLendCopy = new JButton("Lend Copy");
 		btnLendCopy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				library.createAndAddLoan(library.getCustomerPerID(edCustomerID.getText()), library.getCopyPerId(Long.parseLong(edCopyID.getText())));
+				library.createAndAddLoan(library.getCustomerPerID(edCustomerID
+						.getText()), library.getCopyPerId(Long
+						.parseLong(edCopyID.getText())));
+				
+				loanDetailTableModel.fireTableDataChanged();
+
+				loanCheck(library);
 			}
 		});
 		GridBagConstraints gbc_btnLendCopy = new GridBagConstraints();
@@ -355,19 +351,33 @@ public class LoanDetailView extends Observable {
 		frame.getContentPane().add(scrollPane, gbc_scrollPane);
 
 		table = new JTable();
-		if(loan == null)
-			loanDetailTableModel = new LoanDetailTableModel(library, (Customer)cbCustomers.getSelectedItem());
+		if (loan == null)
+			loanDetailTableModel = new LoanDetailTableModel(library,
+					(Customer) cbCustomers.getSelectedItem());
 		else
-			loanDetailTableModel = new LoanDetailTableModel(library, loan.getCustomer());
+			loanDetailTableModel = new LoanDetailTableModel(library,
+					loan.getCustomer());
 		table.setModel(loanDetailTableModel);
 		scrollPane.setViewportView(table);
-		
+
 		JPanel panControl = new PanControl(library, null, loan, frame);
 		GridBagConstraints gbc_panControl = new GridBagConstraints();
 		gbc_panControl.fill = GridBagConstraints.BOTH;
 		gbc_panControl.gridx = 0;
 		gbc_panControl.gridy = 3;
 		frame.getContentPane().add(panControl, gbc_panControl);
+	}
+	
+	private void loanCheck(Library lib){
+		if (lib.getLentCustomerLoans(loan.getCustomer()).size() < 3) {
+			lblIsAvailable.setText("More Loans possible");
+			lblIsAvailable.setBackground(Color.GREEN);
+			btnLendCopy.setEnabled(true);
+		} else {
+			lblIsAvailable.setText("More Loans aren't possible!");
+			lblIsAvailable.setBackground(Color.RED);
+			btnLendCopy.setEnabled(false);
+		}
 	}
 
 }
