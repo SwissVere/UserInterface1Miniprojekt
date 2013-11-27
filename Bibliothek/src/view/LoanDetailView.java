@@ -139,10 +139,12 @@ public class LoanDetailView extends Observable {
 			lblReturnDate.setText(loan.getFormattedDate(returnDate));
 		} else
 			lblReturnDate.setText(loan.getFormattedDate(loan.getReturnDate()));
-		
-		loanCheck(lib);
 
 		frame.setVisible(true);
+
+		if (edCustomerID != null) {
+			loanCheck(library, library.getCustomerPerID(edCustomerID.getText()));
+		}
 	}
 
 	/**
@@ -210,6 +212,10 @@ public class LoanDetailView extends Observable {
 				loanDetailTableModel = new LoanDetailTableModel(library, cs);
 				table.setModel(loanDetailTableModel);
 				loanDetailTableModel.fireTableDataChanged();
+
+				if (edCustomerID != null) {
+					loanCheck(library, library.getCustomerPerID(edCustomerID.getText()));
+				}
 			}
 		});
 		GridBagConstraints gbc_edCustomerID = new GridBagConstraints();
@@ -240,6 +246,10 @@ public class LoanDetailView extends Observable {
 				loanDetailTableModel = new LoanDetailTableModel(library, cs);
 				table.setModel(loanDetailTableModel);
 				loanDetailTableModel.fireTableDataChanged();
+
+				if (edCustomerID != null) {
+					loanCheck(library, library.getCustomerPerID(edCustomerID.getText()));
+				}
 			}
 		});
 		GridBagConstraints gbc_cbCustomers = new GridBagConstraints();
@@ -307,10 +317,12 @@ public class LoanDetailView extends Observable {
 				library.createAndAddLoan(library.getCustomerPerID(edCustomerID
 						.getText()), library.getCopyPerId(Long
 						.parseLong(edCopyID.getText())));
-				
+
 				loanDetailTableModel.fireTableDataChanged();
 
-				loanCheck(library);
+				if (edCustomerID != null) {
+					loanCheck(library, library.getCustomerPerID(edCustomerID.getText()));
+				}
 			}
 		});
 		GridBagConstraints gbc_btnLendCopy = new GridBagConstraints();
@@ -367,15 +379,13 @@ public class LoanDetailView extends Observable {
 		gbc_panControl.gridy = 3;
 		frame.getContentPane().add(panControl, gbc_panControl);
 	}
-	
-	private void loanCheck(Library lib){
-		if (lib.getLentCustomerLoans(loan.getCustomer()).size() < 3) {
+
+	private void loanCheck(Library lib, Customer customer) {
+		if (lib.getLentCustomerLoans(customer).size() < 3) {
 			lblIsAvailable.setText("More Loans possible");
-			lblIsAvailable.setBackground(Color.GREEN);
 			btnLendCopy.setEnabled(true);
 		} else {
 			lblIsAvailable.setText("More Loans aren't possible!");
-			lblIsAvailable.setBackground(Color.RED);
 			btnLendCopy.setEnabled(false);
 		}
 	}
