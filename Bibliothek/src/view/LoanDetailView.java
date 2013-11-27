@@ -165,7 +165,7 @@ public class LoanDetailView extends Observable {
 		frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 434, 0 };
-		gridBagLayout.rowHeights = new int[] { 0, 0, 274, 0, 0, 0 };
+		gridBagLayout.rowHeights = new int[] { 91, 0, 274, 0, 0, 0 };
 		gridBagLayout.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
 		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 1.0, 0.0, 1.0,
 				Double.MIN_VALUE };
@@ -288,6 +288,7 @@ public class LoanDetailView extends Observable {
 		panCopySelection.add(lblAvailable, gbc_lblAvailable);
 
 		lblIsAvailable = new JLabel("");
+		lblIsAvailable.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_lblIsAvailable = new GridBagConstraints();
 		gbc_lblIsAvailable.insets = new Insets(0, 0, 5, 5);
 		gbc_lblIsAvailable.gridx = 1;
@@ -340,6 +341,7 @@ public class LoanDetailView extends Observable {
 		panCopySelection.add(lblNewLabel_3, gbc_lblNewLabel_3);
 
 		lblReturnDate = new JLabel();
+		lblReturnDate.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_lblReturnDate = new GridBagConstraints();
 		gbc_lblReturnDate.insets = new Insets(0, 0, 5, 5);
 		gbc_lblReturnDate.gridx = 1;
@@ -381,7 +383,15 @@ public class LoanDetailView extends Observable {
 	}
 
 	private void loanCheck(Library lib, Customer customer) {
-		if (lib.getLentCustomerLoans(customer).size() < 3) {
+		boolean oneLoanOverdue = false;
+		List<Loan> loans = lib.getLentCustomerLoans(customer);
+		for(Loan l: loans){
+			if(l.isOverdue()){
+				oneLoanOverdue = true;
+			}
+		}
+		
+		if (lib.getLentCustomerLoans(customer).size() < 3 && !oneLoanOverdue) {
 			lblIsAvailable.setText("More Loans possible");
 			btnLendCopy.setEnabled(true);
 		} else {
