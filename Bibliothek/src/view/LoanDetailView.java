@@ -160,12 +160,12 @@ public class LoanDetailView extends Observable {
 			}
 		});
 		frame.setTitle("Loan Detail View");
-		frame.setMinimumSize(new Dimension(600, 480));
-		frame.setBounds(100, 100, 600, 480);
+		frame.setMinimumSize(new Dimension(650, 550));
+		frame.setBounds(100, 100, 650, 550);
 		frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 434, 0 };
-		gridBagLayout.rowHeights = new int[] { 91, 0, 274, 0, 0, 0 };
+		gridBagLayout.rowHeights = new int[] { 96, 0, 274, 0, 0, 0 };
 		gridBagLayout.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
 		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 1.0, 0.0, 1.0,
 				Double.MIN_VALUE };
@@ -184,10 +184,10 @@ public class LoanDetailView extends Observable {
 				TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagLayout gbl_panCustomerSelection = new GridBagLayout();
 		gbl_panCustomerSelection.columnWidths = new int[] { 0, 0, 0 };
-		gbl_panCustomerSelection.rowHeights = new int[] { 0, 0, 0 };
+		gbl_panCustomerSelection.rowHeights = new int[] { 5, 0, 40, 0 };
 		gbl_panCustomerSelection.columnWeights = new double[] { 0.0, 1.0,
 				Double.MIN_VALUE };
-		gbl_panCustomerSelection.rowWeights = new double[] { 0.0, 0.0,
+		gbl_panCustomerSelection.rowWeights = new double[] { 0.0, 0.0, 0.0,
 				Double.MIN_VALUE };
 		panCustomerSelection.setLayout(gbl_panCustomerSelection);
 
@@ -197,7 +197,7 @@ public class LoanDetailView extends Observable {
 		gbc_lblCustomerId.anchor = GridBagConstraints.EAST;
 		gbc_lblCustomerId.insets = new Insets(0, 0, 5, 5);
 		gbc_lblCustomerId.gridx = 0;
-		gbc_lblCustomerId.gridy = 0;
+		gbc_lblCustomerId.gridy = 1;
 		panCustomerSelection.add(lblCustomerId, gbc_lblCustomerId);
 
 		edCustomerID = new JTextField();
@@ -222,18 +222,18 @@ public class LoanDetailView extends Observable {
 		gbc_edCustomerID.insets = new Insets(0, 0, 5, 0);
 		gbc_edCustomerID.fill = GridBagConstraints.HORIZONTAL;
 		gbc_edCustomerID.gridx = 1;
-		gbc_edCustomerID.gridy = 0;
+		gbc_edCustomerID.gridy = 1;
 		panCustomerSelection.add(edCustomerID, gbc_edCustomerID);
 		edCustomerID.setColumns(10);
 
-		JLabel lblNewLabel = new JLabel("Customer");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.insets = new Insets(0, 0, 0, 5);
-		gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel.gridx = 0;
-		gbc_lblNewLabel.gridy = 1;
-		panCustomerSelection.add(lblNewLabel, gbc_lblNewLabel);
+		JLabel lblCustomer = new JLabel("Customer");
+		lblCustomer.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_lblCustomer = new GridBagConstraints();
+		gbc_lblCustomer.insets = new Insets(0, 0, 0, 5);
+		gbc_lblCustomer.anchor = GridBagConstraints.EAST;
+		gbc_lblCustomer.gridx = 0;
+		gbc_lblCustomer.gridy = 2;
+		panCustomerSelection.add(lblCustomer, gbc_lblCustomer);
 
 		cbCustomers = new JComboBox();
 		cbCustomers.addItemListener(new ItemListener() {
@@ -255,7 +255,7 @@ public class LoanDetailView extends Observable {
 		GridBagConstraints gbc_cbCustomers = new GridBagConstraints();
 		gbc_cbCustomers.fill = GridBagConstraints.HORIZONTAL;
 		gbc_cbCustomers.gridx = 1;
-		gbc_cbCustomers.gridy = 1;
+		gbc_cbCustomers.gridy = 2;
 		panCustomerSelection.add(cbCustomers, gbc_cbCustomers);
 		List<Customer> customers = library.getCustomers();
 		cbCustomers.setModel(new DefaultComboBoxModel<Customer>(customers
@@ -332,13 +332,13 @@ public class LoanDetailView extends Observable {
 		gbc_btnLendCopy.gridy = 1;
 		panCopySelection.add(btnLendCopy, gbc_btnLendCopy);
 
-		JLabel lblNewLabel_3 = new JLabel("Back at");
-		GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
-		gbc_lblNewLabel_3.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel_3.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_3.gridx = 0;
-		gbc_lblNewLabel_3.gridy = 2;
-		panCopySelection.add(lblNewLabel_3, gbc_lblNewLabel_3);
+		JLabel lblBackAt = new JLabel("Back at");
+		GridBagConstraints gbc_lblBackAt = new GridBagConstraints();
+		gbc_lblBackAt.anchor = GridBagConstraints.EAST;
+		gbc_lblBackAt.insets = new Insets(0, 0, 5, 5);
+		gbc_lblBackAt.gridx = 0;
+		gbc_lblBackAt.gridy = 2;
+		panCopySelection.add(lblBackAt, gbc_lblBackAt);
 
 		lblReturnDate = new JLabel();
 		lblReturnDate.setHorizontalAlignment(SwingConstants.LEFT);
@@ -347,14 +347,6 @@ public class LoanDetailView extends Observable {
 		gbc_lblReturnDate.gridx = 1;
 		gbc_lblReturnDate.gridy = 2;
 		panCopySelection.add(lblReturnDate, gbc_lblReturnDate);
-
-		JLabel label = new JLabel("");
-		GridBagConstraints gbc_label = new GridBagConstraints();
-		gbc_label.insets = new Insets(0, 0, 0, 5);
-		gbc_label.anchor = GridBagConstraints.WEST;
-		gbc_label.gridx = 0;
-		gbc_label.gridy = 3;
-		panCopySelection.add(label, gbc_label);
 
 		JScrollPane scrollPane = new JScrollPane();
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
@@ -385,18 +377,19 @@ public class LoanDetailView extends Observable {
 	private void checkChanges(Library lib, Customer customer) {
 		boolean oneLoanOverdue = false;
 		List<Loan> loans = lib.getLentCustomerLoans(customer);
+		
 		for(Loan l: loans){
 			if(l.isOverdue()){
 				oneLoanOverdue = true;
 			}
 		}
 		
-		if (lib.getLentCustomerLoans(customer).size() < 3 && !oneLoanOverdue) {
-			lblIsAvailable.setText("More Loans possible");
-			btnLendCopy.setEnabled(true);
-		} else {
+		if (lib.getLentCustomerLoans(customer).size() >= 3 || oneLoanOverdue) {
 			lblIsAvailable.setText("More Loans aren't possible!");
 			btnLendCopy.setEnabled(false);
+		} else {
+			lblIsAvailable.setText("More Loans possible");
+			btnLendCopy.setEnabled(true);
 		}
 	}
 
