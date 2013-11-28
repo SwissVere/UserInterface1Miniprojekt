@@ -7,6 +7,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.JButton;
+import javax.swing.event.TableModelEvent;
 import javax.swing.table.AbstractTableModel;
 
 import domain.Book;
@@ -85,6 +86,6 @@ public class LoanTableModel extends AbstractTableModel implements Observer{
 	
 	@Override
 	public void update(Observable o, Object arg) {
-		fireTableDataChanged();		
+		fireTableChanged(new TableModelEvent(this));
 	}
 }

@@ -5,6 +5,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -18,14 +19,14 @@ public class PanControl extends JPanel {
 
 	private Library lib;
 	private Book book;
-	private Loan loan;
 	private JFrame masterFrame;
+	private List<Loan> loans;
 	
-	public PanControl(Library lib, Book book, Loan loan, JFrame masterFrame) {
+	public PanControl(Library lib, Book book, List<Loan> loans, JFrame masterFrame) {
 		this();
 		this.lib = lib;
 		this.book = book;
-		this.loan = loan;
+		this.loans = loans;
 		this.masterFrame = masterFrame;
 	}
 	
@@ -46,8 +47,10 @@ public class PanControl extends JPanel {
 				if(book != null) {
 					lib.replaceOrAddBook(book);
 				}
-				if(loan != null) {
-					lib.replaceOrAddLoan(loan);
+				if(loans != null) {
+					for(Loan loan : loans) {
+						lib.replaceOrAddLoan(loan);
+					}
 				}
 				
 				masterFrame.setVisible(false);
@@ -58,8 +61,6 @@ public class PanControl extends JPanel {
 		gbc_btnSave.gridx = 0;
 		gbc_btnSave.gridy = 0;
 		add(btnSave, gbc_btnSave);
-		
-		
 		
 		
 		JButton btnCancel = new JButton("Cancel");

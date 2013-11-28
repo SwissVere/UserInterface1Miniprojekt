@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.EventObject;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import javax.swing.event.CellEditorListener;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
+import domain.IllegalLoanOperationException;
 import domain.Loan;
 
 public class ReturnLoanButton extends JButton  implements TableCellRenderer, TableCellEditor{
@@ -29,7 +31,12 @@ public class ReturnLoanButton extends JButton  implements TableCellRenderer, Tab
 
 		addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				getLoan().returnCopy();
+				try {
+					getLoan().returnCopy(new GregorianCalendar());
+				} catch (IllegalLoanOperationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		

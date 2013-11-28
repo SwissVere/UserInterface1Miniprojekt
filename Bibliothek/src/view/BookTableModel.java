@@ -1,5 +1,7 @@
 package view;
 
+import java.text.SimpleDateFormat;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -68,15 +70,44 @@ public class BookTableModel extends AbstractTableModel implements Observer{
 						early = l;
 					}
 					else {
-						if(l.getReturnDate().compareTo(early.getReturnDate()) < 0) {
+						if(l.getReturnDate() == null) {
+							GregorianCalendar returnDate = (GregorianCalendar) l
+									.getPickupDate().clone();
+							returnDate.add(GregorianCalendar.DAY_OF_YEAR,
+									l.DAYS_TO_RETURN_BOOK);
+							
+							GregorianCalendar earlyreturnDate = (GregorianCalendar) early
+									.getPickupDate().clone();
+							earlyreturnDate.add(GregorianCalendar.DAY_OF_YEAR,
+									early.DAYS_TO_RETURN_BOOK);
+							if(returnDate.compareTo(earlyreturnDate) < 0 ) {
+								early = l;
+							}
+							
+						}
+						else if(l.getReturnDate().compareTo(early.getReturnDate()) < 0) {
 							early = l;
 						}
 					}
 				}
-				
+				GregorianCalendar earlyreturnDate;
 				if(early.getReturnDate() != null)
-					return early.getReturnDate().toString();
-				return "Not available";
+					earlyreturnDate = early.getReturnDate();
+				else {
+					earlyreturnDate = (GregorianCalendar) early
+							.getPickupDate().clone();
+					earlyreturnDate.add(GregorianCalendar.DAY_OF_YEAR,
+							early.DAYS_TO_RETURN_BOOK);
+				}
+
+				String date = "";
+				SimpleDateFormat fromater = new SimpleDateFormat("dd.MM.yyyy");
+
+				if (earlyreturnDate != null) {
+					date = fromater.format(earlyreturnDate.getTime());
+				}
+				
+				return date;
 			}
 			return "Available";
 		case 1:

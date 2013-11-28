@@ -124,4 +124,15 @@ public class Loan extends Observable{
 		setChanged();
 		notifyObservers();
 	}
+	
+	@Override
+	public Loan clone() {
+		Loan l = new Loan(customer, copy);
+		try {
+			l.setPickupDate((GregorianCalendar)pickupDate.clone());
+		} catch (IllegalLoanOperationException e) {
+			e.printStackTrace();
+		}
+		return l;
+	}
 }

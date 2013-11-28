@@ -19,12 +19,21 @@ public class Library extends Observable implements Observer {
 		books = new ArrayList<Book>();
 	}
 
-	public Loan createAndAddLoan(Customer customer, Copy copy) {
-		if (!isCopyLent(copy)) {
-			Loan l = new Loan(customer, copy);
+	public Loan createAndAddLoan(Customer customer, Copy copy) {	
+		Loan l = createLoan(customer, copy);
+		if(l != null) {
 			l.addObserver(this);
 			loans.add(l);
 			notifyAllObservers();
+			return l;
+		} else {
+			return null;
+		}
+	}
+	
+	public Loan createLoan(Customer customer, Copy copy) {
+		if (!isCopyLent(copy)) {
+			Loan l = new Loan(customer, copy);
 			return l;
 		} else {
 			return null;
@@ -55,7 +64,9 @@ public class Library extends Observable implements Observer {
 	}
 
 	public void replaceOrAddLoan(Loan loan) {
-		loans.remove(loan);
+		Loan l = findLoanByBookAndCustomer(loan.getCopy(), loan.getCustomer());
+		if(l != null)
+			loans.remove(l);
 		loans.add(loan);
 		loan.addObserver(this);
 		notifyAllObservers();
@@ -73,6 +84,14 @@ public class Library extends Observable implements Observer {
 			if (b.getName().equals(title)) {
 				return b;
 			}
+		}
+		return null;
+	}
+	
+	public Loan findLoanByBookAndCustomer(Copy copy, Customer customer) {
+		for(Loan l : loans) {
+			if(l.getCopy().equals(copy) && l.getCustomer().equals(customer))
+				return l;
 		}
 		return null;
 	}

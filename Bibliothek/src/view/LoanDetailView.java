@@ -26,10 +26,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Observable;
 
+import javax.swing.AbstractAction;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JComboBox;
+import javax.swing.KeyStroke;
 
 import application.LibraryApp;
 import domain.Book;
@@ -75,6 +78,8 @@ public class LoanDetailView extends Observable {
 	private JLabel lblStatus;
 	private LoanDetailTableModel loanDetailTableModel;
 	private JButton btnLendCopy;
+	
+	private List<Loan> loansToSave = new ArrayList<Loan>();
 
 	Calendar c = new GregorianCalendar();
 
@@ -111,6 +116,7 @@ public class LoanDetailView extends Observable {
 		}
 		detailView.frame.toFront();
 		detailView.frame.repaint();
+		detailView.frame.setVisible(true);
 
 		return detailView;
 	}
@@ -124,7 +130,7 @@ public class LoanDetailView extends Observable {
 	 */
 	public LoanDetailView(Library lib, Loan loan) {
 		this.library = lib;
-		this.loan = loan;
+		this.loan = loan.clone();
 		initialize();
 
 		if (loan.getCustomer() != null || loan.getCopy() != null) {
@@ -142,8 +148,6 @@ public class LoanDetailView extends Observable {
 		} else
 			lblReturnDate.setText(loan.getFormattedDate(loan.getReturnDate()));
 
-		frame.setVisible(true);
-
 		if (!edCustomerID.getText().isEmpty() && !edCopyID.getText().isEmpty()) {
 			checkCustomer(library,
 					library.getCustomerPerID(edCustomerID.getText()),
@@ -151,6 +155,8 @@ public class LoanDetailView extends Observable {
 		} else {
 			btnLendCopy.setEnabled(false);
 		}
+		
+		setDefaultKeys();
 	}
 
 	/**
@@ -228,7 +234,7 @@ public class LoanDetailView extends Observable {
 					return;
 				cbCustomers.setSelectedItem(cs);
 
-				loanDetailTableModel = new LoanDetailTableModel(library, cs);
+				loanDetailTableModel = new LoanDetailTableModel(library, cs, loansToSave);
 				table.setModel(loanDetailTableModel);
 				loanDetailTableModel.fireTableDataChanged();
 
@@ -267,7 +273,7 @@ public class LoanDetailView extends Observable {
 					return;
 				edCustomerID.setText(cs.getId());
 
-				loanDetailTableModel = new LoanDetailTableModel(library, cs);
+				loanDetailTableModel = new LoanDetailTableModel(library, cs, loansToSave);
 				table.setModel(loanDetailTableModel);
 				loanDetailTableModel.fireTableDataChanged();
 
@@ -342,9 +348,9 @@ public class LoanDetailView extends Observable {
 		btnLendCopy = new JButton("Lend Copy");
 		btnLendCopy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				library.createAndAddLoan(library.getCustomerPerID(edCustomerID
+				loansToSave.add(library.createLoan(library.getCustomerPerID(edCustomerID
 						.getText()), library.getCopyPerId(Long
-						.parseLong(edCopyID.getText())));
+						.parseLong(edCopyID.getText()))));
 
 				loanDetailTableModel.fireTableDataChanged();
 
@@ -391,14 +397,14 @@ public class LoanDetailView extends Observable {
 		table = new JTable();
 		if (loan == null)
 			loanDetailTableModel = new LoanDetailTableModel(library,
-					(Customer) cbCustomers.getSelectedItem());
+					(Customer) cbCustomers.getSelectedItem(), loansToSave);
 		else
 			loanDetailTableModel = new LoanDetailTableModel(library,
-					loan.getCustomer());
+					loan.getCustomer(), loansToSave);
 		table.setModel(loanDetailTableModel);
 		scrollPane.setViewportView(table);
 
-		JPanel panControl = new PanControl(library, null, loan, frame);
+		JPanel panControl = new PanControl(library, null, loansToSave, frame);
 		GridBagConstraints gbc_panControl = new GridBagConstraints();
 		gbc_panControl.insets = new Insets(0, 0, 5, 0);
 		gbc_panControl.fill = GridBagConstraints.BOTH;
@@ -440,5 +446,30 @@ public class LoanDetailView extends Observable {
 			btnLendCopy.setEnabled(true);
 			lblStatus.setText("Loan is possible");
 		}
+	}
+	
+	private void setDefaultKeys() {
+		// on ESC key close frame
+        frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+            KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "Cancel"); //$NON-NLS-1$
+        frame.getRootPane().getActionMap().put("Cancel", new AbstractAction(){ //$NON-NLS-1$
+            public void actionPerformed(ActionEvent e)
+            {
+            	frame.setVisible(false);
+            }
+        });
+        
+        frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+                KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "Save"); //$NON-NLS-1$
+        frame.getRootPane().getActionMap().put("Save", new AbstractAction(){ //$NON-NLS-1$
+            public void actionPerformed(ActionEvent e)
+                {
+            		library.replaceOrAddLoan(loan);
+            		for(Loan l : loansToSave) {
+            			library.replaceOrAddLoan(l);
+            		}
+            		frame.setVisible(false);
+                }
+            });  
 	}
 }
