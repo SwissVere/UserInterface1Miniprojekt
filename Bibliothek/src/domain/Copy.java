@@ -2,12 +2,12 @@ package domain;
 
 public class Copy {
 	
-	public enum Condition {NEW, GOOD, DAMAGED, WASTE, LOST }
+	public enum Condition {NEW, GOOD, DAMAGED, WASTE, LOST, DELETED }
 	
 	public static long nextInventoryNumber = 1;
 	
 	private final long inventoryNumber;
-	private final Book book;
+	private Book book;
 	private Condition condition;
 	
 	@Override
@@ -25,6 +25,10 @@ public class Copy {
 		return book;
 	}
 
+	public void setTitle(Book b) {
+		book = b;
+	}
+	
 	public Condition getCondition() {
 		return condition;
 	}

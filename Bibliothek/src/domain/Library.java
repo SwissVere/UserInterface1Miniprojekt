@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import domain.Copy.Condition;
+
 public class Library extends Observable implements Observer {
 
 	private List<Copy> copies;
@@ -58,8 +60,12 @@ public class Library extends Observable implements Observer {
 		Book b = findByBookTitle(book.getName());
 		if(b == null)
 			b = findByBookTitle("");
-		if (b != null)
+		if (b != null) {
 			books.remove(b);
+			List<Copy> copies = getCopiesOfBook(b);
+			for(Copy copy : copies)
+				copy.setTitle(book);
+		}
 		books.add(book);
 		book.addObserver(this);
 		notifyAllObservers();
@@ -120,7 +126,9 @@ public class Library extends Observable implements Observer {
 		List<Copy> res = new ArrayList<Copy>();
 		for (Copy c : copies) {
 			if (c.getTitle().equals(book)) {
-				res.add(c);
+				if(c.getCondition() != Condition.DELETED) {
+					res.add(c);
+				}
 			}
 		}
 
@@ -128,7 +136,7 @@ public class Library extends Observable implements Observer {
 	}
 
 	public void deleteCopyOfBook(Copy copy) {
-		copies.remove(copy);
+		copy.setCondition(Condition.DELETED);
 	}
 
 	public List<Loan> getLentCopiesOfBook(Book book) {
