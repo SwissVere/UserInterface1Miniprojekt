@@ -156,6 +156,8 @@ public class LoanDetailView extends Observable {
 			btnLendCopy.setEnabled(false);
 		}
 		
+		frame.setVisible(true);
+		
 		setDefaultKeys();
 	}
 
@@ -418,6 +420,7 @@ public class LoanDetailView extends Observable {
 		boolean copyLent = false;
 		List<Loan> customerLoans = lib.getLentCustomerLoans(customer);
 		List<Loan> lentLoans = lib.getLentLoans();
+		customerLoans.addAll(loansToSave);
 
 		for (Loan l : lentLoans) {
 			if (l.getCopy().equals(copy)) {
@@ -431,10 +434,10 @@ public class LoanDetailView extends Observable {
 			}
 		}
 
-		if (lib.getLentCustomerLoans(customer).size() >= 3 || oneLoanOverdue
+		if (customerLoans.size() >= 3 || oneLoanOverdue
 				|| copyLent || copyLent) {
 			btnLendCopy.setEnabled(false);
-			if (lib.getLentCustomerLoans(customer).size() >= 3) {
+			if (customerLoans.size() >= 3) {
 				lblStatus.setText("Cannot lend more than 3 books!");
 			} else if (oneLoanOverdue) {
 				lblStatus.setText("One ore more loan is overdue!");
