@@ -48,7 +48,7 @@ import java.util.Observer;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class MasterView implements Observer{
+public class MasterView{
 
 	private JFrame frmSwingingLibar;
 	private Library lib;
@@ -104,11 +104,5 @@ public class MasterView implements Observer{
 			tabbedPane.addTab("Books", new PanBook(lib));
 			tabbedPane.addTab("Loans", new PanLoan(lib));
 		}
-	}
-
-	@Override
-	public void update(Observable o, Object arg) {
-		Book book = (Book)arg;
-		//DefaultTableModel model = (DefaultTableModel) tableBookInventory.getModel();
 	}
 }
