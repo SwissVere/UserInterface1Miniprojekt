@@ -21,6 +21,7 @@ public class PanControl extends JPanel {
 	private Book book;
 	private JFrame masterFrame;
 	private List<Loan> loans;
+	private JButton btnSave;
 	
 	public PanControl(Library lib, Book book, List<Loan> loans, JFrame masterFrame) {
 		this();
@@ -41,7 +42,7 @@ public class PanControl extends JPanel {
 		gridBagLayout.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 		
-		JButton btnSave = new JButton("Save");
+		btnSave = new JButton("Save");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(book != null) {
@@ -75,5 +76,10 @@ public class PanControl extends JPanel {
 		gbc_btnCancel.gridy = 0;
 		add(btnCancel, gbc_btnCancel);
 	}
+	
+	public void isSaveButtonEnabled(boolean isenabled){
+		btnSave.setEnabled(isenabled);
+	}
+
 
 }

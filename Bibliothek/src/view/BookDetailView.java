@@ -52,6 +52,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.KeyAdapter;
 
 public class BookDetailView extends Observable{
 
@@ -69,6 +72,7 @@ public class BookDetailView extends Observable{
 	private JButton btnAddCopy;
 	private DefaultListModel<Copy> listModel = new DefaultListModel<Copy>();  
 	private static HashMap<Book, BookDetailView> openViews = new HashMap<Book, BookDetailView>();
+	private PanControl panControl;
 	
 	// needed for UI-Designer
 	public static void main(String[] args) {
@@ -114,6 +118,8 @@ public class BookDetailView extends Observable{
 		this.library = library;
 		initialize();
 		edTitle.setText(book.getName());
+		if(!book.getName().isEmpty())
+			edTitle.setEditable(false);
 		edAuthor.setText(book.getAuthor());
 		edPublisher.setText(book.getPublisher());
 		cbShelf.setSelectedItem(book.getShelf());
@@ -176,10 +182,16 @@ public class BookDetailView extends Observable{
 		panBookInformation.add(lblTitle, gbc_lblTitle);
 		
 		edTitle = new JTextField();
-		edTitle.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		edTitle.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent arg0) {
 				book.setName(edTitle.getText());
 				checkBook();
+			}
+			@Override
+			public void keyReleased(KeyEvent e) {
+				book.setName(edTitle.getText());
+				checkBook();				
 			}
 		});
 		GridBagConstraints gbc_edTitle = new GridBagConstraints();
@@ -199,8 +211,14 @@ public class BookDetailView extends Observable{
 		panBookInformation.add(lblAuthor, gbc_lblAuthor);
 		
 		edAuthor = new JTextField();
-		edAuthor.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		edAuthor.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				book.setAuthor(edAuthor.getText());
+				checkBook();
+			}
+			@Override
+			public void keyReleased(KeyEvent e) {
 				book.setAuthor(edAuthor.getText());
 				checkBook();
 			}
@@ -222,8 +240,14 @@ public class BookDetailView extends Observable{
 		panBookInformation.add(lblPublisher, gbc_lblPublisher);
 		
 		edPublisher = new JTextField();
-		edPublisher.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		edPublisher.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				book.setPublisher(edPublisher.getText());
+				checkBook();
+			}
+			@Override
+			public void keyReleased(KeyEvent e) {
 				book.setPublisher(edPublisher.getText());
 				checkBook();
 			}
@@ -245,8 +269,8 @@ public class BookDetailView extends Observable{
 		panBookInformation.add(lblShelf, gbc_lblShelf);
 		
 		cbShelf = new JComboBox<Shelf>();
-		cbShelf.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		cbShelf.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent arg0) {
 				book.setShelf((Shelf)cbShelf.getSelectedItem());
 				checkBook();
 			}
@@ -295,6 +319,7 @@ public class BookDetailView extends Observable{
 					listModel.removeElement(selectedCopy);
 				}
 				lblCopyCount.setText("Copies: " + library.getCopiesOfBook(book).size());
+				checkBook();
 			}
 		});
 		GridBagConstraints gbc_btnDeleteSelected = new GridBagConstraints();
@@ -309,6 +334,7 @@ public class BookDetailView extends Observable{
 				Copy newCopy = library.createAndAddCopy(book);
 				lblCopyCount.setText("Copies: " + library.getCopiesOfBook(book).size());
 				listModel.addElement(newCopy);
+				checkBook();
 			}
 		});
 		GridBagConstraints gbc_btnAddCopy = new GridBagConstraints();
@@ -333,7 +359,7 @@ public class BookDetailView extends Observable{
 		scrollPane.add(listCopies);
 		panCopies.add(scrollPane, BorderLayout.CENTER);
 		
-		JPanel panControl = new PanControl(library, book, null, frame);
+		panControl = new PanControl(library, book, null, frame);
 		GridBagConstraints gbc_panControl = new GridBagConstraints();
 		gbc_panControl.fill = GridBagConstraints.BOTH;
 		gbc_panControl.gridx = 0;
@@ -343,10 +369,18 @@ public class BookDetailView extends Observable{
 	}
 	
 	private void checkBook() {
-		if(edAuthor.getText().isEmpty() || edPublisher.getText().isEmpty() || edTitle.getText().isEmpty() || cbShelf.getSelectedItem().toString().equals("")){
+		if(edAuthor.getText().isEmpty() 
+				|| edPublisher.getText().isEmpty() 
+				|| edTitle.getText().isEmpty() 
+				|| cbShelf.getSelectedItem() == null 
+				|| cbShelf.getSelectedItem().toString().equals("")){
 			btnAddCopy.setEnabled(false);
+			panControl.isSaveButtonEnabled(false);
 		} else {
 			btnAddCopy.setEnabled(true);
+			if(listModel.getSize() > 0) {
+				panControl.isSaveButtonEnabled(true);
+			}
 		}
 		
 	}

@@ -56,6 +56,8 @@ public class Library extends Observable implements Observer {
 
 	public void replaceOrAddBook(Book book) {
 		Book b = findByBookTitle(book.getName());
+		if(b == null)
+			b = findByBookTitle("");
 		if (b != null)
 			books.remove(b);
 		books.add(book);
