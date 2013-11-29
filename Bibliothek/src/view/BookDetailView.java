@@ -66,6 +66,7 @@ public class BookDetailView extends Observable{
 	private JList<Copy> listCopies;
 	private JLabel lblCopyCount;
 	private JButton btnDeleteSelected;
+	private JButton btnAddCopy;
 	private DefaultListModel<Copy> listModel = new DefaultListModel<Copy>();  
 	private static HashMap<Book, BookDetailView> openViews = new HashMap<Book, BookDetailView>();
 	
@@ -124,6 +125,8 @@ public class BookDetailView extends Observable{
 		
 		lblCopyCount.setText("Copies: " + library.getCopiesOfBook(book).size());
 		
+		checkBook();
+		
 		setDefaultKeys();
 	}
 
@@ -173,10 +176,10 @@ public class BookDetailView extends Observable{
 		panBookInformation.add(lblTitle, gbc_lblTitle);
 		
 		edTitle = new JTextField();
-		edTitle.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusLost(FocusEvent arg0) {
+		edTitle.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				book.setName(edTitle.getText());
+				checkBook();
 			}
 		});
 		GridBagConstraints gbc_edTitle = new GridBagConstraints();
@@ -196,10 +199,10 @@ public class BookDetailView extends Observable{
 		panBookInformation.add(lblAuthor, gbc_lblAuthor);
 		
 		edAuthor = new JTextField();
-		edAuthor.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusLost(FocusEvent e) {
+		edAuthor.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				book.setAuthor(edAuthor.getText());
+				checkBook();
 			}
 		});
 		GridBagConstraints gbc_edAuthor = new GridBagConstraints();
@@ -219,10 +222,10 @@ public class BookDetailView extends Observable{
 		panBookInformation.add(lblPublisher, gbc_lblPublisher);
 		
 		edPublisher = new JTextField();
-		edPublisher.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusLost(FocusEvent e) {
+		edPublisher.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				book.setPublisher(edPublisher.getText());
+				checkBook();
 			}
 		});
 		GridBagConstraints gbc_edPublisher = new GridBagConstraints();
@@ -242,10 +245,10 @@ public class BookDetailView extends Observable{
 		panBookInformation.add(lblShelf, gbc_lblShelf);
 		
 		cbShelf = new JComboBox<Shelf>();
-		cbShelf.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusLost(FocusEvent e) {
+		cbShelf.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
 				book.setShelf((Shelf)cbShelf.getSelectedItem());
+				checkBook();
 			}
 		});
 		cbShelf.setModel(new DefaultComboBoxModel<Shelf>(Shelf.values()));
@@ -300,7 +303,7 @@ public class BookDetailView extends Observable{
 		gbc_btnDeleteSelected.gridy = 0;
 		panel.add(btnDeleteSelected, gbc_btnDeleteSelected);
 		
-		JButton btnAddCopy = new JButton("Add copy");
+		btnAddCopy = new JButton("Add copy");
 		btnAddCopy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Copy newCopy = library.createAndAddCopy(book);
@@ -337,6 +340,15 @@ public class BookDetailView extends Observable{
 		gbc_panControl.gridy = 2;
 		frame.getContentPane().add(panControl, gbc_panControl);
 
+	}
+	
+	private void checkBook() {
+		if(edAuthor.getText().isEmpty() || edPublisher.getText().isEmpty() || edTitle.getText().isEmpty() || cbShelf.getSelectedItem().toString().equals("")){
+			btnAddCopy.setEnabled(false);
+		} else {
+			btnAddCopy.setEnabled(true);
+		}
+		
 	}
 	
 	private void setDefaultKeys() {
