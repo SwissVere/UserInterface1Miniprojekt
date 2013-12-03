@@ -43,6 +43,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.Observable;
+import java.util.regex.Pattern;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 
@@ -244,7 +245,7 @@ public class PanLoan extends JPanel {
 		
 			List<RowFilter<Object, Object>> filters = new ArrayList<RowFilter<Object, Object>>();
 			
-			filters.add( RowFilter.regexFilter("(?i)" + edSearchField.getText()) ); 
+			filters.add( RowFilter.regexFilter("(?i)" + Pattern.quote(edSearchField.getText()) )); 
 			
 			if(cbShowOverdueLoans.isSelected()) {
 				filters.add( RowFilter.regexFilter("^(?i)Overdue!$"));

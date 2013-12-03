@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.regex.Pattern;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -41,7 +42,9 @@ import javax.swing.JTextField;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+
 import javax.swing.JCheckBox;
+
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 
@@ -197,7 +200,7 @@ public class PanBook extends JPanel implements Observer{
 		
 			List<RowFilter<Object, Object>> filters = new ArrayList<RowFilter<Object, Object>>();
 			
-			filters.add( RowFilter.regexFilter("(?i)" + edSearchField.getText()) ); 
+			filters.add( RowFilter.regexFilter("(?i)" + Pattern.quote(edSearchField.getText())) ); 
 			
 			if(cbShowAvailable.isSelected()) {
 				filters.add( RowFilter.regexFilter("^(?i)Available$"));
