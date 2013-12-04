@@ -37,6 +37,7 @@ import javax.swing.KeyStroke;
 import application.LibraryApp;
 import domain.Book;
 import domain.Copy;
+import domain.Copy.Condition;
 import domain.Customer;
 import domain.Library;
 import domain.Loan;
@@ -418,6 +419,8 @@ public class LoanDetailView extends Observable {
 	private void checkCustomer(Library lib, Customer customer, Copy copy) {
 		boolean oneLoanOverdue = false;
 		boolean copyLent = false;
+		boolean copyIsAvailable = false;
+		boolean copyIsAlreadyInList = false;
 		List<Loan> customerLoans = lib.getLentCustomerLoans(customer);
 		List<Loan> lentLoans = lib.getLentLoans();
 		customerLoans.addAll(loansToSave);
@@ -433,14 +436,29 @@ public class LoanDetailView extends Observable {
 				oneLoanOverdue = true;
 			}
 		}
+		
+		if(copy.getCondition() != Condition.DELETED) {
+			copyIsAvailable = true;
+		}
+		
+		for(int i = 0; i < loanDetailTableModel.getRowCount(); i++) {
+			if(loanDetailTableModel.getValueAt(i, 0).equals(edCopyID.getText())) {
+				copyIsAlreadyInList = true;
+				break;
+			}
+		}
 
 		if (customerLoans.size() >= 3 || oneLoanOverdue
-				|| copyLent || copyLent) {
+				|| copyLent || copyLent || copyIsAlreadyInList || !copyIsAvailable) {
 			btnLendCopy.setEnabled(false);
 			if (customerLoans.size() >= 3) {
 				lblStatus.setText("Cannot lend more than 3 books!");
 			} else if (oneLoanOverdue) {
 				lblStatus.setText("One ore more loan is overdue!");
+			} else if(copyIsAlreadyInList) {
+				lblStatus.setText("Copy already in the list");
+			} else if(!copyIsAvailable) {
+				lblStatus.setText("Copy not availalbe");
 			} else {
 				lblStatus.setText("Copy already Lent!");
 			}

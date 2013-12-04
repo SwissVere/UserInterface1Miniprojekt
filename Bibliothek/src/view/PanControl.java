@@ -5,6 +5,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -12,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import domain.Book;
+import domain.Copy;
 import domain.Library;
 import domain.Loan;
 
@@ -22,6 +24,8 @@ public class PanControl extends JPanel {
 	private JFrame masterFrame;
 	private List<Loan> loans;
 	private JButton btnSave;
+	private List<Copy> copiesToDelete = new ArrayList<Copy>();
+	
 	
 	public PanControl(Library lib, Book book, List<Loan> loans, JFrame masterFrame) {
 		this();
@@ -47,6 +51,9 @@ public class PanControl extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				if(book != null) {
 					lib.replaceOrAddBook(book);
+					for(Copy c : copiesToDelete) {
+						lib.deleteCopyOfBook(c);
+					}
 				}
 				if(loans != null) {
 					for(Loan loan : loans) {
@@ -81,5 +88,8 @@ public class PanControl extends JPanel {
 		btnSave.setEnabled(isenabled);
 	}
 
+	public void setCopiesToDelete(List<Copy> listOfCopiesToDelete) {
+		copiesToDelete = listOfCopiesToDelete;
+	}
 
 }

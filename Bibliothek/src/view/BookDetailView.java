@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.EventQueue;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Observable;
@@ -73,6 +74,8 @@ public class BookDetailView extends Observable{
 	private DefaultListModel<Copy> listModel = new DefaultListModel<Copy>();  
 	private static HashMap<Book, BookDetailView> openViews = new HashMap<Book, BookDetailView>();
 	private PanControl panControl;
+	
+	private List<Copy> deletedCopies = new ArrayList<Copy>();
 	
 	// needed for UI-Designer
 	public static void main(String[] args) {
@@ -315,10 +318,10 @@ public class BookDetailView extends Observable{
 			public void actionPerformed(ActionEvent arg0) {
 				List<Copy> selectedCopies = listCopies.getSelectedValuesList();
 				for(Copy selectedCopy : selectedCopies) {
-					library.deleteCopyOfBook(selectedCopy);
+					deletedCopies.add(selectedCopy);
 					listModel.removeElement(selectedCopy);
 				}
-				lblCopyCount.setText("Copies: " + library.getCopiesOfBook(book).size());
+				lblCopyCount.setText("Copies: " + listModel.getSize());
 				checkBook();
 			}
 		});
@@ -360,6 +363,7 @@ public class BookDetailView extends Observable{
 		panCopies.add(scrollPane, BorderLayout.CENTER);
 		
 		panControl = new PanControl(library, book, null, frame);
+		panControl.setCopiesToDelete(deletedCopies);
 		GridBagConstraints gbc_panControl = new GridBagConstraints();
 		gbc_panControl.fill = GridBagConstraints.BOTH;
 		gbc_panControl.gridx = 0;
@@ -402,6 +406,12 @@ public class BookDetailView extends Observable{
             public void actionPerformed(ActionEvent e)
                 {
             		library.replaceOrAddBook(book);
+            		
+            		for(Copy c: deletedCopies)
+            		{
+            			library.deleteCopyOfBook(c);
+            		}
+            		
             		frame.setVisible(false);
                 }
             });

@@ -137,6 +137,22 @@ public class Library extends Observable implements Observer {
 
 	public void deleteCopyOfBook(Copy copy) {
 		copy.setCondition(Condition.DELETED);
+		deleteLoanForDeletedCopy(copy);
+	}
+
+	private void deleteLoanForDeletedCopy(Copy copy) {
+		Loan loan = null;
+		for(Loan l: loans) {
+			if(l.getCopy().equals(copy) && l.isLent()) {
+				loan = l;
+				break;
+			}
+		}
+		if(loan != null) {
+			loans.remove(loan);
+			loan.deleteObserver(this);
+			notifyAllObservers();
+		}
 	}
 
 	public List<Loan> getLentCopiesOfBook(Book book) {
