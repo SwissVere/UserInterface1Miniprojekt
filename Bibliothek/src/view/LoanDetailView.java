@@ -458,7 +458,7 @@ public class LoanDetailView extends Observable {
 			} else if(copyIsAlreadyInList) {
 				lblStatus.setText("Copy already in the list");
 			} else if(!copyIsAvailable) {
-				lblStatus.setText("Copy not availalbe");
+				lblStatus.setText("Copy not available");
 			} else {
 				lblStatus.setText("Copy already Lent!");
 			}
